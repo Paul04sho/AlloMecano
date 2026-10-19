@@ -2,7 +2,7 @@
 
 > Plateforme de mise en relation entre automobilistes en panne et mécaniciens vérifiés.
 
-![Page d'accueil du site](path/to/preview-homepage.png)
+![Page d'accueil du site](design/Accueil · Desktop - AlloMécano.png)
 
 
 ---
