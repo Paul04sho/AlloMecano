@@ -37,7 +37,7 @@ distance affichée.
 ## 🛠️ Technologies envisagées
 * **Interface (frontend)** : HTML, CSS, JavaScript (design orienté mobile-first)
 * **Server (backend)** : PHP avec gestion des comptes et des envois de fichiers
-* ** Base de données** : MySQL
+* **Base de données** : MySQL
 
 ## ⚙️ Installation et Démarrage
 
