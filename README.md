@@ -1,4 +1,4 @@
-# 🚀 [AlloMécano]
+# 🔧 AlloMécano
 
 > Plateforme de mise en relation entre automobilistes en panne et mécaniciens vérifiés.
 
