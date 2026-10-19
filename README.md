@@ -21,7 +21,7 @@ AlloMécano est un site web qui met en relation, en temps réel, un automobilist
 isolé, loin de tout garage) et le mécanicien disponible le plus proche de sa position. Le client indique
 sa situation, voit les mécaniciens autour de lui et peut les contacter immédiatement.
 
-La particularité d'Allomecano est la confiance : un mécanicien n'apparaît sur la plateforme qu'après
+La particularité d'AlloMécano est la confiance : un mécanicien n'apparaît sur la plateforme qu'après
 la vérification de son identité, de son permis, de son diplôme et de son expérience. Seuls des
 professionnels qualifiés sont visibles par les clients.
 
