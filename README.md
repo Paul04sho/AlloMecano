@@ -26,13 +26,13 @@ la vérification de son identité, de son permis, de son diplôme et de son exp�
 professionnels qualifiés sont visibles par les clients.
 
 ## ✨ Fonctionnalités
-* **[Autorisation de la géolocalisation]**
-* **[Description de la panne]** : type de véhicule (voiture, moto, camion) et nature du problème.
-* **[Liste et carte des mécaniciens validés et disponibles]** : triés du plus proche au plus éloigné, avec la
+* **Autorisation de la géolocalisation**
+* **Description de la panne** : type de véhicule (voiture, moto, camion) et nature du problème.
+* **Liste et carte des mécaniciens validés et disponibles** : triés du plus proche au plus éloigné, avec la
 distance affichée.
-* **[Fiche du mécanicien]** : photo, spécialités, années d'expérience, note moyenne, badge « Vérifié ».
-* **[Contact direct]** : bouton d'appel et lien WhatsApp.
-* **[Notation et avis après l'intervention]**
+* **Fiche du mécanicien** : photo, spécialités, années d'expérience, note moyenne, badge « Vérifié ».
+* **Contact direct** : bouton d'appel et lien WhatsApp.
+* **Notation et avis après l'intervention**
 
 ## 🛠️ Technologies envisagées
 * **Interface (frontend)** : HTML, CSS, JavaScript (design orienté mobile-first)
