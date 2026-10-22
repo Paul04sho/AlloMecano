@@ -28,7 +28,9 @@ Dépendances Composer : `minishlink/web-push`, `phpmailer/phpmailer`, `phpunit/p
 
 ## Démarrer en local
 
-Prérequis : PHP 8.2+ avec `pdo_mysql`, `mbstring`, `gd`, `gmp` ; Composer ; MySQL ou MariaDB.
+Prérequis : PHP 8.2+ avec `pdo_mysql`, `mbstring`, `curl`, `openssl`, `gd` ; Composer ; MySQL ou MariaDB.
+
+**Sous Windows avec XAMPP** : suivre [`docs/installation-xampp.md`](docs/installation-xampp.md) pas à pas.
 
 ```bash
 git clone https://github.com/Paul04sho/AlloMecano.git

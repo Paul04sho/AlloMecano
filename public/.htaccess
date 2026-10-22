@@ -7,7 +7,9 @@ DirectoryIndex index.php
   # HTTPS obligatoire (micro, localisation et notifications ne marchent qu'en HTTPS)
   RewriteCond %{HTTPS} !=on
   RewriteCond %{HTTP:X-Forwarded-Proto} !=https
-  RewriteCond %{HTTP_HOST} !^localhost [NC]
+  # Sauf en local : localhost, 127.0.0.1 et les domaines .test (XAMPP)
+  RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)(:\d+)?$ [NC]
+  RewriteCond %{HTTP_HOST} !\.test(:\d+)?$ [NC]
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
   # Fichiers existants servis tels quels, tout le reste passe par index.php
