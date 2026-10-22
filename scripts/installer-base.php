@@ -18,12 +18,26 @@ if (in_array('--reinitialiser', $options, true) && Env::enProduction()) {
     exit(1);
 }
 
-$pdo = new PDO(
-    sprintf('mysql:host=%s;port=%s;charset=utf8mb4', Env::get('DB_HOTE', '127.0.0.1'), Env::get('DB_PORT', '3306')),
-    (string) Env::get('DB_UTILISATEUR', 'root'),
-    (string) Env::get('DB_MOT_DE_PASSE', ''),
-    [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
-);
+$hote = (string) Env::get('DB_HOTE', '127.0.0.1');
+$port = (string) Env::get('DB_PORT', '3306');
+$utilisateur = (string) Env::get('DB_UTILISATEUR', 'root');
+try {
+    $pdo = new PDO(
+        sprintf('mysql:host=%s;port=%s;charset=utf8mb4', $hote, $port),
+        $utilisateur,
+        (string) Env::get('DB_MOT_DE_PASSE', ''),
+        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+    );
+} catch (PDOException $e) {
+    $aide = match (true) {
+        str_contains($e->getMessage(), '[2002]') => "MySQL ne répond pas sur $hote:$port. Est-il démarré (panneau XAMPP) ? Le port est-il le bon (DB_PORT) ?",
+        str_contains($e->getMessage(), '[1045]') => "Identifiants refusés pour « $utilisateur ». Vérifier DB_UTILISATEUR et DB_MOT_DE_PASSE dans .env.",
+        str_contains($e->getMessage(), 'could not find driver') => "Extension pdo_mysql absente : la décommenter dans php.ini (extension=pdo_mysql).",
+        default => $e->getMessage(),
+    };
+    fwrite(STDERR, "Connexion impossible. $aide\n");
+    exit(1);
+}
 
 if (in_array('--reinitialiser', $options, true)) {
     $pdo->exec("DROP DATABASE IF EXISTS `$nom`");
