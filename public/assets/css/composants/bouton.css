@@ -1,0 +1,58 @@
+/* Bouton (Figma Système 53:148 · spec 7.2)
+   Types : principal (balise), secondaire (bitume), contour, contour-beton (sur fond sombre), danger.
+   Hauteurs : 64 (urgence, socle C5), 56 (défaut), 52 (desktop), 44 (admin). */
+
+.bouton {
+  --h: 56px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+  min-height: var(--h); padding: 0 24px;
+  border: 0; border-radius: var(--rayon);
+  font-family: var(--police-marque); font-stretch: 100%; font-weight: 800; font-size: 18px; line-height: 20px;
+  text-decoration: none; text-align: center;
+  transition: transform var(--t-micro) var(--ease-sortie), background-color var(--t-etat) linear;
+  -webkit-tap-highlight-color: transparent;
+}
+.bouton .icone { width: 24px; height: 24px; stroke-width: 2.25; }
+.bouton--64 { --h: 64px; }
+.bouton--52 { --h: 52px; }
+.bouton--44 { --h: 44px; padding: 0 16px; font-size: 16px; line-height: 18px; gap: 8px; }
+.bouton--plein { display: flex; width: 100%; }
+.bouton:active:not([disabled]):not([aria-disabled="true"]) { transform: translateY(1px); }
+
+.bouton--principal { background: var(--balise); color: var(--bitume); box-shadow: inset 0 0 0 2px var(--bitume); }
+.sur-sombre .bouton--principal, .bouton--principal.bouton--sans-lisere { box-shadow: none; }
+.bouton--principal:active { background: var(--balise-presse); }
+
+.bouton--secondaire { background: var(--bitume); color: var(--beton); }
+.bouton--contour { background: transparent; color: var(--encre); box-shadow: inset 0 0 0 2px var(--encre); }
+.bouton--contour-beton { background: transparent; color: var(--beton); box-shadow: inset 0 0 0 2px var(--beton); }
+.bouton--danger { background: transparent; color: var(--erreur-texte); box-shadow: inset 0 0 0 2px var(--erreur-texte); }
+.bouton--danger-confirme { background: var(--erreur-texte); color: var(--blanc); }
+
+.bouton[disabled], .bouton[aria-disabled="true"] {
+  background: var(--surface-creuse); color: var(--encre-2); box-shadow: inset 0 0 0 2px var(--filet); cursor: not-allowed;
+}
+
+/* Chargement : libellé au présent + voyant de 10 px qui clignote à 1 Hz, largeur figée */
+.bouton[aria-busy="true"] { pointer-events: none; }
+.bouton__voyant { display: none; width: 10px; height: 10px; border-radius: 50%; background: var(--bitume); }
+.bouton[aria-busy="true"] .bouton__voyant { display: block; animation: clignotant 1s steps(2, jump-none) infinite; }
+.bouton--secondaire[aria-busy="true"] .bouton__voyant { background: var(--balise); }
+
+/* Lien (spec 7.2) */
+.bouton-lien {
+  display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0;
+  background: none; border: 0; color: inherit;
+  font: 700 17px/26px var(--police-texte); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px;
+}
+.bouton-lien .icone { width: 20px; height: 20px; }
+
+/* Bouton icône 48 × 48 (retour, fermer) ; sur photo : carré bitume, flèche béton */
+.bouton-icone { display: inline-grid; place-items: center; width: 48px; height: 48px; padding: 0; background: none; border: 0; border-radius: var(--rayon); color: var(--encre); }
+.bouton-icone--bitume { background: var(--bitume); color: var(--beton); }
+
+@keyframes clignotant { from { opacity: 1; } to { opacity: .25; } }
+
+@media (min-width: 1024px) {
+  .bouton:not(.bouton--64):not(.bouton--44) { --h: 52px; }
+}

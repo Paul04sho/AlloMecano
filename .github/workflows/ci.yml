@@ -1,0 +1,35 @@
+name: Contrôles
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  php:
+    runs-on: ubuntu-latest
+    services:
+      mariadb:
+        image: mariadb:10.11
+        env:
+          MARIADB_ROOT_PASSWORD: racine
+          MARIADB_DATABASE: allomecano
+        ports: ["3306:3306"]
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: pdo_mysql, mbstring, gd, gmp, intl
+          coverage: none
+      - name: Dépendances
+        run: composer install --no-interaction --prefer-dist --no-progress
+      - name: Syntaxe PHP
+        run: find app public scripts tests -name "*.php" -print0 | xargs -0 -n1 php -l > /dev/null
+      - name: Schéma de la base
+        run: mysql -h 127.0.0.1 -uroot -pracine allomecano < database/schema.sql
+      - name: Tests
+        run: vendor/bin/phpunit

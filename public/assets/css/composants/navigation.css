@@ -1,0 +1,85 @@
+/* Navigation : barre client (56:322), barre desktop (56:337), barre de parcours (53:374),
+   socle d'action (53:282), pied de page (56:636 / 56:670), onglets mécano (56:469), rail admin (56:635). */
+
+/* ---------- Barre client : logo 112 à gauche, « Espace pro » à droite ---------- */
+.barre {
+  position: sticky; top: 0; z-index: 40;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  height: var(--hauteur-barre); padding: 0 var(--marge);
+  background: var(--surface);
+  border-bottom: 1px solid var(--filet);
+}
+.barre__logo { display: block; color: var(--encre); width: 112px; }
+.barre__logo svg { width: 100%; height: auto; }
+.barre__liens { display: flex; align-items: center; gap: 24px; }
+.barre__liens a { font-weight: 700; font-size: 15px; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+@media (min-width: 1024px) {
+  .barre { height: 72px; }
+  .barre__logo { width: 148px; }
+}
+
+/* ---------- Barre de parcours : retour · ÉTAPE 2 / 3 · Annuler + marquage ---------- */
+.parcours { position: sticky; top: 0; z-index: 40; background: var(--surface); }
+.parcours__barre { display: grid; grid-template-columns: 48px 1fr auto; align-items: center; height: 56px; padding: 0 var(--marge) 0 4px; }
+.parcours__etape { text-align: center; }
+.parcours__annuler { font-weight: 700; font-size: 15px; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.marquage { display: flex; gap: 6px; padding: 0 var(--marge); }
+.marquage > i { flex: 1; height: 4px; background: var(--filet); position: relative; overflow: hidden; }
+.marquage > i.fait::after { content: ""; position: absolute; inset: 0; background: var(--encre); transform-origin: left; }
+.marquage > i.courant::after { animation: marquage-trace var(--t-entree) var(--ease-sortie) 200ms both; }
+@keyframes marquage-trace { from { transform: scaleX(0); } }
+
+/* ---------- Socle d'action : barre basse bitume ---------- */
+.socle {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 12px var(--marge) calc(12px + env(safe-area-inset-bottom));
+  background: var(--socle); color: var(--beton);
+  border-top: 1px solid var(--filet-sombre);
+  animation: socle-entree var(--t-entree) var(--ease-sortie) both;
+}
+.socle__info { font-family: var(--police-donnee); font-weight: 500; font-size: 13px; line-height: 18px; letter-spacing: .04em; text-transform: uppercase; color: var(--gris-voyant); }
+.socle__actions { display: flex; gap: 8px; }
+.socle__actions > :first-child { flex: 1.6; }
+.socle__actions > :nth-child(2) { flex: 1; }
+.socle .bouton--principal { box-shadow: none; }
+.socle .bouton--secondaire { background: transparent; box-shadow: inset 0 0 0 2px var(--beton); }
+.socle__pourquoi { font-size: 15px; line-height: 22px; color: var(--hachure); }
+.socle.cache { animation: socle-sortie 160ms var(--ease-sortie) both; }
+.avec-socle { padding-bottom: calc(var(--hauteur-socle) + 24px + env(safe-area-inset-bottom)); }
+@keyframes socle-entree { from { transform: translateY(100%); } }
+@keyframes socle-sortie { to { transform: translateY(100%); } }
+@media (min-width: 1024px) {
+  .socle { position: static; animation: none; background: transparent; border: 0; padding: 0; color: inherit; }
+  .socle__info { color: var(--encre-2); }
+  .avec-socle { padding-bottom: 0; }
+}
+
+/* ---------- Pied de page : bitume, logo blanc, slogan ---------- */
+.pied { background: var(--bitume); color: var(--beton); padding: 48px var(--marge) calc(32px + env(safe-area-inset-bottom)); }
+.pied__interieur { max-width: var(--largeur-contenu); margin-inline: auto; display: grid; gap: 32px; }
+.pied__logo { width: 140px; color: var(--beton); }
+.pied__liens { display: flex; flex-wrap: wrap; gap: 4px 24px; }
+.pied__liens a { display: inline-flex; align-items: center; min-height: 48px; font-weight: 700; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.pied__urgence { display: flex; flex-wrap: wrap; gap: 8px 24px; color: var(--gris-voyant); }
+.pied__urgence a { color: var(--beton); text-decoration: none; }
+.pied__mentions { color: var(--gris-voyant); font-size: 13px; line-height: 18px; }
+
+/* ---------- Onglets mécano : barre bitume de 64 en bas ---------- */
+.onglets {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  height: calc(64px + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom);
+  background: var(--bitume);
+}
+.onglets a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: var(--gris-voyant); text-decoration: none; font-weight: 700; font-size: 13px; position: relative; }
+.onglets a[aria-current="page"] { color: var(--beton); }
+.onglets a[aria-current="page"]::before { content: ""; position: absolute; top: 0; left: 20%; right: 20%; height: 3px; background: var(--balise); }
+.onglets__compteur { position: absolute; top: 8px; left: calc(50% + 8px); min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: var(--beton); color: var(--bitume); font-family: var(--police-donnee); font-weight: 500; font-size: 12px; line-height: 20px; text-align: center; }
+
+/* ---------- Rail admin : bitume de 248 ---------- */
+.rail { position: fixed; inset: 0 auto 0 0; width: 248px; background: var(--bitume); color: var(--beton); padding: 24px 0; display: flex; flex-direction: column; gap: 4px; }
+.rail__logo { width: 140px; margin: 0 24px 24px; color: var(--beton); }
+.rail a { display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 24px; color: var(--beton); text-decoration: none; font-weight: 700; font-size: 15px; }
+.rail a[aria-current="page"] { background: var(--panneau); box-shadow: inset 3px 0 0 var(--balise); }
+.rail__compteur { margin-left: auto; font-family: var(--police-donnee); font-weight: 500; font-size: 14px; color: var(--gris-voyant); }

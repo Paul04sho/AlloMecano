@@ -1,0 +1,14 @@
+{
+  "name": "allomécano",
+  "short_name": "allomécano",
+  "description": "Le mécano vérifié le plus proche, à Abidjan.",
+  "lang": "fr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#15171c",
+  "theme_color": "#15171c",
+  "icons": [
+    { "src": "/assets/img/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

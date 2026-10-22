@@ -1,0 +1,63 @@
+/* Sélecteurs (spec 7.10) : tuile véhicule (54:293), panneau et tuile voyant (54:390/391),
+   ligne de choix (54:467), étiquette de choix (54:451), segment (54:499), stepper (54:500). */
+
+/* ---------- Tuiles véhicule : 3 colonnes, 88 de haut ---------- */
+.vehicules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.tuile-vehicule { position: relative; display: block; cursor: pointer; }
+.tuile-vehicule input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.tuile-vehicule span {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; height: 88px;
+  border-radius: var(--rayon); box-shadow: inset 0 0 0 2px var(--encre); font-weight: 700; font-size: 15px;
+  transition: background-color var(--t-etat) var(--ease-sortie), color var(--t-etat) var(--ease-sortie);
+}
+.tuile-vehicule .icone { width: 40px; height: 40px; }
+.tuile-vehicule input:checked + span { background: var(--encre); color: var(--surface); }
+.tuile-vehicule input:focus-visible + span { outline: 3px solid var(--encre); outline-offset: 3px; }
+
+/* ---------- Panneau des voyants : bitume, coupe M, 2 colonnes de tuiles de 64 ---------- */
+.panneau-voyants { background: var(--bitume); color: var(--beton); padding: 20px 12px 12px; display: flex; flex-direction: column; gap: 8px;
+  clip-path: polygon(var(--coupe-m) 0, 100% 0, 100% 100%, 0 100%, 0 calc(var(--coupe-m) * .577)); }
+.panneau-voyants > .t-etiquette { color: var(--gris-voyant); padding: 0 8px 4px; }
+fieldset.panneau-voyants { border: 0; margin: 0; min-width: 0; }
+fieldset.panneau-voyants > legend { float: left; width: 100%; } /* légende dans le flux (sinon posée sur le bord) */
+fieldset.panneau-voyants > legend + * { clear: both; }
+.voyants { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.tuile-voyant { position: relative; display: block; cursor: pointer; }
+.tuile-voyant--large { grid-column: 1 / -1; }
+.tuile-voyant input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.tuile-voyant span {
+  display: grid; grid-template-columns: 32px 1fr; gap: 10px; align-items: center; min-height: 64px; padding: 8px 12px;
+  background: var(--panneau); font-weight: 700; font-size: 15px; line-height: 19px; position: relative;
+}
+.tuile-voyant .icone { width: 32px; height: 32px; color: var(--gris-voyant); }
+.tuile-voyant input:checked + span { color: var(--balise); box-shadow: inset 0 0 0 2px var(--balise); }
+.tuile-voyant input:checked + span .icone { color: var(--balise); animation: voyant-allume 260ms linear both; }
+.tuile-voyant input:focus-visible + span { outline: 3px solid var(--beton); outline-offset: 2px; }
+@keyframes voyant-allume { 0% { opacity: 0; } 30% { opacity: 1; } 60% { opacity: .4; } 100% { opacity: 1; } }
+
+/* ---------- Lignes radio et cases : 56, filets, cases de 24 jamais pré-cochées ---------- */
+.lignes-choix { display: flex; flex-direction: column; border-top: 1px solid var(--filet); }
+.ligne-choix { display: flex; align-items: center; gap: 14px; min-height: 56px; border-bottom: 1px solid var(--filet); cursor: pointer; font-size: 17px; }
+.ligne-choix input { appearance: none; flex: none; width: 24px; height: 24px; margin: 0; border-radius: var(--rayon); box-shadow: inset 0 0 0 2px var(--encre); display: grid; place-items: center; cursor: pointer; }
+.ligne-choix input[type="radio"] { border-radius: 50%; }
+.ligne-choix input:checked { background: var(--encre); }
+.ligne-choix input[type="checkbox"]:checked::after { content: ""; width: 12px; height: 7px; border: solid var(--surface); border-width: 0 0 2.5px 2.5px; transform: translateY(-2px) rotate(-45deg); }
+.ligne-choix input[type="radio"]:checked::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--surface); }
+
+/* ---------- Étiquettes de choix multiple (spécialités) : 48, bord 1,5 ---------- */
+.etiquettes-choix { display: flex; flex-wrap: wrap; gap: 8px; }
+.etiquette-choix { position: relative; cursor: pointer; }
+.etiquette-choix input { position: absolute; opacity: 0; inset: 0; margin: 0; }
+.etiquette-choix span { display: inline-flex; align-items: center; gap: 8px; height: 48px; padding: 0 14px; border-radius: var(--rayon); box-shadow: inset 0 0 0 1.5px var(--encre); font-family: var(--police-marque); font-stretch: 100%; font-weight: 700; font-size: 15px; }
+.etiquette-choix input:checked + span { background: var(--encre); color: var(--surface); }
+.etiquette-choix input:focus-visible + span { outline: 3px solid var(--encre); outline-offset: 3px; }
+
+/* ---------- Segment : 44, actif sur fond bitume ---------- */
+.segment { display: inline-flex; border-radius: var(--rayon); box-shadow: inset 0 0 0 2px var(--encre); }
+.segment button, .segment a { min-height: 44px; padding: 0 16px; border: 0; background: none; display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 15px; text-decoration: none; color: var(--encre); }
+.segment [aria-pressed="true"], .segment [aria-current="true"] { background: var(--encre); color: var(--surface); }
+
+/* ---------- Stepper : − valeur + ---------- */
+.stepper { display: grid; grid-template-columns: 56px 1fr 56px; align-items: center; height: 56px; border-radius: var(--rayon); box-shadow: inset 0 0 0 1.5px var(--bord-champ); background: var(--surface-elevee); }
+.stepper button { height: 56px; border: 0; background: none; display: grid; place-items: center; color: var(--encre); }
+.stepper output { text-align: center; }
