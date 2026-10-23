@@ -62,12 +62,10 @@
 
 .accueil__hero-sous-titre {
   color: var(--encre-2);
-  font: inherit;
-  font-size: var(--esp-24);
-  line-height: 1.15;
 }
 
 .accueil__intro {
+  display: none;
   max-width: 34ch;
 }
 
@@ -690,6 +688,10 @@
 
   .accueil__action {
     max-width: 30rem;
+  }
+
+  .accueil__intro {
+    display: block;
   }
 
   .accueil__reconstitution,
