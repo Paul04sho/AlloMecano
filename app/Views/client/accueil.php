@@ -88,11 +88,11 @@ $communes = [
 
     <div class="accueil__hero-contenu">
       <p class="t-etiquette accueil__surtitre"><?= $texte('Le bon réflexe en cas de panne') ?></p>
-      <h1 id="accueil-titre" class="t-display-l"><?= $texte('En panne ?') ?><br><span><?= $texte('Le mécano vérifié le plus proche.') ?></span></h1>
+      <h1 id="accueil-titre" class="t-titre-1"><?= $texte('En panne ?') ?><span class="accueil__hero-sous-titre"><?= $texte('Le mécano vérifié le plus proche.') ?></span></h1>
       <p class="t-lead accueil__intro"><?= $texte('Trouvez un mécanicien vérifié près de vous. Vous l’appelez directement.') ?></p>
       <div class="accueil__action">
         <?= composant('bouton', ['libelle' => 'Trouver un mécano', 'icone' => 'viseur', 'href' => '/position', 'hauteur' => 64, 'plein' => true]) ?>
-        <p class="t-petit t-secondaire"><?= $texte('Sans compte, gratuit. Vous gardez le contrôle.') ?></p>
+        <p class="t-petit t-secondaire"><?= $texte('Sans compte, gratuit. Vous l’appelez directement.') ?></p>
       </div>
     </div>
   </section>
@@ -183,7 +183,7 @@ $communes = [
               <span class="accueil__portrait-corps"></span>
             </div>
             <div class="accueil__profil-infos">
-              <h3 class="t-titre-3"><?= $texte($profil['nom']) ?></h3>
+              <h3 class="t-label"><?= $texte($profil['nom']) ?></h3>
               <p class="t-micro t-secondaire"><?= $texte($profil['specialite']) ?></p>
               <p class="t-micro t-secondaire"><?= $texte($profil['metier']) ?></p>
               <p class="accueil__note t-micro"><?= icone('etoile', 16) ?> <strong><?= $texte($profil['note']) ?></strong> · <?= $texte($profil['avis']) ?></p>
@@ -247,9 +247,9 @@ $communes = [
         <h2 id="accueil-urgence" class="t-titre-2"><?= $texte('Blessé ou en danger ? Appelez d’abord les secours.') ?></h2>
       </div>
       <div class="accueil__numeros">
-        <a class="accueil__numero" href="tel:185"><strong class="t-borne-xl">185</strong><span class="t-etiquette"><?= $texte('SAMU') ?></span></a>
-        <a class="accueil__numero" href="tel:180"><strong class="t-borne-xl">180</strong><span class="t-etiquette"><?= $texte('Pompiers') ?></span></a>
-        <a class="accueil__numero" href="tel:170"><strong class="t-borne-xl">170</strong><span class="t-etiquette"><?= $texte('Police') ?></span></a>
+        <a class="accueil__numero" href="tel:185"><strong class="t-borne-l">185</strong><span class="t-etiquette"><?= $texte('SAMU') ?></span></a>
+        <a class="accueil__numero" href="tel:180"><strong class="t-borne-l">180</strong><span class="t-etiquette"><?= $texte('Pompiers') ?></span></a>
+        <a class="accueil__numero" href="tel:170"><strong class="t-borne-l">170</strong><span class="t-etiquette"><?= $texte('Police') ?></span></a>
       </div>
       <p class="t-micro t-secondaire"><?= $texte('N’attendez pas un mécanicien pour vous mettre en sécurité.') ?></p>
     </div>
