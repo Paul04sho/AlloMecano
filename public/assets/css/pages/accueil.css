@@ -1,0 +1,845 @@
+/* C1 · Accueil mobile-first. Toutes les couleurs et espacements utilisent les jetons du projet. */
+
+.accueil {
+  overflow: clip;
+  background: var(--surface);
+}
+
+.accueil__conteneur {
+  width: 100%;
+  max-width: calc(var(--largeur-contenu) + 2 * var(--marge));
+  margin-inline: auto;
+  padding-inline: var(--marge);
+}
+
+.accueil__hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  background: var(--surface);
+}
+
+.accueil__hero-visuel {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-creuse);
+  isolation: isolate;
+}
+
+.accueil__scene {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 5 / 3;
+}
+
+.accueil__repere-photo {
+  position: absolute;
+  inset: auto auto var(--esp-16) var(--esp-16);
+  padding: var(--esp-8) var(--esp-12);
+  background: var(--bitume);
+  color: var(--beton);
+}
+
+.accueil__hero-contenu {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--esp-16);
+  padding: var(--esp-32) var(--marge) var(--esp-48);
+}
+
+.accueil__surtitre {
+  color: var(--encre-2);
+}
+
+.accueil__hero h1 {
+  max-width: 16ch;
+}
+
+.accueil__hero h1 span {
+  color: var(--encre-2);
+}
+
+.accueil__intro {
+  max-width: 34ch;
+}
+
+.accueil__action {
+  display: grid;
+  gap: var(--esp-12);
+  width: 100%;
+}
+
+.accueil__action .bouton {
+  width: 100%;
+}
+
+.accueil__action p {
+  max-width: 38ch;
+}
+
+.accueil__reconstitution {
+  padding-block: var(--esp-48);
+  background: var(--surface-creuse);
+}
+
+.accueil__fil {
+  position: relative;
+  display: grid;
+  gap: var(--esp-32);
+  margin-top: var(--esp-32);
+}
+
+.accueil__fil::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 var(--esp-12);
+  width: 1px;
+  background: var(--encre-2);
+  opacity: .5;
+}
+
+.accueil__etape {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--esp-12);
+  padding-left: var(--esp-32);
+}
+
+.accueil__heure {
+  position: relative;
+  line-height: 1;
+}
+
+.accueil__heure::before {
+  content: "";
+  position: absolute;
+  left: calc(-1 * var(--esp-24));
+  top: 50%;
+  width: var(--esp-8);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--encre);
+  transform: translateY(-50%);
+}
+
+.accueil__etape-corps {
+  display: grid;
+  align-content: start;
+  gap: var(--esp-8);
+  min-width: 0;
+}
+
+.accueil__vignette {
+  position: relative;
+  display: grid;
+  overflow: hidden;
+  align-items: end;
+  min-height: 0;
+  aspect-ratio: 5 / 3;
+  background: var(--surface-elevee);
+  isolation: isolate;
+}
+
+.accueil__vignette::before {
+  content: "";
+  position: absolute;
+  inset: 38% -12% -20%;
+  z-index: -1;
+  background: var(--carte-sol);
+  transform: rotate(-8deg);
+}
+
+.accueil__vignette--route::after {
+  content: "";
+  position: absolute;
+  right: 8%;
+  bottom: 20%;
+  width: 54%;
+  height: 28%;
+  background: var(--balise);
+  border-radius: var(--coupe-s) var(--coupe-m) var(--rayon) var(--rayon);
+  box-shadow: inset 0 0 0 2px var(--bitume);
+  transform: skewX(-10deg);
+}
+
+.accueil__vignette--route .accueil__vignette-scene {
+  position: absolute;
+  right: 14%;
+  bottom: 13%;
+  width: 12%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--bitume);
+  box-shadow: calc(var(--esp-48) * 2.7) 0 0 var(--bitume);
+}
+
+.accueil__vignette--mecano {
+  background: var(--carte-eau);
+}
+
+.accueil__vignette--mecano::before {
+  inset: 45% -8% -20%;
+  background: var(--carte-sol);
+  transform: rotate(6deg);
+}
+
+.accueil__vignette--mecano .accueil__vignette-personne {
+  position: absolute;
+  left: 34%;
+  bottom: 0;
+  width: 34%;
+  height: 76%;
+}
+
+.accueil__vignette-personne::before,
+.accueil__portrait-tete {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 38%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--encre-2);
+  transform: translateX(-50%);
+}
+
+.accueil__vignette-personne::after,
+.accueil__portrait-corps {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -5%;
+  width: 78%;
+  height: 62%;
+  border-radius: var(--coupe-m) var(--coupe-m) 0 0;
+  background: var(--encre);
+  transform: translateX(-50%);
+}
+
+.accueil__vignette-tag {
+  position: absolute;
+  z-index: 2;
+  left: var(--esp-12);
+  bottom: var(--esp-12);
+  padding: var(--esp-4) var(--esp-8);
+  color: var(--beton);
+  background: var(--bitume);
+}
+
+.accueil__note {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-4);
+  color: var(--encre-2);
+}
+
+.accueil__note .icone {
+  flex: none;
+}
+
+.accueil__verification {
+  padding-block: var(--esp-48);
+  background: var(--bitume);
+  color: var(--beton);
+}
+
+.accueil__verification-grille {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--esp-32);
+}
+
+.accueil__verification .t-etiquette,
+.accueil__verification .t-secondaire {
+  color: var(--gris-voyant);
+}
+
+.accueil__verification-visuel {
+  display: grid;
+  align-items: center;
+}
+
+.accueil__identite {
+  display: grid;
+  grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+  align-items: center;
+  gap: var(--esp-12);
+  max-width: 36rem;
+}
+
+.accueil__identite-portrait {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  background: var(--surface-creuse);
+}
+
+.accueil__identite-portrait .accueil__portrait-tete {
+  top: 20%;
+  width: 30%;
+  background: var(--encre-2);
+}
+
+.accueil__identite-portrait .accueil__portrait-corps {
+  bottom: -10%;
+  width: 78%;
+  height: 58%;
+  background: var(--encre);
+}
+
+.accueil__identite-document {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: var(--esp-8);
+  aspect-ratio: 4 / 3;
+  padding: var(--esp-12);
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--filet);
+}
+
+.accueil__document-photo {
+  grid-row: span 3;
+  float: left;
+  width: 30%;
+  aspect-ratio: 3 / 4;
+  background: var(--surface-creuse);
+}
+
+.accueil__document-ligne {
+  height: var(--esp-4);
+  margin-left: 36%;
+  background: var(--encre-2);
+  opacity: .7;
+}
+
+.accueil__document-ligne:nth-of-type(3) {
+  width: 75%;
+}
+
+.accueil__document-ligne:nth-of-type(4) {
+  width: 57%;
+}
+
+.accueil__document-signature {
+  width: 42%;
+  height: var(--esp-16);
+  margin-top: auto;
+  margin-left: auto;
+  border-bottom: 2px solid var(--encre-2);
+  transform: skewX(-24deg);
+}
+
+.accueil__preuves {
+  display: grid;
+  gap: var(--esp-12);
+  margin-top: var(--esp-24);
+  padding: 0;
+  list-style: none;
+}
+
+.accueil__preuves li {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-12);
+  padding-block: var(--esp-8);
+  border-bottom: 1px solid var(--filet-sombre);
+}
+
+.accueil__preuves .icone {
+  flex: none;
+}
+
+.accueil__lien-verification {
+  margin-top: var(--esp-16);
+  color: var(--beton);
+}
+
+.accueil__details-verification {
+  margin-top: var(--esp-12);
+}
+
+.accueil__mecanos {
+  padding-block: var(--esp-48);
+}
+
+.accueil__profils {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--esp-16);
+  margin-top: var(--esp-24);
+}
+
+.accueil__profil {
+  display: grid;
+  grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+  align-items: stretch;
+  gap: var(--esp-12);
+  min-width: 0;
+  padding-bottom: var(--esp-16);
+  border-bottom: 1px solid var(--filet);
+}
+
+.accueil__portrait {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  min-width: 0;
+  background: var(--surface-creuse);
+}
+
+.accueil__portrait::before {
+  content: "";
+  position: absolute;
+  inset: 48% -20% -20%;
+  background: var(--carte-sol);
+  transform: rotate(-8deg);
+}
+
+.accueil__portrait .accueil__portrait-tete {
+  z-index: 1;
+  top: 15%;
+  width: 33%;
+  background: var(--encre-2);
+}
+
+.accueil__portrait .accueil__portrait-corps {
+  z-index: 1;
+  bottom: -3%;
+  width: 74%;
+  height: 58%;
+  background: var(--encre);
+}
+
+.accueil__portrait--adama {
+  background: var(--carte-eau);
+}
+
+.accueil__portrait--adama .accueil__portrait-corps {
+  background: var(--encre-2);
+}
+
+.accueil__portrait--awa {
+  background: var(--surface-elevee);
+}
+
+.accueil__portrait--awa .accueil__portrait-tete {
+  background: var(--bitume);
+}
+
+.accueil__portrait--awa .accueil__portrait-corps {
+  background: var(--encre-2);
+}
+
+.accueil__profil-infos {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--esp-4);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.accueil__profil-infos h3 {
+  font-size: 1rem;
+  line-height: 1.25;
+}
+
+.accueil__profil-infos .accueil__note {
+  margin-top: var(--esp-8);
+}
+
+.accueil__communes {
+  padding-block: var(--esp-48);
+  background: var(--surface-creuse);
+}
+
+.accueil__communes-grille {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--esp-24);
+}
+
+.accueil__liste-communes {
+  display: grid;
+  padding: 0;
+  list-style: none;
+}
+
+.accueil__commune {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-12);
+  min-height: var(--esp-48);
+  padding-block: var(--esp-8);
+  border-bottom: 1px solid var(--filet);
+}
+
+.accueil__commune > :first-child {
+  min-width: 0;
+}
+
+.accueil__commune-statut {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: var(--esp-8);
+  flex: none;
+}
+
+.accueil__commune-statut .t-borne-l {
+  color: var(--encre);
+}
+
+.accueil__commune-statut .t-etiquette {
+  color: var(--encre-2);
+}
+
+.accueil__lien-communes {
+  justify-self: start;
+}
+
+.accueil__pros {
+  padding-block: var(--esp-48);
+}
+
+.accueil__pros-grille {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--esp-24);
+}
+
+.accueil__pros-visuel {
+  overflow: hidden;
+  position: relative;
+  min-height: 16rem;
+  background: var(--surface-creuse);
+}
+
+.accueil__pros-visuel::before {
+  content: "";
+  position: absolute;
+  inset: auto -10% -18%;
+  height: 42%;
+  background: var(--carte-sol);
+  transform: rotate(-8deg);
+}
+
+.accueil__pros-atelier {
+  position: absolute;
+  inset: 0;
+}
+
+.accueil__atelier-roue {
+  position: absolute;
+  right: 7%;
+  bottom: 9%;
+  width: 52%;
+  aspect-ratio: 1;
+  border: var(--esp-8) solid var(--encre);
+  border-radius: 50%;
+  background: var(--surface-creuse);
+}
+
+.accueil__atelier-personne {
+  position: absolute;
+  left: 24%;
+  bottom: 0;
+  width: 40%;
+  height: 82%;
+}
+
+.accueil__atelier-personne .accueil__portrait-tete {
+  top: 3%;
+  width: 38%;
+  background: var(--encre-2);
+}
+
+.accueil__atelier-personne .accueil__portrait-corps {
+  bottom: -6%;
+  width: 86%;
+  height: 65%;
+  background: var(--encre);
+}
+
+.accueil__atelier-outil {
+  position: absolute;
+  right: 12%;
+  top: var(--esp-16);
+  display: grid;
+  place-items: center;
+  width: var(--esp-48);
+  aspect-ratio: 1;
+  background: var(--balise);
+  color: var(--bitume);
+}
+
+.accueil__pros-contenu {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--esp-16);
+}
+
+.accueil__pros-contenu .t-etiquette {
+  color: var(--encre-2);
+}
+
+.accueil__pros-contenu h2 {
+  max-width: 22ch;
+}
+
+.accueil__pros-contenu > p:not(.t-etiquette) {
+  max-width: 42ch;
+}
+
+.accueil__pros-contenu .bouton {
+  margin-top: var(--esp-8);
+  width: 100%;
+}
+
+.accueil__urgence {
+  padding-block: var(--esp-32);
+  background: var(--surface-creuse);
+}
+
+.accueil__urgence-interieur {
+  display: grid;
+  gap: var(--esp-24);
+}
+
+.accueil__urgence-texte {
+  display: grid;
+  gap: var(--esp-12);
+}
+
+.accueil__numeros {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--esp-12);
+}
+
+.accueil__numero {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--esp-8);
+  min-width: 0;
+  padding-block: var(--esp-12);
+  color: var(--encre);
+  text-decoration: none;
+  border-top: 1px solid var(--filet);
+}
+
+.accueil__numero strong {
+  font-size: clamp(1.75rem, 8vw, 2.75rem);
+  line-height: 1;
+}
+
+.accueil__numero .t-etiquette {
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 640px) {
+  .accueil__etape {
+    grid-template-columns: minmax(0, .28fr) minmax(0, 1fr);
+    align-items: start;
+    gap: var(--esp-16);
+  }
+
+  .accueil__profils {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+    gap: var(--esp-16);
+  }
+
+  .accueil__profil {
+    grid-template-columns: minmax(0, 1fr);
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .accueil__portrait {
+    aspect-ratio: 4 / 5;
+  }
+
+  .accueil__profil-infos {
+    justify-content: flex-start;
+    padding-top: var(--esp-8);
+  }
+
+  .accueil__profil-infos h3 {
+    font-size: 1.1rem;
+  }
+
+  .accueil__pros-grille {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--esp-32);
+  }
+}
+
+@media (min-width: 1024px) {
+  .accueil__hero {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: stretch;
+    min-height: 0;
+  }
+
+  .accueil__hero-visuel {
+    grid-column: 2;
+    grid-row: 1;
+    min-height: 100%;
+  }
+
+  .accueil__scene {
+    width: 100%;
+    height: 100%;
+    min-height: 32rem;
+    aspect-ratio: auto;
+    object-fit: cover;
+  }
+
+  .accueil__repere-photo {
+    inset: auto auto var(--esp-24) var(--esp-24);
+  }
+
+  .accueil__hero-contenu {
+    grid-column: 1;
+    grid-row: 1;
+    justify-content: center;
+    padding: var(--esp-72) var(--esp-48) var(--esp-72) max(var(--marge), calc((100vw - var(--largeur-contenu)) / 2));
+  }
+
+  .accueil__hero h1 {
+    max-width: 12ch;
+  }
+
+  .accueil__hero h1 span {
+    display: block;
+    max-width: 14ch;
+  }
+
+  .accueil__action {
+    max-width: 30rem;
+  }
+
+  .accueil__reconstitution,
+  .accueil__verification,
+  .accueil__mecanos,
+  .accueil__communes,
+  .accueil__pros {
+    padding-block: var(--esp-72);
+  }
+
+  .accueil__fil {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--esp-32);
+    margin-top: var(--esp-48);
+  }
+
+  .accueil__fil::before {
+    inset: var(--esp-12) 0 auto;
+    width: auto;
+    height: 1px;
+  }
+
+  .accueil__etape {
+    grid-template-columns: minmax(0, 1fr);
+    padding-left: 0;
+    padding-top: var(--esp-24);
+  }
+
+  .accueil__heure::before {
+    left: var(--esp-4);
+    top: calc(-1 * var(--esp-24));
+    transform: translateY(-50%);
+  }
+
+  .accueil__verification-grille {
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    align-items: center;
+    gap: var(--esp-48);
+  }
+
+  .accueil__verification-visuel {
+    min-height: 22rem;
+  }
+
+  .accueil__identite {
+    grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+  }
+
+  .accueil__profils {
+    margin-top: var(--esp-32);
+    gap: var(--esp-24);
+  }
+
+  .accueil__communes-grille {
+    grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+    column-gap: var(--esp-48);
+    align-items: start;
+  }
+
+  .accueil__liste-communes {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  .accueil__lien-communes {
+    grid-column: 1;
+    grid-row: 2;
+    margin-top: var(--esp-8);
+  }
+
+  .accueil__pros-grille {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--esp-48);
+  }
+
+  .accueil__pros-visuel {
+    min-height: 24rem;
+  }
+
+  .accueil__urgence-interieur {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    align-items: center;
+    column-gap: var(--esp-48);
+  }
+
+  .accueil__urgence-interieur > .t-micro {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .accueil__hero-visuel,
+  .accueil__profil,
+  .accueil__etape {
+    animation: accueil-entree var(--t-entree) var(--ease-sortie) both;
+  }
+
+  .accueil__profil:nth-child(2) {
+    animation-delay: 80ms;
+  }
+
+  .accueil__profil:nth-child(3) {
+    animation-delay: 160ms;
+  }
+
+  @keyframes accueil-entree {
+    from {
+      opacity: 0;
+      transform: translateY(var(--esp-12));
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
