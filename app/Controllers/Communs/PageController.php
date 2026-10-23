@@ -14,7 +14,7 @@ final class PageController
     public function accueil(Request $requete): Response
     {
         return Response::html(View::rendre('client/accueil', [
-            'titre' => 'En panne ? Le mécano vérifié le plus proche',
+            'titre' => Format::typo('En panne ? Le mécano vérifié le plus proche'),
             'description' => 'En panne à Abidjan ? Trouvez un mécanicien vérifié et disponible près de vous, puis contactez-le directement.',
             'css' => ['css/pages/accueil.css'],
         ], 'layouts/client'));
