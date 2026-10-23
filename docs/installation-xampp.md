@@ -29,6 +29,7 @@ extension=gd
 extension=mbstring
 extension=openssl
 extension=pdo_mysql
+extension=zip
 ```
 
 `extension=gmp` et `extension=intl` sont conseillées (notifications push plus rapides). Enregistrer, puis redémarrer Apache s'il tourne.
@@ -127,6 +128,7 @@ Comptes de démo : mot de passe `Demo2026!`. Admin : `admin@allomecano.test`. M�
 | Message | Solution |
 |---|---|
 | `Failed opening required …vendor/autoload.php` ou « Dépendances manquantes » | `composer install` n'a pas été lancé ou a échoué : le relancer dans le dossier du projet et lire la fin du message |
+| `The zip extension and unzip/7z commands are both missing` | Ajouter `extension=zip` dans php.ini (étape 2), puis relancer `composer install` |
 | `could not find driver` | `extension=pdo_mysql` désactivée dans php.ini (étape 2) |
 | `SQLSTATE[HY000] [2002]` | MySQL n'est pas démarré dans XAMPP |
 | `Access denied for user 'root'` | Mot de passe MySQL à mettre dans `DB_MOT_DE_PASSE` |
