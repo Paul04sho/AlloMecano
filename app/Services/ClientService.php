@@ -83,6 +83,28 @@ final class ClientService
         return $repris['id'];
     }
 
+    /**
+     * « Pour que le mécano vous reconnaisse » (C3) : prénom et téléphone facultatifs, jamais affichés publiquement.
+     * Donnés au mécano au moment du contact ; une valeur nulle efface ce qui était enregistré.
+     */
+    public function enregistrerContact(int $client, ?string $prenom, ?string $telephone): void
+    {
+        $this->db->modifier('clients', ['prenom' => $prenom, 'telephone' => $telephone], ['id' => $client]);
+    }
+
+    /** « Effacer » : on oublie le prénom et le téléphone. */
+    public function effacerContact(int $client): void
+    {
+        $this->enregistrerContact($client, null, null);
+    }
+
+    /** @return array{prenom: ?string, telephone: ?string} */
+    public function contact(int $client): array
+    {
+        $l = $this->db->un('SELECT prenom, telephone FROM clients WHERE id = :id', ['id' => $client]);
+        return ['prenom' => $l['prenom'] ?? null, 'telephone' => $l['telephone'] ?? null];
+    }
+
     public static function poserCookie(string $jeton): void
     {
         if (PHP_SAPI === 'cli') {

@@ -6,6 +6,7 @@ namespace Tests\Integration;
 
 use App\Core\Database;
 use App\Services\ClientService;
+use App\Services\PanneService;
 use App\Services\PositionService;
 use PHPUnit\Framework\TestCase;
 
@@ -60,6 +61,23 @@ final class ClientEtPositionTest extends TestCase
         $jeton = ClientService::genererJeton();
         $id = $service->restaurer($jeton, null);
         self::assertSame($id, $service->identifier($jeton)['id']);
+    }
+
+    public function testPrenomEtTelephoneSEnregistrentEtSEffacent(): void
+    {
+        $service = new ClientService($this->db);
+        $client = $service->identifier(null)['id'];
+        $service->enregistrerContact($client, 'Aminata', '+2250707123456');
+        self::assertSame(['prenom' => 'Aminata', 'telephone' => '+2250707123456'], $service->contact($client));
+        $service->effacerContact($client);
+        self::assertSame(['prenom' => null, 'telephone' => null], $service->contact($client));
+    }
+
+    public function testChaquePanneActiveAUnExemple(): void
+    {
+        foreach ($this->db->tous('SELECT code FROM pannes WHERE actif = 1') as $p) {
+            self::assertArrayHasKey($p['code'], PanneService::EXEMPLES);
+        }
     }
 
     public function testLesTreizeCommunesOuvertesOntDesQuartiers(): void

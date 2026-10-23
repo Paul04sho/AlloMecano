@@ -15,7 +15,7 @@
   font: 400 18px/26px var(--police-texte); color: var(--encre);
 }
 .champ__saisie::placeholder { color: var(--encre-2); opacity: 1; }
-textarea.champ__saisie { padding: 14px 16px; min-height: calc(3 * 26px + 28px); resize: vertical; }
+textarea.champ__saisie { padding: calc(var(--esp-12) + 2px) var(--esp-16); min-height: calc(var(--lignes, 3) * 26px + 32px); resize: vertical; } /* 2 lignes = 84 (69:864) */
 .champ__prefixe {
   display: grid; place-items: center; width: 64px; flex: none;
   background: var(--surface-creuse); border-radius: var(--rayon) 0 0 var(--rayon);

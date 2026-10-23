@@ -25,4 +25,14 @@ final class ClientController
         Session::oublier('client_jeton_neuf');
         return Response::json(['ok' => true]);
     }
+
+    /** « Effacer » (C3) : prénom et téléphone oubliés, en base comme sur le téléphone. */
+    public function effacer(Request $requete): Response
+    {
+        $client = Session::get('client_id');
+        if (is_int($client)) {
+            ClientService::depuisBase()->effacerContact($client);
+        }
+        return Response::json(['ok' => true]);
+    }
 }

@@ -19,7 +19,7 @@ final class ParcoursService
     public const SOURCES = ['gps', 'quartier', 'carte']; // RG-R1, dans cet ordre de préférence
     private const REPERE_MAX = 160;
 
-    /** @return array{position?: array<string, mixed>, gps?: array<string, mixed>, vehicule?: string, panne?: string} */
+    /** @return array{position?: array<string, mixed>, gps?: array<string, mixed>, vehicule?: string, panne?: string, precisions?: ?string} */
     public static function lire(): array
     {
         $p = Session::get(self::CLE, []);
@@ -64,6 +64,12 @@ final class ParcoursService
     public static function enregistrerChoix(?string $vehicule, ?string $panne): void
     {
         self::ecrire(array_filter(['vehicule' => $vehicule, 'panne' => $panne], static fn ($v) => $v !== null && $v !== ''));
+    }
+
+    /** C3 · véhicule, panne et précisions, déjà validés (PanneService::valider). */
+    public static function enregistrerPanne(string $vehicule, string $panne, ?string $precisions): void
+    {
+        self::ecrire(['vehicule' => $vehicule, 'panne' => $panne, 'precisions' => $precisions]);
     }
 
     public static function nettoyerRepere(?string $repere): ?string

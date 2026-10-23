@@ -52,10 +52,13 @@
 .note--securite { background: var(--surface-elevee); padding-left: var(--esp-20); }
 /* Bande S10 de la note : blocs bitume / hachure de 200 / 7 px (Figma 53:409) */
 .note--securite::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 6px; background: repeating-linear-gradient(180deg, var(--bitume) 0 calc(200px / 7), var(--hachure) 0 calc(400px / 7)); }
-.note--erreur, .note--danger { background: var(--surface-elevee); box-shadow: inset 4px 0 0 var(--erreur); color: var(--erreur-texte); padding-left: 20px; }
-.note--erreur > .icone, .note--danger > .icone { color: var(--erreur); }
-.note__actions { grid-column: 2; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
-.note a[href^="tel:"] { font-family: var(--police-marque); font-stretch: 75%; font-weight: 900; font-size: 28px; line-height: 28px; text-decoration: none; }
+.note--erreur, .note--danger { background: var(--surface-elevee); box-shadow: inset 4px 0 0 var(--erreur); color: var(--erreur-texte); padding-left: var(--esp-20); }
+.note--erreur > .icone, .note--danger > .icone { color: var(--erreur-texte); }
+/* Danger immédiat (69:1002) : texte encre en gras, bouton Contour danger de 48 dessous */
+.note--danger { color: var(--encre); font-weight: 700; padding-left: var(--esp-16); }
+.note--danger .note__actions { margin-top: calc(var(--esp-8) + 2px); }
+.note__actions { grid-column: 2; display: flex; flex-wrap: wrap; gap: var(--esp-8); margin-top: var(--esp-4); }
+.note a[href^="tel:"]:not(.bouton) { font-family: var(--police-marque); font-stretch: 75%; font-weight: 900; font-size: 28px; line-height: 28px; text-decoration: none; }
 
 /* ---------- Toast (Figma 53:447) : bitume, 56, au-dessus du socle, 4 s ---------- */
 .toasts { position: fixed; left: var(--marge); right: var(--marge); bottom: calc(var(--decalage-socle, 0px) + 16px + env(safe-area-inset-bottom)); z-index: 60; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }

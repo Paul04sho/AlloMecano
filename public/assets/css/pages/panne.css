@@ -1,0 +1,12 @@
+/* C3 · Ma panne (Figma 69:653) · Choc ou accident (69:868). Mise en page commune du parcours : pages/position.css. */
+
+.panne__contenu > .panne__danger { margin-bottom: var(--esp-24); }
+.panne__contenu > h1 + .choix-vehicule { margin-top: var(--esp-24); }
+.panne__contenu > .panneau-voyants { margin-top: var(--esp-24); }
+.panne__contenu > .panneau-voyants + .champ { margin-top: var(--esp-24); }
+
+.panne__reconnaitre { display: flex; flex-direction: column; margin-top: var(--esp-32); padding-top: var(--esp-24); border-top: 1px solid var(--filet); }
+.panne__reconnaitre > .t-petit { margin-top: var(--esp-8); }
+.panne__reconnaitre > .champ { margin-top: var(--esp-16); }
+.panne__memoire { display: flex; align-items: center; justify-content: space-between; gap: var(--esp-12); margin-top: var(--esp-12); }
+.panne__effacer { min-height: 44px; font-size: 17px; line-height: 26px; }

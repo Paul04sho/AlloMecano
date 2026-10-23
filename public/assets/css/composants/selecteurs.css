@@ -1,39 +1,50 @@
 /* Sélecteurs (spec 7.10) : tuile véhicule (54:293), panneau et tuile voyant (54:390/391),
    ligne de choix (54:467), étiquette de choix (54:451), segment (54:499), stepper (54:500). */
 
-/* ---------- Tuiles véhicule : 3 colonnes, 88 de haut ---------- */
-.vehicules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.tuile-vehicule { position: relative; display: block; cursor: pointer; }
+/* ---------- Tuiles véhicule (54:293) : 108 × 88 ; choisie = fond inverse, picto et texte inversés ---------- */
+fieldset.choix-vehicule { margin: 0; padding: 0; border: 0; min-width: 0; }
+fieldset.choix-vehicule > legend { padding: 0; margin-bottom: var(--esp-12); }
+.vehicules { display: flex; justify-content: space-between; gap: var(--esp-8); }
+.tuile-vehicule { position: relative; display: block; flex: 0 1 108px; cursor: pointer; }
 .tuile-vehicule input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
 .tuile-vehicule span {
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; height: 88px;
-  border-radius: var(--rayon); box-shadow: inset 0 0 0 2px var(--encre); font-weight: 700; font-size: 15px;
-  transition: background-color var(--t-etat) var(--ease-sortie), color var(--t-etat) var(--ease-sortie);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: calc(var(--esp-4) + 2px); height: 88px;
+  border-radius: var(--rayon); background: var(--surface-elevee); box-shadow: inset 0 0 0 1.5px var(--bord-champ); color: var(--encre);
+  font-weight: 700; font-size: 15px; line-height: 20px;
+  transition: background-color var(--t-etat) var(--ease-sortie), color var(--t-etat) var(--ease-sortie), box-shadow var(--t-etat) var(--ease-sortie);
 }
 .tuile-vehicule .icone { width: 40px; height: 40px; }
-.tuile-vehicule input:checked + span { background: var(--encre); color: var(--surface); }
+.tuile-vehicule input:checked + span { background: var(--inverse-fond); color: var(--inverse-texte); box-shadow: none; }
 .tuile-vehicule input:focus-visible + span { outline: 3px solid var(--encre); outline-offset: 3px; }
 
-/* ---------- Panneau des voyants : bitume, coupe M, 2 colonnes de tuiles de 64 ---------- */
-.panneau-voyants { background: var(--bitume); color: var(--beton); padding: 20px 12px 12px; display: flex; flex-direction: column; gap: 8px;
+/* ---------- Panneau des voyants (54:391) : bitume, coupe M, 2 colonnes de tuiles de 64 ---------- */
+.panneau-voyants { background: var(--bitume); color: var(--beton); padding: calc(var(--esp-12) + 2px) var(--esp-12) var(--esp-12); display: flex; flex-direction: column; gap: var(--esp-8);
   clip-path: polygon(var(--coupe-m) 0, 100% 0, 100% 100%, 0 100%, 0 calc(var(--coupe-m) * .577)); }
-.panneau-voyants > .t-etiquette { color: var(--gris-voyant); padding: 0 8px 4px; }
+.panneau-voyants > .t-etiquette { color: var(--gris-voyant); padding: 0 0 0 calc(var(--esp-8) + 2px); }
 fieldset.panneau-voyants { border: 0; margin: 0; min-width: 0; }
 fieldset.panneau-voyants > legend { float: left; width: 100%; } /* légende dans le flux (sinon posée sur le bord) */
 fieldset.panneau-voyants > legend + * { clear: both; }
-.voyants { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.panneau-voyants__erreur { display: flex; gap: var(--esp-8); align-items: flex-start; padding: var(--esp-4) calc(var(--esp-8) + 2px) 0; font-size: 15px; line-height: 22px; color: var(--beton); }
+.panneau-voyants__erreur .icone { width: 20px; height: 20px; color: var(--erreur); }
+.voyants { display: grid; grid-template-columns: 1fr 1fr; gap: var(--esp-8); }
+/* Tuile voyant (54:390) : fond panneau, picto 32 + libellé béton ; choisie = voyant allumé et bord béton 2 px (69:653) */
 .tuile-voyant { position: relative; display: block; cursor: pointer; }
 .tuile-voyant--large { grid-column: 1 / -1; }
 .tuile-voyant input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
-.tuile-voyant span {
-  display: grid; grid-template-columns: 32px 1fr; gap: 10px; align-items: center; min-height: 64px; padding: 8px 12px;
-  background: var(--panneau); font-weight: 700; font-size: 15px; line-height: 19px; position: relative;
+.tuile-voyant > input + span { /* la tuile, pas le voyant qu'elle contient */
+  display: grid; grid-template-columns: 32px 1fr; gap: calc(var(--esp-8) + 2px); align-items: center; min-height: 64px; padding: var(--esp-8) var(--esp-8) var(--esp-8) var(--esp-12);
+  background: var(--panneau); border-radius: var(--rayon); color: var(--beton); font-weight: 700; font-size: 15px; line-height: 19px; position: relative;
+  transition: box-shadow var(--t-etat) linear;
 }
-.tuile-voyant .icone { width: 32px; height: 32px; color: var(--gris-voyant); }
-.tuile-voyant input:checked + span { color: var(--balise); box-shadow: inset 0 0 0 2px var(--balise); }
-.tuile-voyant input:checked + span .icone { color: var(--balise); animation: voyant-allume 260ms linear both; }
-.tuile-voyant input:focus-visible + span { outline: 3px solid var(--beton); outline-offset: 2px; }
-@keyframes voyant-allume { 0% { opacity: 0; } 30% { opacity: 1; } 60% { opacity: .4; } 100% { opacity: 1; } }
+.tuile-voyant > input:checked + span { box-shadow: inset 0 0 0 2px var(--beton); }
+.tuile-voyant > input:focus-visible + span { outline: 3px solid var(--beton); outline-offset: 2px; }
+
+/* Voyant de bord (48:214) : éteint gris ; allumé jaune avec halo pré-rendu, qui déborde du carré de 32 */
+.voyant-bord { position: relative; display: block; width: 32px; height: 32px; }
+.voyant-bord__eteint { width: 32px; height: 32px; color: var(--gris-voyant); transition: opacity var(--t-etat) linear; }
+.voyant-bord__allume { position: absolute; max-width: none; opacity: 0; pointer-events: none; transition: opacity var(--t-etat) linear; }
+.voyant-bord--allume .voyant-bord__allume, .tuile-voyant input:checked + span .voyant-bord__allume { opacity: 1; }
+.voyant-bord--allume .voyant-bord__eteint, .tuile-voyant input:checked + span .voyant-bord__eteint { opacity: 0; }
 
 /* ---------- Lignes radio et cases : 56, filets, cases de 24 jamais pré-cochées ---------- */
 .lignes-choix { display: flex; flex-direction: column; border-top: 1px solid var(--filet); }

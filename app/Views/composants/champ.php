@@ -11,7 +11,9 @@
  * @var ?string $suffixe      « FCFA »
  * @var bool $requis
  * @var bool $desactive
- * @var ?int $max             longueur max (affiche le compteur pour un textarea)
+ * @var ?int $max             longueur max (affiche le compteur pour un textarea, sauf compteur => false)
+ * @var int $lignes            hauteur d'un textarea en lignes (3 par défaut)
+ * @var bool $compteur
  * @var ?string $autocomplete
  * @var ?string $inputmode
  */
@@ -38,7 +40,7 @@ if ($type === 'tel') {
   <div class="champ__boite">
     <?php if ($type === 'tel'): ?><span class="champ__prefixe" aria-hidden="true">+225</span><?php endif ?>
     <?php if ($type === 'textarea'): ?>
-      <textarea <?= $attrs ?> rows="3"><?= e($valeur ?? '') ?></textarea>
+      <textarea <?= $attrs ?> rows="<?= (int) ($lignes ?? 3) ?>" style="--lignes:<?= (int) ($lignes ?? 3) ?>"><?= e($valeur ?? '') ?></textarea>
     <?php else: ?>
       <input type="<?= e($type) ?>" value="<?= e($valeur ?? '') ?>" <?= $attrs ?>>
     <?php endif ?>
@@ -51,5 +53,5 @@ if ($type === 'tel') {
     <p class="champ__message" id="<?= e($id) ?>-erreur"><?= icone('triangle') ?><span><?= e($erreur) ?></span></p>
   <?php endif ?>
   <?php if (!empty($aide)): ?><p class="champ__aide" id="<?= e($id) ?>-aide"><?= e($aide) ?></p><?php endif ?>
-  <?php if ($type === 'textarea' && !empty($max)): ?><span class="champ__compteur" data-compteur="<?= e($id) ?>">0 / <?= (int) $max ?></span><?php endif ?>
+  <?php if ($type === 'textarea' && !empty($max) && ($compteur ?? true)): ?><span class="champ__compteur" data-compteur="<?= e($id) ?>">0 / <?= (int) $max ?></span><?php endif ?>
 </div>

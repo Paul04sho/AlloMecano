@@ -15,8 +15,9 @@
 .bouton .icone { width: 24px; height: 24px; stroke-width: 2.25; }
 .bouton--64 { --h: 64px; }
 .bouton--52 { --h: 52px; }
+.bouton--48 { --h: 48px; } /* bouton dans une note (69:1002) */
 .bouton--44 { --h: 44px; padding: 0 16px; font-size: 16px; line-height: 18px; gap: 8px; }
-.bouton--plein { display: flex; width: 100%; }
+.bouton--plein { display: flex; width: 100%; padding-inline: var(--esp-16); } /* contenu centré : à 360 px, le libellé tient sur une ligne */
 .bouton:active:not([disabled]):not([aria-disabled="true"]) { transform: translateY(1px); }
 
 .bouton--principal { background: var(--balise); color: var(--bitume); box-shadow: inset 0 0 0 2px var(--bitume); }
@@ -56,5 +57,5 @@
 @keyframes clignotant { from { opacity: 1; } to { opacity: .25; } }
 
 @media (min-width: 1024px) {
-  .bouton:not(.bouton--64):not(.bouton--56):not(.bouton--44) { --h: 52px; } /* --56 : écrans desktop dessinés en 56 (D0) */
+  .bouton:not(.bouton--64):not(.bouton--56):not(.bouton--48):not(.bouton--44) { --h: 52px; } /* --56 : écrans desktop dessinés en 56 (D0) */
 }

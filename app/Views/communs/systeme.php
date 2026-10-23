@@ -70,21 +70,15 @@ $icones = json_decode((string) file_get_contents(RACINE . '/scripts/icones.json'
   </section>
 
   <section class="rubrique">
-    <span class="t-etiquette">Sélecteurs · Figma 54:293 · 54:391 · 54:467 · 54:451 · 54:499</span>
+    <span class="t-etiquette">Sélecteurs · Figma 54:293 · 54:391 · voyants de bord 48:214 (allumés) · 54:467 · 54:451 · 54:499</span>
     <div class="systeme__grille">
-      <div class="vehicules" role="radiogroup" aria-label="Votre véhicule">
-        <?php foreach (['voiture' => 'Voiture', 'moto' => 'Moto', 'camion' => 'Camion'] as $code => $libelle): ?>
-          <label class="tuile-vehicule"><input type="radio" name="vehicule" value="<?= $code ?>" <?= $code === 'voiture' ? 'checked' : '' ?>><span><?= icone('vehicule-' . $code, 40) ?><?= e($libelle) ?></span></label>
-        <?php endforeach ?>
+      <?= composant('choix-vehicule', ['nom' => 'vehicule', 'vehicules' => ['voiture' => 'Voiture', 'moto' => 'Moto', 'camion' => 'Camion'], 'valeur' => 'voiture', 'legende' => 'Votre véhicule']) ?>
+      <?= composant('panneau-voyants', ['nom' => 'panne', 'valeur' => 'batterie', 'pannes' => array_map(fn ($c, $l) => ['code' => $c, 'libelle' => $l, 'danger' => $c === 'choc_accident'],
+          ['ne_demarre_pas', 'batterie', 'surchauffe', 'pneu_creve', 'huile_fuite', 'freins', 'choc_accident', 'bruit_fumee', 'je_ne_sais_pas'],
+          ['Ne démarre pas', 'Batterie', 'Surchauffe', 'Pneu crevé', 'Huile ou fuite', 'Freins', 'Choc ou accident', 'Bruit ou fumée', 'Je ne sais pas'])]) ?>
+      <div class="systeme__ligne systeme__sombre">
+        <?php foreach (['ne_demarre_pas', 'batterie', 'surchauffe', 'huile_fuite', 'pneu_creve', 'freins', 'choc_accident', 'bruit_fumee', 'je_ne_sais_pas'] as $c): ?><?= composant('voyant-de-bord', ['code' => $c, 'allume' => true]) ?><?php endforeach ?>
       </div>
-      <fieldset class="panneau-voyants" style="border:0;margin:0">
-        <legend class="t-etiquette">Qu’est-ce qui s’allume&#8239;?</legend>
-        <div class="voyants">
-          <?php foreach (['ne-demarre-pas' => 'Ne démarre pas', 'batterie' => 'Batterie', 'surchauffe' => 'Surchauffe', 'pneu-creve' => 'Pneu crevé', 'huile-fuite' => 'Huile ou fuite', 'freins' => 'Freins', 'choc-accident' => 'Choc ou accident', 'bruit-fumee' => 'Bruit ou fumée', 'je-ne-sais-pas' => 'Je ne sais pas'] as $code => $libelle): ?>
-            <label class="tuile-voyant<?= $code === 'je-ne-sais-pas' ? ' tuile-voyant--large' : '' ?>"><input type="radio" name="panne" value="<?= $code ?>" <?= $code === 'batterie' ? 'checked' : '' ?>><span><?= icone('voyant-' . $code, 32) ?><?= e($libelle) ?></span></label>
-          <?php endforeach ?>
-        </div>
-      </fieldset>
       <div class="lignes-choix">
         <label class="ligne-choix"><input type="checkbox" name="cgu">J’accepte les conditions d’utilisation</label>
         <label class="ligne-choix"><input type="radio" name="r" checked>Voiture</label>

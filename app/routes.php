@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 use App\Controllers\Api\ClientController;
 use App\Controllers\Client\AccueilController;
+use App\Controllers\Client\PanneController;
 use App\Controllers\Client\PositionController;
 use App\Controllers\Communs\SystemeController;
 use App\Middleware\IdentifierClient;
@@ -27,8 +28,10 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
         $r->post('/position/confirmer', [PositionController::class, 'enregistrerConfirmation']);
         $r->get('/position/quartier', [PositionController::class, 'quartier']);                // C2b
         $r->post('/position/quartier', [PositionController::class, 'enregistrerQuartier']);
+        $r->get('/panne', [PanneController::class, 'formulaire'], 'panne');                       // C3
+        $r->post('/panne', [PanneController::class, 'enregistrer']);
+        $r->post('/panne/effacer', [PanneController::class, 'effacerContact']);
     });
-    // $r->get('/panne', …)               C3 · Ma panne             (à faire)
     // $r->get('/resultats/{id}', …)      C4 · C4b · C4c · D1       (à faire)
     // $r->get('/mecano/{slug}', …)       C5                        (à faire)
     // $r->get('/contact/{id}', …)        C5c · C6                  (à faire)
@@ -61,4 +64,5 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
 // ----- API JSON (appel intégré, recherche, push) : routes ajoutées par les chantiers -----
 $routeur->groupe('/api', [VerifierCsrf::class], function ($r) {
     $r->post('/client/restaurer', [ClientController::class, 'restaurer']);                    // RG-C7
+    $r->post('/client/effacer', [ClientController::class, 'effacer']);                        // C3 · « Effacer »
 });
