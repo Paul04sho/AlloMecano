@@ -16,7 +16,7 @@ final class PageController
     {
         return Response::html(View::rendre('client/accueil', [
             'titre' => Format::typo('En panne ? Le mécano vérifié le plus proche'),
-            'description' => 'En panne à Abidjan ? Trouvez un mécanicien vérifié et disponible près de vous, puis contactez-le directement.',
+            'description' => Format::typo('En panne à Abidjan ? Trouvez un mécanicien vérifié et disponible près de vous, puis contactez-le directement.'),
             'css' => ['css/pages/accueil.css'],
         ], 'layouts/client'));
     }
