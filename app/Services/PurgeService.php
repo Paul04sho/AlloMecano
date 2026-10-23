@@ -20,7 +20,7 @@ final class PurgeService
         return new self(Database::instance());
     }
 
-    /** @return array{positions: int, recherches: int, zones: int} lignes touchées */
+    /** @return array{positions: int, recherches: int, zones: int, signalisation: int} lignes touchées */
     public function purger(): array
     {
         $heures = Parametres::int('purge.position_h', 24);
@@ -46,6 +46,8 @@ final class PurgeService
             'DELETE FROM zones_sans_resultat WHERE jour < UTC_DATE() - INTERVAL :j DAY',
             ['j' => $jours]
         )->rowCount();
-        return ['positions' => $positions, 'recherches' => $recherches, 'zones' => $zones];
+        // RG-P3 : messages de l'appel intégré effacés 1 h après la fin de l'appel
+        $signalisation = (new AppelService($this->db))->purgerSignalisation();
+        return ['positions' => $positions, 'recherches' => $recherches, 'zones' => $zones, 'signalisation' => $signalisation];
     }
 }

@@ -33,17 +33,14 @@ final class ContactService
      *
      * @param array{recherche: ?string, lieu: ?string, repere: ?string, vehicule: ?string, panne: ?string, lat: ?float, lon: ?float} $contexte
      * @param ?string $precedent public_id du contact raté qui mène à celui-ci (RG-I5)
-     * @return array{public_id: string, canal: string, cible: string, prenom: string, mecano: string}
+     * @param bool $webrtc le navigateur sait faire un appel intégré (détecté par le JS)
+     * @return array{public_id: string, canal: string, cible: string, prenom: string, mecano: string, statut: string}
      * @throws ContactException
      */
-    public function creer(int $client, string $mecano, string $canal, bool $position, array $contexte, ?string $precedent = null): array
+    public function creer(int $client, string $mecano, string $canal, bool $position, array $contexte, ?string $precedent = null, bool $webrtc = false): array
     {
         if (!in_array($canal, ['app', 'tel', 'whatsapp'], true)) {
             throw new ContactException('canal', 'Canal inconnu.');
-        }
-        // RG-A2 : tant que l'appel intégré n'est pas actif, « Appeler » ouvre l'appel direct
-        if ($canal === 'app' && Parametres::int('appel.integre_actif', 0) !== 1) {
-            $canal = 'tel';
         }
         $m = $this->db->un(
             'SELECT id, public_id, prenom, telephone, whatsapp, etat, position_maj_le FROM mecaniciens
@@ -54,6 +51,16 @@ final class ContactService
             throw new ContactException('indisponible', (string) ($m['prenom'] ?? 'Ce mécano') . ' n’est plus disponible.');
         }
         $this->verifierLimites($client, (int) $m['id']);
+
+        // RG-A2 : l'appel intégré est le bouton principal si le navigateur le permet ET si le mécano peut le recevoir ; sinon « Appeler » ouvre l'appel direct
+        $appel = new AppelService($this->db);
+        if ($canal === 'app' && (Parametres::int('appel.integre_actif', 0) !== 1 || !$webrtc || !$appel->mecanoJoignable((int) $m['id']))) {
+            $canal = 'tel';
+        }
+        if ($canal === 'app' && $appel->appelDuClient($client) !== null) {
+            throw new ContactException('appel_en_cours', 'Vous avez déjà un appel en cours.'); // RG-A4
+        }
+        $occupe = $canal === 'app' && $appel->mecanoOccupe((int) $m['id']); // RG-A3 : « occupé » tout de suite, on propose le suivant
 
         $recherche = $contexte['recherche'] !== null ? $this->db->un(
             'SELECT r.id, rr.rang FROM recherches r
@@ -71,7 +78,8 @@ final class ContactService
         $publicId = Ulid::generer();
         $this->db->inserer('contacts', [
             'public_id' => $publicId, 'recherche_id' => $recherche['id'] ?? null, 'client_id' => $client, 'mecanicien_id' => (int) $m['id'],
-            'canal' => $canal, 'rang' => $recherche['rang'] ?? null, 'contact_precedent_id' => $avant['id'] ?? null, 'statut' => 'initie',
+            'canal' => $canal, 'rang' => $recherche['rang'] ?? null, 'contact_precedent_id' => $avant['id'] ?? null, 'statut' => $occupe ? 'occupe' : 'initie',
+            'termine_le' => $occupe ? gmdate('Y-m-d H:i:s') : null, 'fin_par' => $occupe ? 'mecanicien' : null,
             'resume' => mb_substr(implode(' · ', array_filter([$contexte['vehicule'], $contexte['panne']])) ?: 'Dépannage', 0, 120),
             'quartier_libelle' => $contexte['lieu'] !== null ? mb_substr($contexte['lieu'], 0, 80) : null,
             'position_partagee' => $position ? 1 : 0,
@@ -80,8 +88,8 @@ final class ContactService
         ]);
 
         return [
-            'public_id' => $publicId, 'canal' => $canal, 'prenom' => (string) $m['prenom'], 'mecano' => (string) $m['public_id'],
-            'cible' => $canal === 'whatsapp' ? $this->lienWhatsApp($m, $contexte, $position, false) : 'tel:' . Format::telephoneE164((string) $m['telephone']),
+            'public_id' => $publicId, 'canal' => $canal, 'prenom' => (string) $m['prenom'], 'mecano' => (string) $m['public_id'], 'statut' => $occupe ? 'occupe' : 'initie',
+            'cible' => $canal === 'app' ? '/appel/' . $publicId : ($canal === 'whatsapp' ? $this->lienWhatsApp($m, $contexte, $position, false) : 'tel:' . Format::telephoneE164((string) $m['telephone'])),
         ];
     }
 
@@ -159,12 +167,15 @@ final class ContactService
     public function lire(string $publicId, int $client): ?array
     {
         $c = $this->db->un(
-            'SELECT c.id, c.public_id, c.canal, c.statut, c.cree_le, c.rang, c.issue_client, c.position_partagee, c.resume, c.quartier_libelle,
+            'SELECT c.id, c.public_id, c.canal, c.statut, c.cree_le, c.rang, c.issue_client, c.issue_mecano, c.position_partagee, c.resume, c.quartier_libelle, c.repere,
+                    c.sonne_le, c.decroche_le, c.termine_le, c.duree_s, c.fin_par, rr.distance_m, qm.nom AS quartier_mecano,
                     r.public_id AS recherche, m.public_id AS mecano, m.slug, m.prenom, m.nom, m.metier, m.identite_verifiee_le,
                     ph.dossier, ph.largeurs, ph.ratio, ph.couleur_dominante, ph.focal_x, ph.focal_y
                FROM contacts c
                JOIN mecaniciens m ON m.id = c.mecanicien_id
                LEFT JOIN recherches r ON r.id = c.recherche_id
+               LEFT JOIN quartiers qm ON qm.id = m.dispo_quartier_id
+               LEFT JOIN resultats_recherche rr ON rr.recherche_id = c.recherche_id AND rr.mecanicien_id = c.mecanicien_id
                LEFT JOIN photos ph ON ph.mecanicien_id = m.id AND ph.type = \'portrait\' AND ph.active = 1
               WHERE c.public_id = :p AND c.client_id = :c',
             ['p' => $publicId, 'c' => $client]
@@ -177,8 +188,20 @@ final class ContactService
             'heure' => Format::heure((string) $c['cree_le']), 'issue' => $c['issue_client'], 'recherche' => $c['recherche'],
             'mecano' => (string) $c['mecano'], 'slug' => (string) $c['slug'], 'prenom' => (string) $c['prenom'], 'nom_complet' => $c['prenom'] . ' ' . $c['nom'],
             'portrait' => PhotoService::portrait($c), 'lieu' => $c['quartier_libelle'], 'position_partagee' => (bool) $c['position_partagee'],
-            'cree_le' => (string) $c['cree_le'],
+            'cree_le' => (string) $c['cree_le'], 'statut' => (string) $c['statut'], 'issue_mecano' => $c['issue_mecano'], 'metier' => (string) $c['metier'],
+            'resume' => (string) $c['resume'], 'repere' => $c['position_partagee'] ? $c['repere'] : null, 'duree_s' => $c['duree_s'] !== null ? (int) $c['duree_s'] : null,
+            'termine_le' => $c['termine_le'], 'fin_par' => $c['fin_par'], 'quartier_mecano' => $c['quartier_mecano'], 'distance_m' => $c['distance_m'] !== null ? (int) $c['distance_m'] : null,
         ];
+    }
+
+    /** Le numéro du mécano, donné seulement à celui qui a un contact avec lui (RG-A1) : « Appeler Koffi sur son numéro » (C5c, RG-A7). */
+    public function numero(string $contactPublicId, int $client): ?string
+    {
+        $t = $this->db->valeur(
+            'SELECT m.telephone FROM contacts c JOIN mecaniciens m ON m.id = c.mecanicien_id WHERE c.public_id = :p AND c.client_id = :c',
+            ['p' => $contactPublicId, 'c' => $client]
+        );
+        return $t ? Format::telephoneE164((string) $t) : null;
     }
 
     /** RG-A12 : temps passé hors d'allomécano (un indice, jamais une preuve). */

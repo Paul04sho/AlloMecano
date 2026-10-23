@@ -6,6 +6,7 @@
  * @var string $heure      heure de la réponse (UTC = Abidjan)
  * @var ?array<string, mixed> $suivant  mécano suivant de la liste figée (RG-I5), null s'il n'y en a plus
  * @var bool $pasEntendus
+ * @var bool $pasPourMoi  le mécano a répondu « Pas pour moi » (RG-I2)
  * @var array{sans: string, position: ?string} $message
  */
 use App\Core\Format;
@@ -34,7 +35,7 @@ $heureAppel = $c['heure'];
   <p class="retour__pied t-etiquette t-secondaire">Votre réponse nous aide à garder des mécanos joignables</p>
 
 <?php elseif ($etape === 'suivant'): ?>
-  <?php $rubrique = ($pasEntendus ? 'Pas d’accord avec ' . $c['prenom'] : $c['prenom'] . ' n’a pas répondu') . ' · ' . $heure; ?>
+  <?php $rubrique = (!empty($pasPourMoi) ? $c['prenom'] . ' ne peut pas venir' : ($pasEntendus ? 'Pas d’accord avec ' . $c['prenom'] : $c['prenom'] . ' n’a pas répondu')) . ' · ' . $heure; ?>
   <p class="retour__rubrique t-etiquette t-secondaire"><?= e($rubrique) ?></p>
   <?php if ($suivant !== null): ?>
     <h2 class="retour__titre t-titre-1" id="retour-titre" tabindex="-1"><?= e($suivant['prenom']) ?> est à <?= e(Format::distance($suivant['distance_m'])) ?> et disponible.</h2>

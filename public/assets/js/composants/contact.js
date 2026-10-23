@@ -6,6 +6,8 @@ import { initialiserMessage } from './fiche.js';
 const reduit = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 const CLE = 'appel';
 const bureau = () => matchMedia('(min-width: 1024px)').matches;
+/** RG-A2 : l'appel intégré demande un micro et du WebRTC ; sinon « Appeler » ouvre l'appel direct. */
+const capable = () => !!(navigator.mediaDevices?.getUserMedia && window.RTCPeerConnection);
 
 function memoriser(id, min) {
   try { sessionStorage.setItem(CLE, JSON.stringify({ id, t: Date.now(), min })); } catch { /* stockage fermé : pas de retour d'appel */ }
@@ -29,9 +31,11 @@ export function initialiserContacts(racine) {
       bouton?.setAttribute('aria-busy', 'true');
       const donnees = Object.fromEntries([...new FormData(f)].filter(([k]) => k !== '_csrf'));
       if (f.hasAttribute('data-reveler')) donnees.reveler = '1';
+      donnees.webrtc = capable() ? '1' : '0';
       try {
         const r = await api('/api/contacts', { methode: 'POST', donnees });
         if (r.html) { reveler(f, r.html); return; }
+        if (r.canal === 'app') { location.href = r.cible; return; } // l'appel intégré : la page d'appel (C5c) prend le relais
         memoriser(r.id, Number(f.dataset.absenceMin) || 3);
         if (r.canal === 'whatsapp' && bureau()) {
           // Desktop : WhatsApp Web dans un autre onglet, la fiche reste là

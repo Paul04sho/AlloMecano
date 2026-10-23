@@ -100,7 +100,7 @@ final class ContactController
         $precedent = (string) $requete->input('precedent', '');
         return ContactService::depuisBase()->creer(
             $this->client(), $mecano, (string) $requete->input('canal', ''), (string) $requete->input('position', '1') !== '0',
-            $this->contexte($requete), preg_match('/^[0-9A-Z]{26}$/', $precedent) === 1 ? $precedent : null
+            $this->contexte($requete), preg_match('/^[0-9A-Z]{26}$/', $precedent) === 1 ? $precedent : null, (string) $requete->input('webrtc', '0') === '1'
         );
     }
 
@@ -145,7 +145,13 @@ final class ContactController
         if ($contact === null) {
             throw HttpException::introuvable();
         }
-        $etape = match ($contact['issue']) {
+        // RG-I2 : sans réponse du client, celle du mécano (« J'y vais » / « Pas pour moi ») décide de l'étape
+        $issue = $contact['issue'] ?? match ($contact['issue_mecano']) {
+            'j_y_vais' => 'arrive',
+            'pas_pour_moi' => 'pas_pour_moi',
+            default => null,
+        };
+        $etape = match ($issue) {
             null => 'question',
             'arrive' => 'arrive',
             default => 'suivant',
@@ -153,7 +159,8 @@ final class ContactController
         $donnees = ['etape' => $etape, 'contact' => $contact, 'heure' => Format::heure(new \DateTimeImmutable('now', new \DateTimeZone('UTC')))];
         if ($etape === 'suivant') {
             $donnees['suivant'] = $service->suivant($publicId, $client);
-            $donnees['pasEntendus'] = $contact['issue'] === 'pas_entendus';
+            $donnees['pasEntendus'] = $issue === 'pas_entendus';
+            $donnees['pasPourMoi'] = $issue === 'pas_pour_moi';
         }
         if ($etape === 'arrive') {
             $ctx = FicheController::contexte($contact['recherche']);

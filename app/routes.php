@@ -11,11 +11,13 @@ declare(strict_types=1);
 
 use App\Controllers\Api\ClientController;
 use App\Controllers\Client\AccueilController;
+use App\Controllers\Client\AppelController;
 use App\Controllers\Client\ContactController;
 use App\Controllers\Client\FicheController;
 use App\Controllers\Client\PanneController;
 use App\Controllers\Client\PositionController;
 use App\Controllers\Client\RechercheController;
+use App\Controllers\Communs\DevAppelController;
 use App\Controllers\Communs\SystemeController;
 use App\Middleware\IdentifierClient;
 use App\Middleware\VerifierCsrf;
@@ -45,6 +47,7 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
         $r->post('/contacter', [ContactController::class, 'creerFormulaire']);                    // RG-A1 : le contact d'abord, puis tel: ou WhatsApp
         $r->get('/contact/{id}', [ContactController::class, 'page'], 'contact');                  // C6 · « Avez-vous pu le joindre ? »
         $r->post('/contact/{id}/issue', [ContactController::class, 'issue']);
+        $r->get('/appel/{id}', [AppelController::class, 'page'], 'appel');                        // C5c · appel intégré
     });
     // $r->get('/avis/{id}', …)           C6b                       (à faire)
     // $r->get('/signaler/{slug}', …)     C7                        (à faire)
@@ -70,6 +73,7 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
 
     // ----- Design system (dev uniquement) -----
     $r->get('/systeme', [SystemeController::class, 'index'], 'systeme');
+    $r->get('/systeme/appel', [DevAppelController::class, 'page'], 'systeme-appel');          // mécano de test pour l'appel intégré
 });
 
 // ----- API JSON (appel intégré, recherche, push) : routes ajoutées par les chantiers -----
@@ -79,8 +83,19 @@ $routeur->groupe('/api', [VerifierCsrf::class, IdentifierClient::class], functio
     $r->get('/contacts/{id}/retour', [ContactController::class, 'retourApi']);                   // C6 · feuille de retour d'appel
     $r->post('/contacts/{id}/absence', [ContactController::class, 'absence']);                   // RG-A12
     $r->post('/contacts/{id}/issue', [ContactController::class, 'issue']);                       // RG-I4
+    $r->get('/appels/ice', [AppelController::class, 'ice']);                                     // serveurs STUN et relais TURN
+    $r->get('/appels/{id}/signaux', [AppelController::class, 'signaux']);                        // RG-A8 : état + messages de l'autre côté
+    $r->post('/appels/{id}/signal', [AppelController::class, 'signal']);
+    $r->post('/appels/{id}/raccrocher', [AppelController::class, 'raccrocher']);
+    $r->post('/appels/{id}/echec', [AppelController::class, 'echec']);                           // RG-A7
 });
 $routeur->groupe('/api', [VerifierCsrf::class], function ($r) {
+    // Outil de développement (absent en production) : joue le mécano qui reçoit l'appel, en attendant M5
+    $r->get('/dev/ice', [DevAppelController::class, 'ice']);
+    $r->get('/dev/mecano/{id}/entrants', [DevAppelController::class, 'entrants']);
+    $r->get('/dev/appel/{id}/signaux', [DevAppelController::class, 'signaux']);
+    $r->post('/dev/appel/{id}/signal', [DevAppelController::class, 'signal']);
+    $r->post('/dev/appel/{id}/issue', [DevAppelController::class, 'issue']);
     $r->post('/client/restaurer', [ClientController::class, 'restaurer']);                    // RG-C7
     $r->post('/client/effacer', [ClientController::class, 'effacer']);                        // C3 · « Effacer »
 });

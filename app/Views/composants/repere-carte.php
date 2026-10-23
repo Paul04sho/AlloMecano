@@ -8,9 +8,10 @@
  * @var int|string $rang
  * @var ?string $visage    URL du portrait WebP 80 × 80 (sélectionné)
  * @var ?string $etiquette « 1 · 1,2 KM » (sélectionné)
+ * @var ?int $largeur   largeur en pixels si elle diffère du type (W44 pour le mécano suivant de C5c, 270:1862)
  */
 $type ??= 'numerote';
-$largeur = ['rang' => 28, 'numerote' => 36, 'selectionne' => 56][$type] ?? 36;
+$largeur = $largeur ?? ['rang' => 28, 'numerote' => 36, 'selectionne' => 56][$type] ?? 36;
 // Le trou est un peu plus grand sur le sélectionné (visage de 38 sur 56) que sur les autres (17 sur 28)
 $rayon = ['rang' => 8.5, 'numerote' => 8.17, 'selectionne' => 9.5][$type] ?? 8.17;
 ?>

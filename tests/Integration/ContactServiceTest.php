@@ -90,10 +90,10 @@ final class ContactServiceTest extends TestCase
         self::assertStringStartsWith('tel:+2250700', $r['cible']);
     }
 
-    public function testAppelerOuvreLAppelDirectTantQueLAppelIntegreEstInactif(): void
+    public function testAppelerOuvreLAppelDirectSansWebRtc(): void
     {
         $r = $this->service->creer($this->client, $this->mecano('koffi', 800), 'app', true, $this->contexte());
-        self::assertSame('tel', $r['canal']); // RG-A2 : repli
+        self::assertSame('tel', $r['canal']); // RG-A2 : repli (le JS n'a pas annoncé de WebRTC)
     }
 
     public function testWhatsAppPorteLeMessagePretEtLaPositionSeulementSiActive(): void

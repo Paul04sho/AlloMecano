@@ -267,6 +267,31 @@ $icones = json_decode((string) file_get_contents(RACINE . '/scripts/icones.json'
   </section>
 
   <section class="rubrique">
+    <span class="t-etiquette">Appel intégré · anneau 269:1827 / 269:1873 · commande 269:1849 / 269:1891 · état 269:1837 / 269:1881 / 270:1853 · repère carte W44 270:1862</span>
+    <div class="systeme__grille systeme__appel">
+      <div class="appel appel--sombre sur-sombre systeme__appel-sombre">
+        <?= composant('anneau-appel', ['portrait' => ['src' => '/medias/demo/koffi-360.webp', 'srcset' => '/medias/demo/koffi-360.webp 360w', 'couleur' => '#6f665b', 'cadrage' => '50% 30%'], 'nom' => 'Koffi Yao', 'phase' => 'sonne']) ?>
+        <div class="appel__identite">
+          <?= composant('etat-appel', ['voyant' => 'recherche', 'texte' => 'Ça sonne chez Koffi', 'chrono' => '0:12']) ?>
+          <?= composant('etat-appel', ['texte' => 'En ligne', 'chrono' => '01:24']) ?>
+        </div>
+        <div class="appel__commandes">
+          <?= composant('commande-appel', ['icone' => 'micro', 'libelle' => 'Micro']) ?>
+          <?= composant('commande-appel', ['icone' => 'micro-barre', 'libelle' => 'Micro coupé', 'actif' => true]) ?>
+        </div>
+      </div>
+      <div class="systeme__ligne">
+        <?= composant('etat-appel', ['voyant' => 'indisponible', 'texte' => '30 s sans réponse']) ?>
+        <?= composant('etat-appel', ['voyant' => 'erreur', 'texte' => 'Connexion impossible']) ?>
+        <?= composant('repere-carte', ['type' => 'numerote', 'rang' => 2, 'largeur' => 44]) ?>
+      </div>
+      <div class="appel__reponses">
+        <?= composant('reponse-retour', ['contact' => '01JDEMOC00100000000000001', 'issue' => 'arrive', 'libelle' => 'Il m’a dit qu’il arrive', 'compacte' => true]) ?>
+      </div>
+    </div>
+  </section>
+
+  <section class="rubrique">
     <span class="t-etiquette">Panneau coupé L · Figma 67:619</span>
     <div class="systeme__carte-fond systeme__panneau">
       <?= composant('panneau', ['contenu' => '<p class="t-titre-2">Riviera 2, Cocody</p><p class="t-donnee t-secondaire">5,3571° N · 3,9672° O · ± 18 M</p>']) ?>
