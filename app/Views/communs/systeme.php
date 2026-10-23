@@ -279,6 +279,18 @@ $icones = json_decode((string) file_get_contents(RACINE . '/scripts/icones.json'
   </section>
 
   <section class="rubrique">
+    <span class="t-etiquette">Signalement · photo facultative 210:1812 · fil de suivi 90:1681</span>
+    <div class="systeme__grille">
+      <?= composant('champ-photo', ['nom' => 'demo-photo', 'label' => 'Une photo (facultatif)', 'aide' => 'Allégée avant l’envoi. La position enregistrée dans la photo est retirée.']) ?>
+      <?= composant('frise-suivi', ['etapes' => [
+          ['etat' => 'fait', 'titre' => 'Signalement reçu', 'detail' => '21 octobre · 10:41'],
+          ['etat' => 'en_cours', 'titre' => 'Lu par une personne de l’équipe', 'detail' => 'Sous 24 h · avant le 22 octobre, 10:41'],
+          ['etat' => 'a_venir', 'titre' => 'On vous rappelle si besoin', 'detail' => 'Au +225 07 07 12 34 56'],
+      ]]) ?>
+    </div>
+  </section>
+
+  <section class="rubrique">
     <span class="t-etiquette">Appel intégré · anneau 269:1827 / 269:1873 · commande 269:1849 / 269:1891 · état 269:1837 / 269:1881 / 270:1853 · repère carte W44 270:1862</span>
     <div class="systeme__grille systeme__appel">
       <div class="appel appel--sombre sur-sombre systeme__appel-sombre">

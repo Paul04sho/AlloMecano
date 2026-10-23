@@ -55,6 +55,19 @@ final class Format
         return '+225' . self::INSECABLE . implode(self::INSECABLE, str_split($c, 2));
     }
 
+    /** « +2250707123456 » → « 07 07 12 34 56 » : ce qu'on remet dans un champ téléphone (le préfixe +225 est déjà à l'écran). */
+    public static function telephoneLocal(?string $tel): string
+    {
+        if ($tel === null || $tel === '') {
+            return '';
+        }
+        $c = preg_replace('/\D/', '', $tel) ?? '';
+        if (str_starts_with($c, '225') && strlen($c) === 13) {
+            $c = substr($c, 3);
+        }
+        return implode(' ', str_split($c, 2));
+    }
+
     public static function telephoneE164(string $tel): string
     {
         $c = preg_replace('/\D/', '', $tel) ?? '';

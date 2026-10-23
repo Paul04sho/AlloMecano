@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers\Client;
 
+use App\Core\Format;
 use App\Core\HttpException;
 use App\Core\Request;
 use App\Core\Response;
@@ -30,8 +31,8 @@ final class AvisController
         return $this->page($c, [
             'erreurs' => [],
             'saisie' => $existant !== null
-                ? ['note' => $existant['note'], 'etiquettes' => $existant['etiquettes'], 'commentaire' => $existant['commentaire'], 'prenom' => $existant['prenom'] ?? $moi['prenom'], 'telephone' => $moi['telephone']]
-                : ['note' => 0, 'etiquettes' => [], 'commentaire' => '', 'prenom' => $moi['prenom'] ?? '', 'telephone' => $moi['telephone'] ?? ''],
+                ? ['note' => $existant['note'], 'etiquettes' => $existant['etiquettes'], 'commentaire' => $existant['commentaire'], 'prenom' => $existant['prenom'] ?? $moi['prenom'], 'telephone' => Format::telephoneLocal($moi['telephone'])]
+                : ['note' => 0, 'etiquettes' => [], 'commentaire' => '', 'prenom' => $moi['prenom'] ?? '', 'telephone' => Format::telephoneLocal($moi['telephone'])],
             'verrouille' => $existant !== null && !$existant['modifiable'],
         ]);
     }

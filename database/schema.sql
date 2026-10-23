@@ -831,6 +831,8 @@ INSERT INTO parametres (cle,valeur,type,description) VALUES
 ('avis.delai_j','7','int','RG-AV1 · délai pour laisser un avis'),
 ('avis.duree_min_s','30','int','RG-AV1 · appel intégré assez long pour ouvrir l''avis'),
 ('avis.modifiable_h','24','int','RG-AV2'),
+('signalement.lecture_h','24','int','RG-S2 · délai de lecture par un admin'),
+('signalement.photo_max_ko','300','int','RG-S3 · poids maximum de la photo jointe'),
 ('avis.seuil_note','3','int','RG-AV6 · en dessous, la fiche affiche « Nouveau »'),
 ('purge.position_h','24','int','RG-P1'),
 ('purge.recherches_j','90','int','RG-P2'),

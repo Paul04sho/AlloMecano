@@ -20,7 +20,7 @@ final class SystemeController
         }
         return Response::html(View::rendre('communs/systeme', [
             'titre' => 'Système',
-            'css' => ['css/composants/carte.css', 'css/pages/fiche.css', 'css/pages/contact.css', 'css/pages/appel.css', 'css/pages/avis.css', 'css/pages/systeme.css'],
+            'css' => ['css/composants/carte.css', 'css/pages/fiche.css', 'css/pages/contact.css', 'css/pages/appel.css', 'css/pages/avis.css', 'css/pages/signalement.css', 'css/pages/systeme.css'],
             'js' => ['js/pages/systeme.js'],
         ], 'layouts/client'));
     }

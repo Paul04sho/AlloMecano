@@ -13,6 +13,7 @@ use App\Controllers\Api\ClientController;
 use App\Controllers\Client\AccueilController;
 use App\Controllers\Client\AppelController;
 use App\Controllers\Client\AvisController;
+use App\Controllers\Client\SignalementController;
 use App\Controllers\Client\ContactController;
 use App\Controllers\Client\FicheController;
 use App\Controllers\Client\PanneController;
@@ -52,8 +53,10 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
         $r->get('/avis/{contact}', [AvisController::class, 'formulaire'], 'avis');                 // C6b · RG-AV1
         $r->post('/avis/{contact}', [AvisController::class, 'publier']);
         $r->get('/avis/{contact}/merci', [AvisController::class, 'merci']);
+        $r->get('/signaler/{slug}', [SignalementController::class, 'formulaire'], 'signaler');     // C7 · RG-S1
+        $r->post('/signaler/{slug}', [SignalementController::class, 'envoyer']);
+        $r->get('/signalement/{id}', [SignalementController::class, 'envoye']);                    // C7 · envoyé
     });
-    // $r->get('/signaler/{slug}', …)     C7                        (à faire)
 
     // ----- Mécano (chantier B) -----
     // $r->get('/pro/devenir', …)         M0                        (à faire)

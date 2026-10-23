@@ -1,0 +1,60 @@
+/* C7 · Signaler (Figma 89:1612 / 210:1774) et « Signalement envoyé » (90:1660). Complète avis.css (barre de formulaire, page). */
+
+/* ---------- Formulaire ---------- */
+.signalement__corps { gap: 0; padding-bottom: var(--esp-32); }
+.signalement__corps > * { margin: 0; }
+.signalement__qui { display: flex; align-items: center; gap: var(--esp-16); }
+.signalement__qui h1 { flex: 1; min-width: 0; margin: 0; text-wrap: wrap; }
+.signalement__intro { margin-top: var(--esp-12) !important; }
+.signalement__corps > .note { margin-top: var(--esp-20); }
+.signalement__motifs { min-width: 0; margin: var(--esp-32) 0 0; padding: 0; border: 0; }
+.signalement__motifs > legend { padding: 0; margin: 0 0 var(--esp-12); }
+.signalement__motifs > h2 { margin: 0 0 var(--esp-8); }
+.signalement__lignes { display: flex; flex-direction: column; }
+.signalement__motifs .champ__message { margin-top: var(--esp-8); }
+.signalement__corps > .champ, .signalement__corps > .champ-photo { margin-top: var(--esp-32); }
+.signalement__corps > .champ-photo { margin-top: var(--esp-28, 28px); }
+.signalement__corps > .signalement__contact { margin-top: var(--esp-32); gap: var(--esp-16); }
+.signalement__corps > .signalement__contact > h2 { margin-bottom: 0; }
+.signalement__corps > p:last-child { margin-top: var(--esp-20); }
+
+/* « Racontez-nous » : l'aide à gauche, le compteur à droite sur la même ligne (210:1808) */
+.signalement .champ:has(.champ__compteur) { display: grid; grid-template-columns: 1fr auto; column-gap: var(--esp-12); row-gap: var(--esp-8); }
+.signalement .champ:has(.champ__compteur) > .champ__label, .signalement .champ:has(.champ__compteur) > .champ__boite, .signalement .champ:has(.champ__compteur) > .champ__message { grid-column: 1 / -1; }
+.signalement .champ:has(.champ__compteur) > .champ__compteur { align-self: start; }
+
+/* ---------- Photo facultative (210:1812) ---------- */
+.champ-photo { display: flex; flex-direction: column; align-items: flex-start; gap: var(--esp-8); }
+.champ-photo > p { margin: 0; }
+.champ-photo__fichier { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.champ-photo__ajout { cursor: pointer; }
+.champ-photo__fichier:focus-visible + .champ-photo__ajout { outline: 3px solid var(--encre); outline-offset: 3px; }
+.champ-photo__choisie { display: flex; align-items: center; gap: var(--esp-16); min-height: 44px; margin: 0; }
+.champ-photo__choisie[hidden] { display: none; }
+.champ-photo--choisie .champ-photo__ajout { display: none; }
+
+/* ---------- Signalement envoyé (90:1660) ---------- */
+.signalement-envoye__corps { gap: 0; padding-top: var(--esp-24); }
+.signalement-envoye__corps > * { margin: 0; }
+.signalement-envoye__corps > h1 { margin-top: var(--esp-12); }
+.signalement-envoye__corps > h1 + p { margin-top: var(--esp-8); }
+.signalement-envoye__numero { display: flex; flex-direction: column; gap: 6px; margin-top: var(--esp-24); padding: var(--esp-16); background: var(--surface-creuse); border-left: 4px solid var(--encre); }
+.signalement-envoye__numero > p { margin: 0; }
+.signalement-envoye__suite { margin-top: var(--esp-28, 28px); }
+.signalement-envoye__suite > h2 { margin: 0 0 var(--esp-16); }
+.signalement-envoye__corps > h1 { text-wrap: wrap; }
+.signalement-envoye__corps > .lien-icone { display: inline-flex; align-items: center; gap: var(--esp-8); margin-top: var(--esp-20); align-self: flex-start; padding-block: 11px; color: var(--erreur-texte); text-decoration: none; }
+.signalement-envoye__corps > .lien-icone span { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+
+/* ---------- Fil de suivi (90:1681) ---------- */
+.frise-suivi { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; }
+.frise-suivi__etape { display: flex; gap: var(--esp-16); align-items: stretch; }
+.frise-suivi__repere { position: relative; flex: none; width: 16px; color: var(--encre); }
+.frise-suivi__noeud { position: absolute; top: 2px; left: 0; display: block; }
+.frise-suivi__trait { position: absolute; top: calc(2px + 19px + 4px); bottom: 2px; left: 50%; width: 0; border-left: 2px dashed var(--encre); transform: translateX(-50%); }
+.frise-suivi__texte { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; padding-bottom: var(--esp-24); }
+.frise-suivi__etape:last-child .frise-suivi__texte { padding-bottom: 0; }
+.frise-suivi__titre, .frise-suivi__detail { display: block; }
+.frise-suivi__detail { color: var(--encre-2); }
+.frise-suivi__etape--a-venir .frise-suivi__titre { color: var(--encre-2); }
+.frise-suivi__etape--a-venir .frise-suivi__repere { color: var(--encre-2); }
