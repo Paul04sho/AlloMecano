@@ -1,0 +1,124 @@
+/* C2a · Localisation — styles propres à cet écran, fondés sur les jetons du socle. */
+
+.page-position {
+  background: var(--surface);
+}
+
+.position {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  color: var(--encre);
+  background: var(--surface);
+}
+
+.position__corps {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: var(--esp-24) var(--marge) calc(
+    var(--esp-48) + var(--esp-16) +
+    var(--esp-48) + var(--esp-8) +
+    var(--esp-12) + var(--esp-24) +
+    env(safe-area-inset-bottom)
+  );
+}
+
+.position__corps h1 {
+  max-width: 100%;
+}
+
+.position__illustration {
+  position: relative;
+  display: grid;
+  place-items: end center;
+  height: calc(4 * var(--esp-32) + var(--esp-16));
+  margin-top: var(--esp-48);
+}
+
+.position__separateur {
+  position: absolute;
+  inset: auto 0 0;
+  height: var(--esp-4);
+  background: repeating-linear-gradient(
+    90deg,
+    var(--hachure) 0 var(--esp-20),
+    transparent var(--esp-20) var(--esp-32)
+  );
+}
+
+.position__repere {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: min(100%, calc(3 * var(--esp-32)));
+  height: auto;
+  aspect-ratio: 9 / 13;
+}
+
+.position__explications {
+  display: grid;
+  gap: var(--esp-16);
+  margin-top: calc(var(--esp-32) + var(--esp-8));
+}
+
+.position__texte-principal {
+  max-width: 42ch;
+}
+
+.position__instruction {
+  color: var(--encre-2);
+  overflow-wrap: anywhere;
+}
+
+.position__statut {
+  padding: var(--esp-12);
+  border-inline-start: var(--esp-4) solid var(--encre-2);
+  color: var(--encre);
+  background: var(--surface-creuse);
+}
+
+.position__statut[data-etat="erreur"] {
+  border-inline-start-color: var(--erreur-texte);
+  color: var(--erreur-texte);
+}
+
+.position__statut[data-etat="succes"] {
+  border-inline-start-color: var(--dispo-texte);
+}
+
+.position__actions {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 50;
+  display: grid;
+  gap: var(--esp-12);
+  padding: 0 var(--marge) calc(var(--esp-24) + env(safe-area-inset-bottom));
+  background: var(--surface);
+}
+
+.position__actions .bouton {
+  width: 100%;
+}
+
+.position__actions .bouton--principal {
+  box-shadow: inset 0 0 0 var(--rayon) var(--bitume);
+}
+
+.position__actions .bouton--contour {
+  box-shadow: inset 0 0 0 var(--rayon) var(--encre);
+}
+
+@media (min-width: 1024px) {
+  .position__corps {
+    max-width: calc(18 * var(--esp-32));
+    margin-inline: auto;
+  }
+
+  .position__actions {
+    left: 50%;
+    right: auto;
+    width: min(calc(100% - 2 * var(--marge)), calc(18 * var(--esp-32)));
+    transform: translateX(-50%);
+  }
+}
