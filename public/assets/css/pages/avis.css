@@ -1,0 +1,54 @@
+/* C6b · Votre avis (Figma 87:1576) et « Merci » (88:1609). Composants : barre de formulaire, étoiles de saisie, étiquette 44. Servis aussi à /signaler. */
+
+/* ---------- Barre de formulaire (87:1577) ---------- */
+.barre-formulaire { display: grid; grid-template-columns: 96px 1fr 96px; align-items: center; height: 56px; padding-inline: var(--esp-4); }
+.barre-formulaire__rubrique { margin: 0; text-align: center; }
+.barre-formulaire__action { justify-self: end; display: inline-flex; align-items: center; min-height: 48px; padding-inline: var(--esp-12); }
+
+/* ---------- Page ---------- */
+.avis-page { display: flex; flex-direction: column; max-width: 560px; margin-inline: auto; padding-bottom: calc(var(--hauteur-socle) + var(--esp-48)); }
+.avis-page__corps { display: flex; flex-direction: column; gap: var(--esp-32); padding: var(--esp-24) var(--marge) var(--esp-24); }
+.avis-page__corps > * { margin: 0; }
+.avis-page__qui { display: flex; align-items: center; gap: var(--esp-12); margin-bottom: calc(var(--esp-20) - var(--esp-32)); }
+.avis-page__qui > div > p { margin: 0; }
+.avis-page__portrait { margin-bottom: 0; width: 56px; height: 56px; }
+.avis-page__portrait img { width: 56px; height: 56px; }
+.avis-page__portrait .poincon { left: 40px; top: 38px; }
+.avis-page__bloc { display: flex; flex-direction: column; gap: var(--esp-12); min-width: 0; margin: 0; padding: 0; border: 0; }
+.avis-page__bloc > legend, .avis-page__bloc > h2 { float: left; width: 100%; margin: 0; padding: 0; }
+.avis-page__bloc > legend + *, .avis-page__bloc > h2 + * { clear: both; }
+.avis-page__bloc > p { margin: 0; }
+.avis-page__mention { margin: var(--esp-8) 0 0 !important; }
+.avis-page .champ { align-self: stretch; }
+
+/* ---------- Étoiles de saisie (87:1600) ---------- */
+.etoiles-saisie { display: flex; align-items: center; justify-content: space-between; gap: var(--esp-16); }
+.etoiles-saisie__rangee { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: var(--esp-8); }
+.etoiles-saisie__champ { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.etoiles-saisie__etoile { display: inline-grid; place-items: center; width: 48px; height: 48px; cursor: pointer; color: var(--encre); }
+.etoiles-saisie__etoile svg { fill: none; stroke: currentColor; stroke-width: 1.16667; stroke-linecap: square; stroke-linejoin: bevel; transition: fill var(--t-micro) linear; }
+/* La suivante dans le HTML est la précédente à l'écran : « cochée et toutes celles d'avant » se remplissent */
+.etoiles-saisie__champ:checked ~ .etoiles-saisie__etoile svg, .etoiles-saisie__etoile:hover svg, .etoiles-saisie__etoile:hover ~ .etoiles-saisie__etoile svg { fill: currentColor; }
+.etoiles-saisie__champ:focus-visible + .etoiles-saisie__etoile { outline: 3px solid var(--encre); outline-offset: 2px; }
+.etoiles-saisie__valeur { display: flex; align-items: baseline; gap: 3px; margin: 0; white-space: nowrap; }
+.etoiles-saisie__valeur[hidden] { display: none; }
+.etoiles-saisie--erreur .etoiles-saisie__etoile { color: var(--erreur-texte); }
+
+/* ---------- Étiquette à cocher (87:1625) : 44 de haut, coche quand elle est choisie ---------- */
+.etiquette-choix--44 span { height: 44px; padding-inline: var(--esp-12); }
+.etiquette-choix span .icone { display: none; fill: none; }
+.etiquette-choix input:checked + span .icone { display: inline-block; }
+
+/* ---------- Merci (88:1609) ---------- */
+.avis-merci { max-width: 560px; margin-inline: auto; min-height: 100dvh; }
+.avis-merci__haut { position: relative; }
+.avis-merci__photo { aspect-ratio: 390 / 253; }
+.avis-merci__photo .photo__a-produire { min-height: 238px; }
+.avis-merci__fermer { position: absolute; top: var(--esp-12); right: var(--esp-12); z-index: 2; }
+.avis-merci__corps { display: flex; flex-direction: column; align-items: flex-start; gap: var(--esp-16); padding: var(--esp-24) var(--marge) var(--esp-48); }
+.avis-merci__corps > * { margin: 0; }
+.avis-merci__recap { align-self: stretch; display: flex; gap: var(--esp-12); padding-block: var(--esp-16); border-block: 1px solid var(--filet); }
+.avis-merci__recap > div { display: flex; flex-direction: column; gap: var(--esp-4); min-width: 0; }
+.avis-merci__recap > div > p { margin: 0; }
+.avis-merci__visage img { display: block; width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+.avis-merci__modifier { align-self: flex-start; }

@@ -1,0 +1,11 @@
+/* X6 · Route barrée */
+.erreur { display: flex; flex-direction: column; padding-bottom: 48px; }
+.erreur__illustration { display: block; padding: 50px 0 30px; background: var(--beton); } /* l’illustration a un fond béton : bande claire aussi en mode sombre */
+.erreur__illustration img { width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; }
+.erreur__texte { display: flex; flex-direction: column; gap: 16px; max-width: 560px; }
+.erreur__texte .bouton { margin-top: 8px; }
+@media (min-width: 1024px) {
+  .erreur { flex-direction: row-reverse; align-items: center; justify-content: center; gap: 48px; min-height: calc(100vh - 72px - 320px); padding: 48px var(--marge); }
+  .erreur__illustration { flex: 0 1 640px; padding: 0; }
+  .erreur__texte { padding: 0; }
+}

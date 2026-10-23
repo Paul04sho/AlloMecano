@@ -1,0 +1,114 @@
+/* C5c · Appel intégré, côté client (Figma 269:1820 ça sonne · 269:1866 en ligne · 270:1846 ne répond pas · 270:1905 terminé).
+   Composants : anneau de l'appel, commande, état de l'appel. Page sombre plein écran, ou page claire avec barre. */
+
+/* ---------- Pages ---------- */
+.page-appel--sonne { background: var(--bitume); }
+.appel { max-width: 430px; margin-inline: auto; min-height: 100dvh; }
+.appel--sombre { position: relative; display: flex; flex-direction: column; padding: var(--esp-24) var(--marge); background: var(--bitume); color: var(--beton); }
+.appel--clair { display: flex; flex-direction: column; background: var(--surface); color: var(--encre); }
+
+/* En-tête (269:1821) : viseur + « APPEL ALLOMÉCANO · GRATUIT PAR INTERNET » */
+.appel__entete { display: flex; align-items: center; gap: 10px; align-self: center; margin-inline: -6px; color: var(--gris-voyant); } /* 269:1821 : 10,5 px du bord */
+.appel__entete .icone { fill: none; }
+
+/* ---------- Anneau (269:1827 à 269:1831 · 269:1873) ---------- */
+.anneau-appel { position: relative; flex: none; width: 300px; height: 252px; margin: calc(var(--esp-48) + var(--esp-4) + 2px) auto 0; max-width: 100%; }
+.anneau-appel > * { position: absolute; left: 50%; top: 150px; border-radius: 50%; transform: translate(-50%, -50%); }
+.anneau-appel__radar { border: 1px dashed color-mix(in srgb, var(--beton) 32%, transparent); }
+.anneau-appel__radar--grand { width: 300px; height: 300px; }
+.anneau-appel__radar--petit { width: 224px; height: 224px; }
+.anneau-appel__voyant { width: 188px; height: 188px; box-shadow: 0 0 0 3px var(--balise) inset; }
+.anneau-appel__ligne { display: none; width: 164px; height: 164px; box-shadow: 0 0 0 3px var(--beton) inset; }
+.anneau-appel__portrait { width: 144px; height: 144px; object-fit: cover; }
+.anneau-appel__poincon { left: calc(50% + 36px); top: calc(150px + 30px); width: 40px; height: 46px; border-radius: 0; transform: none; }
+.anneau-appel[data-phase="ligne"] .anneau-appel__radar, .anneau-appel[data-phase="ligne"] .anneau-appel__voyant { display: none; }
+.anneau-appel[data-phase="ligne"] .anneau-appel__ligne { display: block; }
+/* Le radar bat : un anneau grandit puis s'efface, deux fois par seconde et demie (même cadence que C4b) */
+.anneau-appel[data-phase="sonne"] .anneau-appel__radar--grand { animation: appel-radar 2400ms var(--ease-radar) infinite; }
+.anneau-appel[data-phase="sonne"] .anneau-appel__radar--petit { animation: appel-radar 2400ms var(--ease-radar) 800ms infinite; }
+@keyframes appel-radar { from { opacity: .9; transform: translate(-50%, -50%) scale(.75); } to { opacity: 0; transform: translate(-50%, -50%) scale(1.05); } }
+
+/* ---------- Identité (269:1834) ---------- */
+.appel__identite { display: flex; flex-direction: column; align-items: center; gap: var(--esp-8); margin-bottom: var(--esp-32); text-align: center; }
+.appel__identite > * { margin: 0; }
+.appel__nom { font-family: var(--police-marque); font-stretch: 75%; font-weight: 800; font-size: 40px; line-height: 40px; letter-spacing: -.01em; } /* Display/L mobile : fixe aussi sur desktop */
+.appel__metier { color: var(--gris-voyant); }
+.appel__etat { padding-top: var(--esp-8); }
+.etat-appel { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 0; }
+.etat-appel--ligne { align-items: baseline; }
+.etat-appel--ligne .t-etiquette { color: var(--gris-voyant); }
+.appel__chrono { font-family: var(--police-marque); font-stretch: 75%; font-weight: 900; font-size: 32px; line-height: 32px; letter-spacing: -.005em; font-variant-numeric: tabular-nums lining-nums; color: var(--beton); }
+[data-phase-ligne][hidden], [data-phase-sonne][hidden] { display: none; }
+.etat-appel--encre { color: var(--encre); }
+
+/* ---------- Ce que Koffi voit (269:1845 · panneau coupé M) ---------- */
+.appel__voit {
+  display: flex; flex-direction: column; gap: 6px; margin-top: auto; padding: calc(var(--esp-16) + 2px) var(--esp-16) var(--esp-16);
+  background: var(--panneau); clip-path: polygon(var(--coupe-m) 0, 100% 0, 100% 100%, 0 100%, 0 calc(var(--coupe-m) * .577));
+}
+.appel__voit > p { margin: 0; }
+.appel__voit .t-donnee { color: var(--gris-voyant); }
+
+/* ---------- Commandes (269:1848) ---------- */
+.appel__commandes { display: flex; gap: 10px; margin-top: var(--esp-16); }
+.commande-appel {
+  flex: 1 1 0; min-width: 0; height: 88px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--esp-8);
+  background: var(--panneau); color: var(--beton); border: 0; border-radius: var(--rayon); cursor: pointer; transition: background-color var(--t-etat) linear, color var(--t-etat) linear;
+}
+.commande-appel .icone { fill: none; }
+.commande-appel--active { background: var(--beton); color: var(--bitume); }
+.commande-appel:disabled { opacity: .55; cursor: not-allowed; }
+.commande-appel:focus-visible { outline: 3px solid var(--beton); outline-offset: 3px; }
+.appel__raccrocher { margin-top: var(--esp-12); }
+
+/* ---------- Pages claires : barre (270:1847) + contenu ---------- */
+.appel__barre { display: flex; align-items: center; gap: var(--esp-4); height: 56px; padding: 0 var(--marge) 0 var(--esp-4); }
+.appel__barre > p { margin: 0; }
+.appel__contenu { display: flex; flex-direction: column; align-items: flex-start; gap: var(--esp-16); padding: var(--esp-20) var(--marge) var(--esp-32); }
+.appel__contenu > * { margin: 0; }
+.appel__titre:focus-visible { outline: none; }
+.appel__lien { margin-top: var(--esp-4); }
+.appel__plus-tard { display: inline-flex; align-items: center; min-height: 44px; }
+
+/* « Koffi ne répond pas » : le suivant (270:1859), le numéro de secours (270:1892) */
+.appel-suivant { align-self: stretch; display: flex; flex-direction: column; gap: 14px; padding-block: var(--esp-16); border-bottom: 1px solid var(--filet); }
+.appel-suivant__ligne { display: flex; align-items: flex-start; gap: var(--esp-12); }
+.appel-suivant__borne { flex: none; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.appel-suivant__texte { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--esp-4); }
+.appel-suivant__texte > p { margin: 0; }
+.appel-suivant__nom { color: var(--encre); text-decoration: none; }
+.appel-suivant__portrait { flex: none; width: 80px; height: 100px; object-fit: cover; clip-path: polygon(var(--coupe-m) 0, 100% 0, 100% 100%, 0 100%, 0 calc(var(--coupe-m) * .577)); }
+.appel-suivant__actions { display: flex; gap: 10px; }
+.appel-suivant__actions .formulaire-contact { display: block; }
+.appel-suivant__actions .formulaire-contact:first-child { flex: 1; min-width: 0; }
+.appel-suivant__actions .bouton { width: 100%; gap: 10px; padding-inline: var(--esp-12); white-space: nowrap; }
+.appel-suivant__actions .formulaire-contact:last-child .bouton { width: auto; }
+.appel-secours { align-self: stretch; display: flex; flex-direction: column; gap: var(--esp-8); }
+.appel-secours > p { margin: 0; }
+.appel-secours .bouton { white-space: nowrap; }
+
+/* « Koffi vous dit s'il vient » : qui (270:1912), réponses (270:1928) */
+.appel__qui { display: flex; align-items: center; gap: 14px; }
+.appel__qui > div > p { margin: 0; }
+.appel__qui .retour__portrait { margin-bottom: 0; width: 72px; height: 72px; }
+.appel__qui .retour__portrait .poincon { left: 52px; top: 50px; }
+.appel__reponses { align-self: stretch; display: flex; flex-direction: column; gap: var(--esp-12); padding-top: var(--esp-20); border-top: 1px solid var(--filet); }
+.appel__reponses > p { margin: 0; }
+.reponse-retour--compacte { min-height: 60px; padding-block: 0; padding-inline: var(--esp-16); box-shadow: inset 0 0 0 2px var(--encre); }
+
+/* Outil de développement (mécano de test) */
+.dev-mecano { max-width: 520px; margin: 0 auto; padding: var(--esp-24) var(--marge) var(--esp-48); display: flex; flex-direction: column; gap: var(--esp-16); }
+.dev-mecano > * { margin: 0; }
+.dev-mecano__appel { padding: var(--esp-16); background: var(--surface-creuse); display: flex; flex-direction: column; gap: var(--esp-12); }
+.dev-mecano__appel > * { margin: 0; }
+.dev-mecano__boutons { display: flex; flex-wrap: wrap; gap: var(--esp-8); }
+.dev-mecano pre { white-space: pre-wrap; word-break: break-all; font-size: 12px; max-height: 160px; overflow: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .anneau-appel[data-phase="sonne"] .anneau-appel__radar { animation: none; opacity: .5; }
+  .commande-appel { transition: none; }
+}
+
+/* /systeme : la page sombre de l'appel n'occupe pas tout l'écran */
+.systeme__appel-sombre { min-height: 0; padding-bottom: var(--esp-24); }
+.systeme__appel-sombre .anneau-appel { margin-top: 0; }

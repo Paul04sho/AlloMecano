@@ -1,0 +1,26 @@
+# Configuration locale et secrets
+.env
+
+# Dépendances
+/vendor/
+
+# Données privées (pièces d'identité, signalements, originaux) et journaux
+/storage/*/*
+!/storage/*/.gitkeep
+
+# Photos publiques générées
+/public/medias/*
+!/public/medias/.gitkeep
+
+# Assets construits pour la production
+/public/assets/build/
+
+# Fond de carte (fichier lourd, déployé à part)
+/public/assets/carte/*.pmtiles
+
+# Outils
+.phpunit.cache/
+.DS_Store
+.idea/
+.vscode/
+__pycache__/

@@ -1,0 +1,144 @@
+/* C4b · Chargement (73:942), C4 · Résultats (60:196 · 185:1669), C4c · Aucun (75:1070), D1 · desktop (156:274).
+   Mobile : carte plein écran, barre flottante, feuille basse à 3 crans. Desktop : colonne liste de 440 + carte. */
+
+.page-carte { overflow: hidden; }
+.resultats { position: fixed; inset: 0; overflow: hidden; background: var(--carte-sol); }
+.resultats__carte { position: absolute; inset: 0; }
+.resultats__carte > .carte { position: absolute; inset: 0; }
+
+/* ---------- Barre flottante (60:341) ---------- */
+.barre-flottante { position: absolute; z-index: 700; top: calc(var(--esp-48) + var(--esp-4) + env(safe-area-inset-top)); left: var(--marge); right: var(--marge); display: flex; gap: var(--esp-8); pointer-events: none; }
+.barre-flottante > * { pointer-events: auto; }
+.barre-flottante__resume {
+  display: flex; align-items: center; gap: var(--esp-8); min-width: 0; height: 48px; padding: 0 calc(var(--esp-12) + 2px) 0 var(--esp-12);
+  background: var(--surface-elevee); box-shadow: inset 0 0 0 1.5px var(--encre); border-radius: var(--rayon);
+  color: var(--encre); text-decoration: none; font-weight: 700; font-size: 15px; line-height: 20px;
+}
+.barre-flottante__resume span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ---------- Feuille basse (cran 56 %, 60:352) : surface coupée L, Ombre/feuille ---------- */
+.feuille {
+  position: absolute; z-index: 800; left: 0; right: 0; bottom: 0; height: var(--feuille-h, 56dvh);
+  filter: drop-shadow(var(--ombre-feuille)); transition: height var(--t-entree) var(--ease-sortie);
+}
+.feuille.glisse { transition: none; }
+.resultats--aucun .feuille { --feuille-h: 62dvh; } /* cran 60 % (75:1201) */
+.feuille__interieur {
+  display: flex; flex-direction: column; gap: var(--esp-12); height: 100%; overflow-y: auto; overscroll-behavior: contain;
+  padding: calc(var(--esp-8) + 2px) var(--marge) calc(var(--esp-24) + env(safe-area-inset-bottom));
+  scrollbar-width: none; /* barre de défilement en surimpression sur téléphone : elle ne mange pas la largeur */
+}
+.feuille__poignee { flex: none; position: relative; width: 40px; height: 4px; padding: 0; border: 0; border-radius: 2px; background: var(--encre); cursor: grab; touch-action: none; }
+.feuille__poignee::before { content: ""; position: absolute; inset: -20px -16px; } /* zone tactile 44 */
+
+.resultats__titre { display: flex; align-items: center; gap: var(--esp-12); }
+.resultats__titre h1 { flex: 1; min-width: 0; }
+.resultats__vue { flex: none; width: 132px; }
+.resultats__vue button { flex: 1; justify-content: center; min-height: 40px; padding: 0; }
+
+.resultats__liste { margin: 0; padding: 0; list-style: none; }
+.resultats__mecano:not(.choisi) .resultats__etendue, .resultats__mecano.choisi .resultats__compacte { display: none; }
+.resultats__mecano[hidden] { display: none; }
+.resultats__elargir { display: flex; flex-direction: column; gap: var(--esp-4); }
+.resultats__elargir-lien { align-self: flex-start; padding: 0; border: 0; background: none; color: var(--encre); font-size: 15px; line-height: 20px; cursor: pointer; text-decoration-thickness: from-font; text-underline-offset: 3px; }
+.resultats__vide { padding: var(--esp-16) 0; }
+
+/* Changement de mécano : la ligne étendue sort de 12 px à gauche, la nouvelle entre de la droite (120 + 200 ms) */
+@keyframes etendue-sort { to { opacity: 0; transform: translateX(-12px); } }
+@keyframes etendue-entre { from { opacity: 0; transform: translateX(12px); } }
+.resultats__etendue.entre { animation: etendue-entre 200ms var(--ease-sortie) both; }
+
+/* Moment 4 · Les repères se plantent (320 ms, +70 ms par repère, ease-pose) */
+.repere-pose { animation: repere-pose var(--t-lieu) var(--ease-pose) both; animation-delay: calc(var(--i, 0) * 70ms); }
+@keyframes repere-pose { from { opacity: 0; transform: translateY(-16px) scale(.9); } }
+.leaflet-marker-icon.repere-icone { background: none; border: 0; overflow: visible; }
+.leaflet-marker-icon.repere-icone .repere { transform-origin: 50% 100%; }
+.repere-icone button { display: block; padding: 0; border: 0; background: none; cursor: pointer; }
+.repere-icone button:focus-visible { outline: 3px solid var(--encre); outline-offset: 3px; }
+/* Repère choisi : 36 → 56 px, puis visage en fondu */
+.repere--selectionne { animation: repere-choisi 220ms var(--ease-sortie) both; }
+.repere--selectionne .repere__visage { animation: fondu 120ms linear 220ms both; }
+@keyframes repere-choisi { from { transform: scale(.64); } }
+@keyframes fondu { from { opacity: 0; } }
+
+/* ---------- C4b · Radar (73:1061) ---------- */
+.radar { position: absolute; z-index: 450; width: 300px; height: 300px; margin: -150px 0 0 -150px; pointer-events: none; }
+.radar__anneau { position: absolute; border-radius: 50%; border: 1.5px dashed color-mix(in srgb, var(--encre) 40%, transparent); animation: radar-anneau var(--t-lieu) var(--ease-sortie) both; }
+.radar__anneau--grand { inset: 0; }
+.radar__anneau--petit { inset: 52px; }
+.radar__balayage { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 300deg, transparent 0deg, color-mix(in srgb, var(--bitume) 10%, transparent) 60deg, transparent 60.5deg); animation: radar-tour 2400ms linear infinite; }
+.radar__balayage::after { content: ""; position: absolute; left: 50%; top: 0; width: 1.5px; height: 50%; margin-left: -.75px; background: color-mix(in srgb, var(--encre) 40%, transparent); }
+.radar.arrete .radar__balayage { animation-play-state: paused; }
+@keyframes radar-anneau { from { opacity: 0; transform: scale(.8); } }
+@keyframes radar-tour { to { transform: rotate(360deg); } }
+.recherche__entete { display: flex; flex-direction: column; gap: var(--esp-8); padding-top: var(--esp-4); }
+.recherche__titre { display: block; }
+/* Voyant sur bitume, clignote à 1 Hz (199:1984) */
+.recherche__voyant { display: inline-block; vertical-align: -2px; margin-left: calc(var(--esp-8) + 2px); position: relative; width: 20px; height: 20px; border-radius: var(--rayon); background: var(--bitume); }
+.recherche__voyant::after { content: ""; position: absolute; inset: 5px; border-radius: 50%; background: var(--balise); animation: clignotant 1s steps(2, jump-none) infinite; }
+
+/* ---------- C4c · Aucun mécano disponible ---------- */
+.aucun { display: flex; flex-direction: column; gap: var(--esp-12); padding-top: var(--esp-4); }
+.aucun__actions { display: flex; flex-direction: column; gap: var(--esp-12); padding: var(--esp-8) 0 var(--esp-4); }
+/* 75:1210 : « Changer de commune ou de panne » sur une ligne dès 390 (le libellé de Figma déborde ses propres marges de 24) */
+@media (min-width: 390px) { .aucun__actions .bouton { gap: var(--esp-8); padding-inline: var(--esp-8); white-space: nowrap; } }
+.aucun__numeros { display: flex; gap: var(--esp-8); margin-top: calc(var(--esp-8) + 2px); }
+.aucun__numeros a { display: flex; flex-direction: column; gap: 2px; min-width: 64px; min-height: 56px; padding: calc(var(--esp-4) + 2px) var(--esp-8) calc(var(--esp-4) + 2px) 0; color: var(--encre); text-decoration: none; }
+.aucun__numero { font-family: var(--police-marque); font-stretch: 75%; font-weight: 900; font-size: 28px; line-height: 28px; letter-spacing: -.005em; text-decoration: underline; text-decoration-thickness: from-font; }
+.aucun__numeros .t-etiquette { color: var(--encre-2); }
+.aucun .note > div { display: block; }
+
+/* ---------- Désactivé pendant le chargement ou si les animations sont réduites ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .radar__balayage, .vous-etes-ici__radar { animation: none !important; }
+}
+
+/* =====================================================================
+   D1 · desktop : barre 64 avec résumé modifiable, colonne liste 440, carte jusqu'au bord droit
+   ===================================================================== */
+@media (min-width: 1024px) {
+  .resultats { display: grid; grid-template-columns: 440px minmax(0, 1fr); grid-template-rows: 64px minmax(0, 1fr); background: var(--surface); }
+  .barre--resultats { grid-column: 1 / -1; position: relative; z-index: 900; height: 64px; justify-content: flex-start; gap: var(--esp-40); padding: 0 var(--esp-32) 0 var(--esp-24); }
+  .barre--resultats .barre__liens { margin-left: auto; }
+  .barre--resultats .barre__pro--lien { min-width: 0; height: auto; padding: 0; box-shadow: none; font-family: var(--police-texte); font-weight: 700; font-size: 17px; line-height: 26px; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+  .resultats__carte { position: relative; grid-column: 2; grid-row: 2; }
+  .feuille { position: static; grid-column: 1; grid-row: 2; height: auto; filter: none; border-right: 1px solid var(--filet); background: var(--surface); }
+  .feuille .panneau__interieur { clip-path: none; }
+  .feuille__interieur { gap: 0; padding: var(--esp-24); scrollbar-width: thin; }
+  .feuille__interieur > .t-etiquette + .resultats__titre { margin-top: var(--esp-12); }
+  .resultats__filtres { display: flex; gap: var(--esp-8); margin: var(--esp-16) 0 var(--esp-12); }
+  .resultats__elargir { margin-top: var(--esp-16); }
+  .resultats__elargir-lien { font-size: 17px; line-height: 26px; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+  .aucun { max-width: 391px; }
+  .recherche__entete + .recherche__squelettes { margin-top: var(--esp-12); }
+}
+
+/* ---------- Résumé modifiable sur place (156:565) ---------- */
+.resume { display: flex; align-items: stretch; height: 44px; border-radius: var(--rayon); box-shadow: inset 0 0 0 1.5px var(--encre); }
+.resume__item { position: relative; display: flex; }
+.resume__segment {
+  display: flex; align-items: center; gap: var(--esp-8); height: 44px; padding: 0 var(--esp-12) 0 calc(var(--esp-12) + 2px); border: 0; background: none;
+  color: var(--encre); text-decoration: none; font-weight: 700; font-size: 15px; line-height: 18px; white-space: nowrap; cursor: pointer;
+}
+.resume > * + *, .resume__item + .resume__item { box-shadow: inset 1.5px 0 0 var(--encre); }
+.resume__segment .icone { width: 20px; height: 20px; }
+.resume__segment .voyant-bord { width: 20px; height: 20px; }
+.resume__segment .voyant-bord__eteint { width: 20px; height: 20px; color: var(--encre); }
+.resume__crayon { width: 16px !important; height: 16px !important; color: var(--encre-2); }
+.resume__segment[aria-expanded="true"] { background: var(--surface-creuse); }
+.resume__panneau { position: absolute; z-index: 950; top: calc(100% + var(--esp-8)); left: 0; display: flex; flex-direction: column; gap: var(--esp-16); width: 390px; padding: var(--esp-16); background: var(--surface-elevee); border-radius: var(--rayon); box-shadow: inset 0 0 0 1.5px var(--encre); }
+.resume__panneau[hidden] { display: none; }
+
+/* ---------- Contrôles de carte (156:417) ---------- */
+.carte-controles { position: absolute; z-index: 700; top: var(--esp-16); right: var(--esp-16); display: flex; flex-direction: column; gap: var(--esp-8); }
+.carte-controles button { display: grid; place-items: center; width: 48px; height: 48px; padding: 0; border: 0; background: var(--surface-elevee); color: var(--encre); box-shadow: inset 0 0 0 1px var(--encre); border-radius: var(--rayon); cursor: pointer; }
+.carte-controles__zoom { display: flex; flex-direction: column; }
+.carte-controles__zoom button + button { margin-top: -1px; }
+
+/* ---------- Filtres légers (156:435) : étiquettes de choix de 40 ---------- */
+.etiquette-choix--40 span, .etiquette-choix--menu select { height: 40px; }
+.etiquette-choix--menu select {
+  appearance: none; padding: 0 var(--esp-12); border: 0; border-radius: var(--rayon); background: transparent; box-shadow: inset 0 0 0 1.5px var(--encre);
+  color: var(--encre); font-family: var(--police-marque); font-stretch: 100%; font-weight: 700; font-size: 15px; cursor: pointer;
+}
+.etiquette-choix--menu select:focus-visible { outline: 3px solid var(--encre); outline-offset: 3px; }

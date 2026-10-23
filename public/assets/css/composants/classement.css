@@ -1,0 +1,107 @@
+/* Classement : repère carte S1 (49:32), ligne de classement compacte (54:251), ligne commune (56:734). */
+
+/* ---------- Repère carte : écrou-repère bitume, ancre = pointe ---------- */
+.repere { position: relative; display: inline-block; flex: none; width: var(--l); line-height: 0; }
+.repere__ecrou { display: block; width: var(--l); height: auto; overflow: visible; }
+.repere__ecrou path { fill: var(--bitume); }
+.repere__ecrou circle { fill: var(--beton); }
+/* Numéroté et sélectionné : liseré béton 2 px à l'extérieur + Ombre/repère */
+.repere--numerote .repere__ecrou, .repere--selectionne .repere__ecrou { filter: drop-shadow(var(--ombre-repere)); }
+.repere--numerote path, .repere--selectionne path { stroke: var(--beton); stroke-width: 4px; paint-order: stroke; vector-effect: non-scaling-stroke; }
+/* Rang : liseré béton 1,5 px, invisible sur la surface claire (béton = surface), il détache l'écrou sur la surface sombre (185:1669) */
+.repere--rang path { stroke: var(--beton); stroke-width: 1.5px; vector-effect: non-scaling-stroke; }
+.repere__rang {
+  position: absolute; left: 0; right: 0; top: calc(var(--l) * 16.17 / 28); transform: translateY(-50%);
+  font-family: var(--police-marque); font-stretch: 100%; font-weight: 900; font-size: 12px; line-height: 1;
+  color: var(--bitume); text-align: center; font-variant-numeric: lining-nums tabular-nums;
+}
+.repere--numerote .repere__rang { font-size: 14px; }
+.repere__visage { position: absolute; left: calc(50% - 19px); top: calc(var(--l) * 16.17 / 28 - 19px); width: 38px; height: 38px; border-radius: 50%; object-fit: cover; }
+.repere__etiquette {
+  position: absolute; top: calc(100% + var(--esp-8)); left: 50%; transform: translateX(-50%);
+  padding: var(--esp-4) var(--esp-8); background: var(--bitume); color: var(--beton); white-space: nowrap; line-height: 18px;
+}
+
+/* ---------- Ligne de classement compacte ---------- */
+.ligne-classement {
+  display: flex; align-items: center; gap: var(--esp-12);
+  padding: var(--esp-12) var(--esp-4) var(--esp-12) 0;
+  border-bottom: 1px solid var(--filet);
+  color: var(--encre); text-decoration: none;
+  transition: background-color var(--t-etat) linear;
+}
+a.ligne-classement:hover, a.ligne-classement:active { background: var(--surface-creuse); }
+.ligne-classement__borne { display: flex; flex-direction: column; align-items: center; gap: var(--esp-4); flex: none; width: 72px; }
+.ligne-classement__borne .borne--l .borne__valeur { font-size: 28px; line-height: 28px; } /* Borne/L mobile, même sur desktop (Figma 154:146) */
+.ligne-classement__portrait { position: relative; flex: none; width: 52px; height: 52px; }
+.ligne-classement__portrait img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; }
+.ligne-classement__portrait .poincon { position: absolute; left: 36px; top: 34px; }
+.ligne-classement__texte { display: flex; flex: 1; flex-direction: column; gap: 2px; min-width: 0; }
+.ligne-classement__texte > * { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ligne-classement__nom { font-size: 19px; line-height: 24px; } /* Titre/3 mobile, même sur desktop */
+.ligne-classement__specialites { color: var(--encre-2); }
+.ligne-classement__specialites b { color: var(--encre); }
+.ligne-classement__meta { font-size: 14px; line-height: 20px; }
+.ligne-classement__chevron { width: 20px; height: 20px; color: var(--encre); }
+
+/* Poinçon posé sur une photo : bitume, coche béton, liseré béton 2 px */
+.poincon--photo { color: var(--bitume); --coche: var(--beton); }
+.poincon--photo .poincon__ecrou { stroke: var(--beton); stroke-width: 4px; paint-order: stroke; vector-effect: non-scaling-stroke; }
+
+/* ---------- Ligne commune : 52, commune Archivo 700/18, nombre en Borne/L ---------- */
+.ligne-commune {
+  display: flex; align-items: center; gap: var(--esp-12); height: 52px;
+  border-bottom: 1px solid var(--filet); color: var(--encre); text-decoration: none;
+}
+.ligne-commune__nom { flex: 1; min-width: 0; font-family: var(--police-marque); font-stretch: 100%; font-weight: 700; font-size: 18px; line-height: normal; }
+a.ligne-commune:hover .ligne-commune__nom { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.ligne-commune__nombre { display: flex; align-items: baseline; gap: var(--esp-4); white-space: nowrap; }
+.ligne-commune__nombre .t-borne-l { font-size: 28px; line-height: 28px; } /* Borne/L mobile, même sur desktop (Figma 154:297) */
+.ligne-commune__nombre .t-etiquette, .ligne-commune__statut { color: var(--encre-2); white-space: nowrap; }
+.ligne-commune__chevron { width: 20px; height: 20px; color: var(--encre); }
+.ligne-commune--bientot .ligne-commune__nom, .ligne-commune--bientot .ligne-commune__chevron { color: var(--encre-2); }
+
+/* ---------- Ligne étendue (54:218) : la plus proche, ou choisie sur la carte ---------- */
+.ligne-classement--etendue { flex-direction: column; align-items: stretch; gap: var(--esp-12); padding: var(--esp-12) 0 var(--esp-16); }
+.ligne-classement__ligne1 { display: flex; align-items: flex-start; gap: var(--esp-12); }
+.ligne-classement--etendue .ligne-classement__borne { gap: calc(var(--esp-4) + 2px); }
+.ligne-classement--etendue .borne--xl .borne__valeur { font-size: 44px; line-height: 44px; } /* Borne/XL mobile, même sur desktop (D1) */
+.ligne-classement--etendue .ligne-classement__texte { gap: 3px; }
+.ligne-classement--etendue .ligne-classement__texte > *, .ligne-classement__lien > * { white-space: normal; }
+.ligne-classement__lien { display: flex; flex-direction: column; gap: 3px; color: inherit; text-decoration: none; }
+.ligne-classement__lien:hover .ligne-classement__nom { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.ligne-classement__rubrique { color: var(--encre-2); }
+.ligne-classement__portrait45 { flex: none; width: 80px; height: 100px; object-fit: cover;
+  clip-path: polygon(var(--coupe-m) 0, 100% 0, 100% 100%, 0 100%, 0 calc(var(--coupe-m) * .577)); } /* portrait 4:5 coupe M */
+.ligne-classement__actions { display: flex; gap: var(--esp-8); }
+/* 54:235 : Appeler remplit, WhatsApp 140 au moins (son libellé de 18 ne tient qu'avec des marges de 8) ; écart icône-libellé 10 */
+.ligne-classement__actions form:first-child { flex: 1; min-width: 0; }
+.ligne-classement__actions .bouton { width: 100%; gap: 10px; padding-inline: var(--esp-16); }
+.ligne-classement__actions form:last-child .bouton { width: auto; min-width: 140px; padding-inline: var(--esp-8); }
+
+/* ---------- Autre rive (RG-R9) : étiquette contour Mono 11 ---------- */
+.ligne-classement__rive {
+  align-self: flex-start; padding: 2px calc(var(--esp-4) + 2px); border-radius: var(--rayon); box-shadow: inset 0 0 0 1px var(--encre);
+  font-family: var(--police-donnee); font-weight: 500; font-size: 11px; line-height: 18px; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap;
+}
+
+/* ---------- Squelette (C4b) : même géométrie, surface creuse, statique ---------- */
+.ligne-classement--squelette { height: 96px; padding: var(--esp-12) 0; }
+.ligne-classement--squelette .ligne-classement__borne { gap: var(--esp-8); }
+.ligne-classement--squelette .ligne-classement__texte { gap: calc(var(--esp-8) + 2px); }
+.squelette { display: block; flex: none; max-width: 100%; border-radius: var(--rayon); background: var(--surface-creuse); }
+.squelette--rond { border-radius: 50%; }
+
+/* ---------- Vous êtes ici (49:130) : disque bitume, liseré béton, voyant jaune ---------- */
+.vous-etes-ici { position: relative; display: block; width: 24px; height: 24px; }
+.vous-etes-ici svg { position: relative; display: block; overflow: visible; }
+.vous-etes-ici__disque { fill: var(--bitume); stroke: var(--beton); stroke-width: 2.4; }
+.vous-etes-ici__voyant { fill: var(--balise); }
+.vous-etes-ici__radar { position: absolute; inset: 0; border-radius: 50%; background: color-mix(in srgb, var(--balise) 25%, transparent); opacity: 0; }
+.vous-etes-ici--recherche .vous-etes-ici__radar { animation: vous-radar 1600ms var(--ease-radar) infinite; } /* Moment 1 · le voyant cherche */
+@keyframes vous-radar { from { opacity: .45; transform: scale(1); } to { opacity: 0; transform: scale(3); } }
+
+/* Prénom trop long pour la largeur (« Appeler Seydou » à 360) : WhatsApp passe en icône seule, son libellé reste lu */
+.ligne-classement__actions--compactes form:last-child .bouton { width: 56px; min-width: 56px; padding: 0; }
+.ligne-classement__actions--compactes form:last-child .bouton__libelle { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.ligne-classement__actions .bouton__libelle { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

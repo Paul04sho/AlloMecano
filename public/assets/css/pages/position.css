@@ -1,0 +1,74 @@
+/* C2a · Localisation GPS (66:437 · 198:1963), confirmation (67:462), C2b · Commune, quartier, repère (68:604).
+   Écrans dessinés en mobile ; sur desktop, la même colonne centrée (560 au plus) sous la barre desktop. */
+
+/* Parcours : la barre de parcours remplace la barre client sur mobile */
+@media (max-width: 1023.98px) { .page-parcours .barre { display: none; } }
+html.js .js-seul[hidden], html:not(.js) .js-seul { display: none !important; }
+
+.parcours-page { display: flex; flex-direction: column; min-height: 100dvh; }
+.parcours-page__contenu { display: flex; flex-direction: column; padding: var(--esp-24) var(--marge) var(--esp-32); }
+.parcours-page__actions {
+  display: flex; flex-direction: column; gap: var(--esp-12); margin-top: auto;
+  padding: var(--esp-16) var(--marge) calc(var(--esp-24) + env(safe-area-inset-bottom));
+}
+
+/* ---------- C2a · Où êtes-vous ? ---------- */
+.position-gps__figure { position: relative; height: 152px; margin-top: calc(var(--esp-40) + var(--esp-4)); }
+.position-gps__figure::after { /* Marquage S8, tirets 20 / 12, filet */
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px;
+  background: repeating-linear-gradient(90deg, var(--filet) 0 20px, transparent 0 32px); background-position-x: -10px;
+}
+.position-gps__figure .ecrou-repere { position: absolute; left: 50%; bottom: 4px; transform: translateX(-50%); }
+/* Moment 2 · On vous a trouvé : halo unique centré sur le trou (6,66 + 55,43 depuis le haut de l'écrou) */
+.position-gps__halo { position: absolute; left: calc(50% - 21px); top: calc(152px - 4px - 141.335px + 55.43px - 21px); width: 42px; height: 42px; border-radius: 50%; background: var(--balise); opacity: 0; }
+.position-gps .t-base { margin-top: var(--esp-32); }
+.position-gps__aide, .position-gps__precision { margin-top: var(--esp-16); }
+.position-gps__precision { text-transform: uppercase; }
+.position-gps__note { margin-top: var(--esp-16); }
+
+/* ---------- C2a · Confirmation ---------- */
+.confirmer { --decalage-repere: -13px; position: fixed; inset: 0; display: flex; flex-direction: column; background: var(--surface); }
+.confirmer > .parcours { position: relative; z-index: 3; flex: none; }
+.confirmer__carte { position: relative; z-index: 1; isolation: isolate; flex: 1; min-height: 240px; } /* les volets Leaflet (z 400+) restent dedans */
+.confirmer__carte .carte { position: absolute; inset: 0 0 -50px 0; } /* le panneau mord 50 px sur la carte */
+.confirmer__carte .carte__attribution { bottom: calc(50px + var(--esp-8)); }
+.confirmer__repere {
+  position: absolute; z-index: 600; left: 50%; top: calc(50% + 25px + var(--decalage-repere));
+  display: flex; flex-direction: column; align-items: center; gap: var(--esp-8); transform: translate(-50%, -100%); pointer-events: none;
+}
+.confirmer__ecrou { transform-origin: 50% 100%; }
+.confirmer__panneau { position: relative; z-index: 2; flex: none; }
+.confirmer__panneau .panneau__interieur { display: flex; flex-direction: column; padding-bottom: calc(var(--hauteur-socle) + var(--esp-16) + env(safe-area-inset-bottom)); }
+.confirmer__coordonnees { margin-top: var(--esp-4); }
+.confirmer__panneau .champ { margin-top: var(--esp-16); }
+.confirmer__autre { align-self: flex-start; margin-top: calc(var(--esp-12) + 2px); font-size: 17px; line-height: 26px; }
+
+/* ---------- C2b · Commune, quartier, repère ---------- */
+.position-quartier__contenu > h1 + .champ { margin-top: var(--esp-20); }
+.position-quartier__choix { display: flex; flex-direction: column; margin-top: calc(var(--esp-24) + var(--esp-4)); }
+.position-quartier__fil { display: flex; align-items: center; justify-content: space-between; gap: var(--esp-12); margin-bottom: var(--esp-12); }
+.position-quartier__fil .lien { font-size: 17px; line-height: 26px; }
+.position-quartier__choix > h2 { margin-bottom: var(--esp-8); }
+.position-quartier .lignes-choix { border-top: 0; }
+.position-quartier__vide { padding: var(--esp-16) 0; }
+.position-quartier__choix + .champ { margin-top: var(--esp-32); }
+.position-quartier .recap { margin-top: var(--esp-24); }
+.position-quartier .recap + .note, .position-quartier .champ + .note { margin-top: var(--esp-16); }
+.position-quartier__gps { align-self: center; gap: var(--esp-8); margin-top: var(--esp-24); padding: var(--esp-12) 0; }
+.position-quartier .note { margin-top: var(--esp-16); }
+
+/* Réduit : pas de transition de liste, le contenu change sur place */
+@media (prefers-reduced-motion: reduce) { .confirmer__nom { transition: none; } }
+
+/* ---------- Desktop : la colonne mobile, centrée ---------- */
+@media (min-width: 1024px) {
+  .parcours-page, .confirmer { width: 100%; max-width: 560px; min-height: 0; margin: var(--esp-32) auto var(--esp-72); }
+  .parcours-page__actions { margin-top: var(--esp-32); padding: 0 var(--marge); }
+  .parcours-page .parcours__barre, .confirmer .parcours__barre { padding-left: 0; padding-right: 0; }
+  .parcours-page .marquage, .confirmer .marquage { padding: 0; }
+  .parcours-page__contenu { padding-left: 0; padding-right: 0; }
+  .parcours-page__actions { padding: 0; }
+  .confirmer { position: static; height: auto; }
+  .confirmer__carte { flex: none; height: 490px; }
+  .confirmer__panneau .panneau__interieur { padding-left: var(--esp-24); padding-right: var(--esp-24); padding-bottom: var(--esp-24); }
+}

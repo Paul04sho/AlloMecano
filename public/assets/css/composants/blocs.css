@@ -1,0 +1,52 @@
+/* Blocs éditoriaux : photo et légende-repère S7 (49:254), spécimen CNI (56:705), urgences (58:282 · 154:401). */
+
+/* ---------- Photo ---------- */
+.photo { position: relative; margin: 0; }
+.photo img, .photo__a-produire { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* Légende à cheval sur le bord bas : 15 px dans la photo, 15 px dehors, à 16 px du bord gauche */
+.photo--legendee { padding-bottom: 15px; }
+.legende-repere {
+  position: absolute; left: var(--esp-16); bottom: 0;
+  display: inline-flex; align-items: center; height: 30px; padding: 0 var(--esp-12);
+  background: var(--bitume); color: var(--beton); white-space: nowrap;
+}
+.legende-repere::before { /* la pointe touche la photo */
+  content: ""; position: absolute; left: 11px; top: -9px; width: 11px; height: 10px;
+  background: var(--bitume); clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+/* Photo pas encore livrée (TODO-PHOTO) : emplacement neutre, étiquette « PHOTO À PRODUIRE » */
+.photo__a-produire { position: relative; background: var(--encre-2); }
+.photo__a-produire-texte {
+  position: absolute; left: var(--esp-12); right: var(--esp-12); top: calc(var(--coupe-l) * 1.1);
+  display: flex; flex-direction: column; gap: var(--esp-4); padding: var(--esp-8) calc(var(--esp-8) + 2px);
+  background: color-mix(in srgb, var(--bitume) 30%, transparent); color: var(--beton);
+}
+
+/* ---------- Spécimen CNI : dessiné à 300 × 189, mis à l'échelle par la largeur ---------- */
+.specimen-cni { display: block; width: 300px; max-width: 100%; height: auto; flex: none; }
+.specimen-cni__fond { fill: var(--surface-creuse); stroke: var(--filet); stroke-width: 1; }
+.specimen-cni__barre { fill: var(--encre-2); }
+.specimen-cni__mention { fill: var(--encre); font-family: var(--police-donnee); font-weight: 500; font-size: 34px; letter-spacing: 4.08px; }
+
+/* ---------- Urgences ---------- */
+.urgences { display: flex; flex-direction: column; gap: var(--esp-12); padding: var(--esp-32) var(--marge) var(--esp-48); background: var(--surface-creuse); }
+.urgences__numeros { display: flex; margin: 0; padding: 0; list-style: none; }
+.urgences__numeros li { flex: 1; }
+.urgences__numeros a { display: flex; flex-direction: column; gap: 2px; padding: var(--esp-8) 0; color: var(--encre); text-decoration: none; }
+.urgences__numero {
+  font-family: var(--police-marque); font-stretch: 75%; font-weight: 900; font-size: 28px; line-height: 28px; letter-spacing: -.005em;
+  text-decoration: underline; text-decoration-thickness: from-font; text-underline-position: from-font; font-variant-numeric: lining-nums tabular-nums;
+}
+.urgences__numeros .t-etiquette { color: var(--encre-2); }
+@media (min-width: 1024px) {
+  .urgences { flex-direction: row; align-items: center; justify-content: space-between; padding: var(--esp-48) var(--marge); }
+  .urgences__titre { width: 640px; }
+  .urgences__numeros { gap: var(--esp-72); }
+  .urgences__numeros li { flex: none; }
+  .urgences__numeros a { padding: 0; }
+  .urgences__numero { font-size: 36px; line-height: 36px; }
+}
+
+/* ---------- Récapitulatif (68:660) : surface creuse, filet bitume de 4 à gauche ---------- */
+.recap { display: flex; flex-direction: column; gap: calc(var(--esp-4) + 2px); padding: var(--esp-16); background: var(--surface-creuse); box-shadow: inset 4px 0 0 var(--encre); }

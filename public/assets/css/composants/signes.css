@@ -1,0 +1,77 @@
+/* Signes de la marque : voyant d'état (S2), poinçon et étiquette Vérifié (S3), statut (7.12),
+   note (7.17), toast (7.18), bande de balisage S10. */
+
+/* ---------- Voyant d'état (Figma 49:144) ---------- */
+.voyant { display: inline-block; flex: none; width: 12px; height: 12px; border-radius: 50%; }
+.voyant--disponible { background: var(--dispo); box-shadow: 0 0 0 4px color-mix(in srgb, var(--dispo) 30%, transparent); }
+.voyant--indisponible { background: transparent; box-shadow: inset 0 0 0 2px var(--gris-voyant); }
+.voyant--erreur { background: var(--erreur); }
+.voyant--recherche { width: 16px; height: 16px; background: var(--balise); box-shadow: inset 0 0 0 3px var(--bitume); animation: clignotant 1s steps(2, jump-none) infinite; }
+.sur-sombre .voyant--recherche { box-shadow: none; }
+
+/* ---------- Poinçon (Figma 49:166) : écrou bitume + coche béton ---------- */
+.poincon { display: inline-block; flex: none; color: var(--encre); --coche: var(--surface); } /* bitume en clair, béton en sombre (spec 4) */
+.poincon svg { width: 100%; height: 100%; }
+
+/* ---------- Étiquette Vérifié (Figma 49:175) : jamais verte ---------- */
+.etiquette-verifie {
+  display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 8px 0 6px;
+  background: var(--encre); color: var(--surface); border-radius: var(--rayon);
+  font-family: var(--police-donnee); font-weight: 500; font-size: 13px; letter-spacing: .04em; text-transform: uppercase;
+}
+.etiquette-verifie .poincon { width: 14px; height: 14px; color: var(--surface); --coche: var(--encre); }
+.sur-sombre .poincon { color: var(--beton); --coche: var(--bitume); }
+.etiquette-verifie--attente { background: transparent; color: var(--encre); box-shadow: inset 0 0 0 1.5px var(--encre); padding-left: 12px; position: relative; overflow: hidden; }
+.etiquette-verifie--attente::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 6px; background: var(--bande); }
+
+/* ---------- Bande de balisage S10 (hachures neutres bitume / hachure) ---------- */
+:root { --bande: repeating-linear-gradient(-60deg, var(--bitume) 0 6px, var(--hachure) 6px 12px); }
+
+/* ---------- Statut (Figma 53:406) : puces de 28, Mono/Étiquette ---------- */
+.statut {
+  display: inline-flex; align-items: center; gap: 8px; height: 28px; padding: 0 10px;
+  border-radius: var(--rayon); position: relative; overflow: hidden;
+  font-family: var(--police-donnee); font-weight: 500; font-size: 13px; letter-spacing: .04em; text-transform: uppercase;
+  white-space: nowrap;
+}
+.statut--disponible { color: var(--dispo-texte); padding-left: 0; }
+.statut--indisponible, .statut--plus-disponible { color: var(--encre-2); padding-left: 0; }
+.statut--brouillon { color: var(--encre); outline: 1.5px dashed var(--encre); outline-offset: -1.5px; }
+.statut--en-attente { color: var(--encre); box-shadow: inset 0 0 0 1.5px var(--encre); padding-left: 18px; }
+.statut--en-attente::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 8px; background: var(--bande); }
+.statut--valide { color: var(--beton); background: var(--bitume); }
+.statut--valide .poincon { width: 14px; height: 14px; color: var(--beton); --coche: var(--bitume); }
+.statut--a-reprendre, .statut--refuse { color: var(--erreur-texte); padding-left: 0; }
+.statut--suspendu { color: var(--beton); background: var(--bitume); padding-left: 14px; }
+.statut--suspendu::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--erreur); }
+
+/* ---------- Note (Figma 53:446) : icône 20, écart 10, 14 / 16 ---------- */
+.note { display: grid; grid-template-columns: 20px 1fr; gap: calc(var(--esp-8) + 2px); padding: calc(var(--esp-12) + 2px) var(--esp-16); font-size: 17px; line-height: 26px; position: relative; border-radius: var(--rayon); overflow: hidden; }
+.note > .icone { width: 20px; height: 20px; margin-top: 3px; }
+.note--info { background: var(--surface-creuse); }
+.note--securite { background: var(--surface-elevee); padding-left: var(--esp-20); }
+/* Bande S10 de la note : blocs bitume / hachure de 200 / 7 px (Figma 53:409) */
+.note--securite::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 6px; background: repeating-linear-gradient(180deg, var(--bitume) 0 calc(200px / 7), var(--hachure) 0 calc(400px / 7)); }
+.note--erreur, .note--danger { background: var(--surface-elevee); box-shadow: inset 4px 0 0 var(--erreur); color: var(--erreur-texte); padding-left: var(--esp-20); }
+.note--erreur > .icone, .note--danger > .icone { color: var(--erreur-texte); }
+/* Danger immédiat (69:1002) : texte encre en gras, bouton Contour danger de 48 dessous */
+.note--danger { color: var(--encre); font-weight: 700; padding-left: var(--esp-16); }
+.note--danger .note__actions { margin-top: calc(var(--esp-8) + 2px); }
+.note__actions { grid-column: 2; display: flex; flex-wrap: wrap; gap: var(--esp-8); margin-top: var(--esp-4); }
+.note a[href^="tel:"]:not(.bouton) { font-family: var(--police-marque); font-stretch: 75%; font-weight: 900; font-size: 28px; line-height: 28px; text-decoration: none; }
+
+/* ---------- Toast (Figma 53:447) : bitume, 56, au-dessus du socle, 4 s ---------- */
+.toasts { position: fixed; left: var(--marge); right: var(--marge); bottom: calc(var(--decalage-socle, 0px) + 16px + env(safe-area-inset-bottom)); z-index: 60; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+.toast {
+  display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 8px 8px 8px 16px;
+  background: var(--bitume); color: var(--beton); border-radius: var(--rayon); pointer-events: auto;
+  font-size: 17px; line-height: 24px;
+  animation: toast-entree 180ms var(--ease-sortie) both;
+}
+.toast > span { flex: 1; }
+.toast .icone { width: 20px; height: 20px; }
+.toast__action { min-height: 44px; padding: 0 12px; background: none; border: 0; color: var(--balise); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
+.toast.sortie { animation: toast-sortie 180ms var(--ease-sortie) both; }
+@keyframes toast-entree { from { opacity: 0; transform: translateY(16px); } }
+@keyframes toast-sortie { to { opacity: 0; transform: translateY(16px); } }
+@media (min-width: 1024px) { .toasts { left: auto; width: 420px; } }

@@ -1,0 +1,42 @@
+/* Champ (Figma 53:230 · spec 7.9) : label au-dessus, aide dessous, jamais de placeholder seul. */
+
+.champ { display: flex; flex-direction: column; gap: 8px; }
+.champ__label { font-size: 15px; line-height: 20px; font-weight: 700; }
+.champ__boite {
+  display: flex; align-items: stretch; min-height: 56px;
+  background: var(--surface-elevee);
+  border-radius: var(--rayon);
+  box-shadow: inset 0 0 0 1.5px var(--bord-champ);
+  transition: box-shadow var(--t-etat) linear;
+}
+.champ__boite:focus-within { box-shadow: inset 0 0 0 3px var(--encre); }
+.champ__saisie {
+  flex: 1; min-width: 0; padding: 0 16px; border: 0; background: transparent; outline: none;
+  font: 400 18px/26px var(--police-texte); color: var(--encre);
+}
+.champ__saisie::placeholder { color: var(--encre-2); opacity: 1; }
+textarea.champ__saisie { padding: calc(var(--esp-12) + 2px) var(--esp-16); min-height: calc(var(--lignes, 3) * 26px + 32px); resize: vertical; } /* 2 lignes = 84 (69:864) */
+.champ__prefixe {
+  display: grid; place-items: center; width: 64px; flex: none;
+  background: var(--surface-creuse); border-radius: var(--rayon) 0 0 var(--rayon);
+  font-family: var(--police-donnee); font-weight: 500; font-size: 15px;
+}
+.champ__suffixe { display: grid; place-items: center; padding: 0 16px; font-family: var(--police-donnee); font-weight: 500; font-size: 15px; color: var(--encre-2); }
+.champ__action { display: grid; place-items: center; width: 48px; background: none; border: 0; color: var(--encre); }
+.champ__aide { font-size: 15px; line-height: 22px; color: var(--encre-2); }
+.champ__compteur { font-family: var(--police-donnee); font-weight: 500; font-size: 14px; color: var(--encre-2); align-self: flex-end; }
+
+.champ--erreur .champ__boite { box-shadow: inset 0 0 0 2px var(--erreur); }
+.champ--erreur .champ__boite:focus-within { box-shadow: inset 0 0 0 3px var(--erreur); }
+.champ__message { display: flex; gap: 8px; align-items: flex-start; font-size: 15px; line-height: 22px; color: var(--erreur-texte); }
+.champ__message .icone { width: 20px; height: 20px; margin-top: 1px; }
+
+.champ--desactive .champ__boite { background: var(--surface-creuse); box-shadow: inset 0 0 0 1.5px var(--filet); }
+.champ--desactive .champ__saisie { color: var(--encre-2); }
+
+/* Règles du mot de passe qui se cochent en direct (coches bitume, jamais vertes) */
+.regles { display: flex; flex-direction: column; gap: 6px; font-size: 15px; line-height: 22px; color: var(--encre-2); }
+.regles li { display: flex; gap: 8px; align-items: center; }
+.regles li .icone { width: 18px; height: 18px; opacity: .35; }
+.regles li.ok { color: var(--encre); }
+.regles li.ok .icone { opacity: 1; }

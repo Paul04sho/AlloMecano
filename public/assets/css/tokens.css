@@ -1,0 +1,150 @@
+/* =====================================================================
+   allomécano · jetons de design
+   Source : Figma « allomécano », collections Couleurs (Clair / Sombre), Espacements, Rayons,
+   styles de texte Mobile/* et Desktop/*, styles d'ombre, page Mouvement.
+   Ne pas inventer de valeur : tout passe par ces variables.
+   ===================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* ---- Couleurs (mode Clair) ---- */
+  --surface: #f4f5f2;
+  --surface-creuse: #e6e8e3;
+  --surface-elevee: #ffffff;
+  --encre: #15171c;
+  --encre-2: #565b64;
+  --filet: #d3d6cf;
+  --bord-champ: #7c8078;
+  --hachure: #c9ccc4;
+  --balise: #ffcb05;
+  --balise-presse: #edbb00;
+  --dispo: #12965f;
+  --dispo-texte: #0e7c4f;
+  --dispo-fond: #0e7c4f;
+  --erreur: #d7322b;
+  --erreur-texte: #b8261f;
+  --socle: #15171c;
+  --inverse-fond: #15171c;
+  --inverse-texte: #f4f5f2;
+  --section-sombre: #15171c;
+  --etoile: #15171c;           /* étoiles des avis (54:674) : bitume en clair, jaune en sombre */
+  --carte-sol: #e9eae5;
+  --carte-ilot: #f7f7f4;
+  --carte-route: #ffffff;
+  --carte-eau: #cfd8da;
+
+  /* Couleurs fixes : identiques dans les deux modes */
+  --bitume: #15171c;
+  --beton: #f4f5f2;
+  --blanc: #ffffff;
+  --gris-voyant: #a3a9b1;
+  --panneau: #22252c;
+  --filet-sombre: #2e323a;
+
+  /* ---- Espacements (esp/*) ---- */
+  --esp-4: 4px;
+  --esp-8: 8px;
+  --esp-12: 12px;
+  --esp-16: 16px;
+  --esp-20: 20px;
+  --esp-24: 24px;
+  --esp-32: 32px;
+  --esp-48: 48px;
+  --esp-40: 40px;
+  --esp-56: 56px;
+  --esp-72: 72px;
+  --esp-96: 96px;
+  --esp-104: 104px;
+  --marge: 16px;               /* marge latérale mobile ; 80 desktop, 48 admin */
+
+  /* ---- Rayons ---- */
+  --rayon: 2px;                /* rayon unique */
+  --coupe-s: 8px;              /* coupe à 30° en haut à gauche (S5) */
+  --coupe-m: 16px;
+  --coupe-l: 24px;
+  --coupe-xl: 48px;
+
+  /* ---- Ombres (seulement repères de carte et feuille basse) ---- */
+  --ombre-repere: 0 2px 6px rgba(21, 23, 28, .35);
+  --ombre-feuille: 0 -8px 24px rgba(21, 23, 28, .18);
+
+  /* ---- Polices ---- */
+  --police-marque: "Archivo", "Arial Narrow", "Roboto Condensed", sans-serif-condensed, sans-serif;
+  --police-texte: "Atkinson Hyperlegible Next", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --police-donnee: "Atkinson Hyperlegible Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  /* ---- Mouvement (spec 9.1) ---- */
+  --t-micro: 80ms;
+  --t-etat: 160ms;
+  --t-entree: 240ms;
+  --t-lieu: 320ms;
+  --ease-sortie: cubic-bezier(.2, .8, .2, 1);
+  --ease-pose: cubic-bezier(.2, .9, .25, 1.15);
+  --ease-tampon: cubic-bezier(.3, 1.4, .5, 1);
+  --ease-radar: cubic-bezier(.2, .6, .3, 1);
+  --ease-entree: cubic-bezier(.7, 0, .84, 0);
+
+  /* ---- Mise en page ---- */
+  --largeur-contenu: 1280px;
+  --hauteur-barre: 56px;
+  --hauteur-socle: 80px;
+}
+
+/* ---- Mode sombre : préférence du système, sauf si l'utilisateur a choisi « clair » ---- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="clair"]) {
+    color-scheme: dark;
+    --surface: #15171c;
+    --surface-creuse: #1e2127;
+    --surface-elevee: #22252c;
+    --encre: #f4f5f2;
+    --encre-2: #a3a9b1;
+    --filet: #2e323a;
+    --bord-champ: #7a808a;
+    --hachure: #3a3e46;
+    --dispo: #3dd68c;
+    --dispo-texte: #3dd68c;
+    --erreur: #ff6b5e;
+    --erreur-texte: #ff6b5e;
+    --socle: #0d0e11;
+    --inverse-fond: #f4f5f2;
+    --inverse-texte: #15171c;
+    --section-sombre: #22252c;
+    --etoile: #ffcb05;
+    --carte-sol: #1b1e23;
+    --carte-ilot: #23262c;
+    --carte-route: #30343b;
+    --carte-eau: #1c2a30;
+  }
+}
+
+/* ---- Mode sombre choisi dans le profil (cookie « theme ») ---- */
+:root[data-theme="sombre"] {
+  color-scheme: dark;
+  --surface: #15171c;
+  --surface-creuse: #1e2127;
+  --surface-elevee: #22252c;
+  --encre: #f4f5f2;
+  --encre-2: #a3a9b1;
+  --filet: #2e323a;
+  --bord-champ: #7a808a;
+  --hachure: #3a3e46;
+  --dispo: #3dd68c;
+  --dispo-texte: #3dd68c;
+  --erreur: #ff6b5e;
+  --erreur-texte: #ff6b5e;
+  --socle: #0d0e11;
+  --inverse-fond: #f4f5f2;
+  --inverse-texte: #15171c;
+  --section-sombre: #22252c;
+  --etoile: #ffcb05;
+  --carte-sol: #1b1e23;
+  --carte-ilot: #23262c;
+  --carte-route: #30343b;
+  --carte-eau: #1c2a30;
+}
+
+@media (min-width: 1024px) {
+  :root { --marge: 80px; }
+}
