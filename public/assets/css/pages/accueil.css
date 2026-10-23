@@ -53,11 +53,18 @@
 }
 
 .accueil__hero h1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--esp-8);
   max-width: 16ch;
 }
 
-.accueil__hero h1 span {
+.accueil__hero-sous-titre {
   color: var(--encre-2);
+  font: inherit;
+  font-size: var(--esp-24);
+  line-height: 1.15;
 }
 
 .accueil__intro {
@@ -94,7 +101,7 @@
   content: "";
   position: absolute;
   inset: 0 auto 0 var(--esp-12);
-  width: 1px;
+  width: var(--rayon);
   background: var(--encre-2);
   opacity: .5;
 }
@@ -102,7 +109,8 @@
 .accueil__etape {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: minmax(0, .32fr) minmax(0, 1fr);
+  align-items: start;
   gap: var(--esp-12);
   padding-left: var(--esp-32);
 }
@@ -160,7 +168,7 @@
   height: 28%;
   background: var(--balise);
   border-radius: var(--coupe-s) var(--coupe-m) var(--rayon) var(--rayon);
-  box-shadow: inset 0 0 0 2px var(--bitume);
+  box-shadow: inset 0 0 0 var(--rayon) var(--bitume);
   transform: skewX(-10deg);
 }
 
@@ -298,7 +306,7 @@
   aspect-ratio: 4 / 3;
   padding: var(--esp-12);
   background: var(--surface);
-  box-shadow: inset 0 0 0 1px var(--filet);
+  box-shadow: inset 0 0 0 var(--rayon) var(--filet);
 }
 
 .accueil__document-photo {
@@ -329,7 +337,7 @@
   height: var(--esp-16);
   margin-top: auto;
   margin-left: auto;
-  border-bottom: 2px solid var(--encre-2);
+  border-bottom: var(--rayon) solid var(--encre-2);
   transform: skewX(-24deg);
 }
 
@@ -346,7 +354,7 @@
   align-items: center;
   gap: var(--esp-12);
   padding-block: var(--esp-8);
-  border-bottom: 1px solid var(--filet-sombre);
+  border-bottom: thin solid var(--filet-sombre);
 }
 
 .accueil__preuves .icone {
@@ -368,8 +376,8 @@
 
 .accueil__profils {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--esp-16);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--esp-8);
   margin-top: var(--esp-24);
 }
 
@@ -380,7 +388,7 @@
   gap: var(--esp-12);
   min-width: 0;
   padding-bottom: var(--esp-16);
-  border-bottom: 1px solid var(--filet);
+  border-bottom: thin solid var(--filet);
 }
 
 .accueil__portrait {
@@ -438,15 +446,10 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: flex-start;
   gap: var(--esp-4);
   min-width: 0;
   overflow-wrap: anywhere;
-}
-
-.accueil__profil-infos h3 {
-  font-size: 1rem;
-  line-height: 1.25;
 }
 
 .accueil__profil-infos .accueil__note {
@@ -477,7 +480,7 @@
   gap: var(--esp-12);
   min-height: var(--esp-48);
   padding-block: var(--esp-8);
-  border-bottom: 1px solid var(--filet);
+  border-bottom: thin solid var(--filet);
 }
 
 .accueil__commune > :first-child {
@@ -517,7 +520,7 @@
 .accueil__pros-visuel {
   overflow: hidden;
   position: relative;
-  min-height: 16rem;
+  aspect-ratio: 4 / 3;
   background: var(--surface-creuse);
 }
 
@@ -633,55 +636,15 @@
   padding-block: var(--esp-12);
   color: var(--encre);
   text-decoration: none;
-  border-top: 1px solid var(--filet);
+  border-top: thin solid var(--filet);
 }
 
 .accueil__numero strong {
-  font-size: clamp(1.75rem, 8vw, 2.75rem);
   line-height: 1;
 }
 
 .accueil__numero .t-etiquette {
   overflow-wrap: anywhere;
-}
-
-@media (min-width: 640px) {
-  .accueil__etape {
-    grid-template-columns: minmax(0, .28fr) minmax(0, 1fr);
-    align-items: start;
-    gap: var(--esp-16);
-  }
-
-  .accueil__profils {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    align-items: start;
-    gap: var(--esp-16);
-  }
-
-  .accueil__profil {
-    grid-template-columns: minmax(0, 1fr);
-    padding-bottom: 0;
-    border-bottom: 0;
-  }
-
-  .accueil__portrait {
-    aspect-ratio: 4 / 5;
-  }
-
-  .accueil__profil-infos {
-    justify-content: flex-start;
-    padding-top: var(--esp-8);
-  }
-
-  .accueil__profil-infos h3 {
-    font-size: 1.1rem;
-  }
-
-  .accueil__pros-grille {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    align-items: center;
-    gap: var(--esp-32);
-  }
 }
 
 @media (min-width: 1024px) {
@@ -746,7 +709,7 @@
   .accueil__fil::before {
     inset: var(--esp-12) 0 auto;
     width: auto;
-    height: 1px;
+    height: var(--rayon);
   }
 
   .accueil__etape {
@@ -803,7 +766,7 @@
   }
 
   .accueil__pros-visuel {
-    min-height: 24rem;
+    aspect-ratio: 4 / 3;
   }
 
   .accueil__urgence-interieur {
