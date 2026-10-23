@@ -1,0 +1,64 @@
+/* X1 · Connexion (Figma 127:69 · 128:69) et X2 · Mot de passe oublié (129:112 à 131:190). */
+
+/* ---------- X1 ---------- */
+.connexion { max-width: 560px; margin-inline: auto; }
+.connexion__photo .photo__a-produire { min-height: 160px; }
+.connexion__corps { display: flex; flex-direction: column; padding: var(--esp-16) var(--marge) var(--esp-20); }
+.connexion__corps > * { margin: 0; }
+.connexion__champs { display: flex; flex-direction: column; gap: var(--esp-12); margin-top: var(--esp-16); }
+.connexion__oublie { align-self: flex-end; display: inline-flex; align-items: center; min-height: 40px; margin-top: calc(-1 * var(--esp-12) + 0px); }
+.connexion__actions { display: flex; flex-direction: column; gap: var(--esp-8); margin-top: var(--esp-8); }
+.connexion__g { display: grid; place-items: center; width: 24px; height: 24px; border-radius: var(--rayon); box-shadow: inset 0 0 0 2px currentColor; font-family: var(--police-marque); font-weight: 800; font-size: 16px; line-height: 18px; } /* « G » provisoire : le logo officiel Google reste à intégrer (annotation Figma 128:140) */
+.connexion__inscription { display: flex; align-items: center; gap: var(--esp-8); flex-wrap: wrap; margin-top: var(--esp-16); padding-top: var(--esp-8); border-top: 1px solid var(--filet); }
+.connexion__inscription .lien-icone { min-height: 44px; }
+.connexion__egare { display: flex; flex-direction: column; gap: var(--esp-4); margin-top: var(--esp-16); padding: var(--esp-16) var(--esp-16) var(--esp-12); background: var(--surface-creuse); border-radius: var(--rayon); }
+.connexion__egare .lien-icone { min-height: 32px; }
+
+/* ---------- X2 ---------- */
+.mdp { max-width: 560px; margin-inline: auto; }
+.mdp__corps { display: flex; flex-direction: column; padding: var(--esp-24) var(--marge); }
+.mdp__corps > * { margin: 0; }
+.mdp__corps > h1 + * { margin-top: var(--esp-12); }
+.mdp__corps > h1 + p + * { margin-top: var(--esp-24); }
+.mdp__corps > .bouton { margin-top: var(--esp-24); }
+.mdp__corps > .bouton + .mdp__lien { margin-top: var(--esp-8); }
+.mdp__lien { display: inline-flex; align-items: center; align-self: flex-start; min-height: 48px; }
+.mdp__sans-email { display: flex; flex-direction: column; margin-top: var(--esp-16); padding-top: var(--esp-8); border-top: 1px solid var(--filet); }
+.mdp__sans-email > p { margin: 0; }
+.mdp__sans-email .lien-icone { min-height: 40px; }
+
+/* étape 2 : « Regardez vos e-mails. » */
+.mdp__lignes { display: flex; flex-direction: column; gap: var(--esp-4); }
+.mdp__lignes > p { margin: 0; }
+.mdp__lignes + p { margin-top: var(--esp-12); }
+.mdp__renvoi { display: flex; flex-direction: column; gap: var(--esp-8); margin-top: var(--esp-24); }
+.mdp__renvoi > p { margin: 0; }
+.mdp__renvoi > p[hidden] { display: none; }
+.mdp__renvoi + .mdp__lien { margin-top: var(--esp-8); }
+.mdp__renvoi .bouton { margin: 0; }
+.mdp__renvoi .bouton:disabled { background: var(--surface-creuse); box-shadow: inset 0 0 0 2px var(--filet); color: var(--encre-2); }
+
+/* étape 3 : les règles vivantes */
+.mdp__corps > .mdp__champ { margin-top: var(--esp-24); }
+.mdp__corps > .mdp__champ + .mdp__champ { margin-top: var(--esp-20); }
+.mdp__corps > .mdp__champ:last-of-type + .bouton, .mdp__corps > .mdp__champ + .bouton { margin-top: var(--esp-24); }
+.mdp__regles { display: flex; flex-direction: column; gap: var(--esp-8); margin: var(--esp-12) 0 0; padding: 0; list-style: none; }
+.regle-vivante { display: flex; align-items: center; gap: 10px; }
+.regle-vivante__case { display: grid; place-items: center; width: 20px; height: 20px; flex: none; border-radius: var(--rayon); box-shadow: inset 0 0 0 2px var(--encre); color: transparent; }
+.regle-vivante__case .icone { fill: none; }
+.regle-vivante--faite .regle-vivante__case { background: var(--encre); box-shadow: none; color: var(--surface); }
+@media (prefers-reduced-motion: no-preference) {
+  .regle-vivante__case { transition: background var(--t-micro) linear, color var(--t-micro) linear; }
+}
+
+/* étape 4 : « C'est fait. » */
+.mdp__corps--fait { align-items: center; padding-top: var(--esp-48); text-align: left; }
+.mdp__corps--fait > .poincon { margin-bottom: var(--esp-20); }
+.mdp__corps--fait > h1 { margin-bottom: 0; }
+.mdp__corps--fait > p { align-self: stretch; margin-top: var(--esp-12); }
+.mdp__corps--fait > .bouton { align-self: stretch; margin-top: var(--esp-24); }
+
+/* lien expiré */
+.mdp__rubrique { display: flex; align-items: center; gap: var(--esp-8); }
+.mdp__rubrique .icone { fill: none; }
+.mdp__corps > .mdp__rubrique + h1 { margin-top: var(--esp-12); }

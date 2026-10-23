@@ -122,3 +122,8 @@ if (jetonNeuf) {
   if (ancien && ancien !== jetonNeuf) api('/api/client/restaurer', { methode: 'POST', donnees: { jeton: ancien } }).catch(garder);
   else garder();
 }
+
+// X7 · hors ligne : le service worker sert la page « Hors ligne » quand le réseau manque (HTTPS ou localhost seulement).
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  navigator.serviceWorker.register('/sw.js').catch(() => { /* pas de service worker : le navigateur affiche sa propre page */ });
+}

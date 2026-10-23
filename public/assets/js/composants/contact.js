@@ -15,6 +15,14 @@ function memoriser(id, min) {
 function lireMemoire() {
   try { return JSON.parse(sessionStorage.getItem(CLE) || 'null'); } catch { return null; }
 }
+/** X7 : les 3 derniers mécanos appelés, gardés sur l'appareil seulement, pour les retrouver quand le réseau saute. */
+function retenirMecano(memo) {
+  if (!memo) return;
+  try {
+    const liste = JSON.parse(localStorage.getItem('derniers_mecanos') || '[]').filter((m) => m.telephone !== memo.telephone);
+    localStorage.setItem('derniers_mecanos', JSON.stringify([{ ...memo, vu: new Date().toISOString() }, ...liste].slice(0, 3)));
+  } catch { /* stockage fermé : pas d'historique hors ligne */ }
+}
 function oublier() {
   try { sessionStorage.removeItem(CLE); } catch { /* rien à oublier */ }
 }
@@ -37,6 +45,7 @@ export function initialiserContacts(racine) {
         if (r.html) { reveler(f, r.html); return; }
         if (r.canal === 'app') { location.href = r.cible; return; } // l'appel intégré : la page d'appel (C5c) prend le relais
         memoriser(r.id, Number(f.dataset.absenceMin) || 3);
+        retenirMecano(r.memo);
         if (r.canal === 'whatsapp' && bureau()) {
           // Desktop : WhatsApp Web dans un autre onglet, la fiche reste là
           if (!window.open(r.cible, '_blank', 'noopener')) location.href = r.cible;

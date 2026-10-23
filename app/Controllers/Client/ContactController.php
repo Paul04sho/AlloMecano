@@ -40,7 +40,7 @@ final class ContactController
         } catch (ContactException $e) {
             return Response::json(['message' => $e->getMessage(), 'code' => $e->code_refus], $e->code_refus === 'limite' ? 429 : 409);
         }
-        $reponse = ['id' => $r['public_id'], 'canal' => $r['canal'], 'cible' => $r['cible']];
+        $reponse = ['id' => $r['public_id'], 'canal' => $r['canal'], 'cible' => $r['cible'], 'memo' => $r['memo']];
         if ($requete->input('reveler') === '1') {
             $revele = ContactService::depuisBase()->reveler($r['public_id'], $this->client(), $this->contexte($requete));
             $reponse['html'] = $revele !== null ? View::rendre('composants/contact-revele', $revele) : '';

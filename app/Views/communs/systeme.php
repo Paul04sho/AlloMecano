@@ -291,6 +291,18 @@ $icones = json_decode((string) file_get_contents(RACINE . '/scripts/icones.json'
   </section>
 
   <section class="rubrique">
+    <span class="t-etiquette">Mot de passe oublié · barre de parcours « MOT DE PASSE · 1 / 3 » 129:113 · terminé 134:204 · règles vivantes 130:178</span>
+    <div class="systeme__grille">
+      <?= composant('barre-parcours', ['etape' => 1, 'total' => 3, 'rubrique' => 'Mot de passe', 'retour' => '#', 'annuler' => '#']) ?>
+      <?= composant('barre-parcours', ['etape' => 3, 'total' => 3, 'rubrique' => 'Mot de passe', 'termine' => true]) ?>
+      <ul class="mdp__regles" role="list">
+        <?= composant('regle-vivante', ['regle' => 'demo-1', 'libelle' => '8 caractères au moins', 'faite' => true]) ?>
+        <?= composant('regle-vivante', ['regle' => 'demo-2', 'libelle' => 'Au moins 1 chiffre']) ?>
+      </ul>
+    </div>
+  </section>
+
+  <section class="rubrique">
     <span class="t-etiquette">Appel intégré · anneau 269:1827 / 269:1873 · commande 269:1849 / 269:1891 · état 269:1837 / 269:1881 / 270:1853 · repère carte W44 270:1862</span>
     <div class="systeme__grille systeme__appel">
       <div class="appel appel--sombre sur-sombre systeme__appel-sombre">

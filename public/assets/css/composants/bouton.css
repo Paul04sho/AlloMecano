@@ -59,3 +59,8 @@
 @media (min-width: 1024px) {
   .bouton:not(.bouton--64):not(.bouton--56):not(.bouton--48):not(.bouton--44) { --h: 52px; } /* --56 : écrans desktop dessinés en 56 (D0) */
 }
+
+/* Lien à icône (84:1505, 86:1605) : 48 de haut, souligné 2 px */
+.lien-icone { text-decoration: none; display: inline-flex; align-items: center; gap: var(--esp-8); min-height: 48px; padding: 0; background: none; border: 0; color: inherit; cursor: pointer; text-align: left; }
+.lien-icone > span { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.lien-icone .icone { fill: none; }

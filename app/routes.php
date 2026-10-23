@@ -19,7 +19,10 @@ use App\Controllers\Client\FicheController;
 use App\Controllers\Client\PanneController;
 use App\Controllers\Client\PositionController;
 use App\Controllers\Client\RechercheController;
+use App\Controllers\Communs\ConnexionController;
 use App\Controllers\Communs\DevAppelController;
+use App\Controllers\Communs\MotDePasseController;
+use App\Controllers\Communs\PagesController;
 use App\Controllers\Communs\SystemeController;
 use App\Middleware\IdentifierClient;
 use App\Middleware\VerifierCsrf;
@@ -70,12 +73,27 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
     // $r->get('/admin', …)               A0 … A5                   (à faire)
 
     // ----- Communs (chantier C) -----
-    // $r->get('/connexion', …)           X1                        (à faire)
-    // $r->get('/mot-de-passe/…', …)      X2                        (à faire)
-    // $r->get('/a-propos', …)            X3                        (à faire)
-    // $r->get('/contact', …)             X4                        (à faire)
-    // $r->get('/cgu', …) /confidentialite X5                       (à faire)
-    // $r->get('/hors-ligne', …)          X7                        (à faire)
+    $r->get('/connexion', [ConnexionController::class, 'formulaire'], 'connexion');           // X1
+    $r->post('/connexion', [ConnexionController::class, 'connecter']);
+    $r->post('/deconnexion', [ConnexionController::class, 'deconnecter']);
+    $r->get('/connexion/google', [ConnexionController::class, 'google']);
+    $r->get('/connexion/google/retour', [ConnexionController::class, 'googleRetour']);
+    $r->get('/mot-de-passe', [MotDePasseController::class, 'email'], 'mot-de-passe');         // X2 · 1
+    $r->post('/mot-de-passe', [MotDePasseController::class, 'envoyer']);
+    $r->get('/mot-de-passe/envoye', [MotDePasseController::class, 'envoye']);                  // X2 · 2
+    $r->post('/mot-de-passe/renvoyer', [MotDePasseController::class, 'renvoyer']);
+    $r->get('/mot-de-passe/nouveau/{jeton}', [MotDePasseController::class, 'nouveau']);        // X2 · 3 ou « Lien expiré »
+    $r->post('/mot-de-passe/nouveau/{jeton}', [MotDePasseController::class, 'enregistrer']);
+    $r->post('/mot-de-passe/nouveau/{jeton}/renvoyer', [MotDePasseController::class, 'renvoyerDepuisLien']);
+    $r->get('/mot-de-passe/termine', [MotDePasseController::class, 'termine']);                // X2 · 4
+    $r->get('/a-propos', [PagesController::class, 'aPropos'], 'a-propos');                    // X3
+    $r->get('/contact', [PagesController::class, 'contact'], 'contact-page');                 // X4 · RG-CT1
+    $r->post('/contact', [PagesController::class, 'envoyerContact']);
+    $r->get('/cgu', [PagesController::class, 'cgu'], 'cgu');                                  // X5
+    $r->get('/cgu.pdf', [PagesController::class, 'cguPdf']);
+    $r->get('/confidentialite', [PagesController::class, 'confidentialite'], 'confidentialite');
+    $r->get('/confidentialite.pdf', [PagesController::class, 'confidentialitePdf']);
+    $r->get('/hors-ligne', [PagesController::class, 'horsLigne'], 'hors-ligne');              // X7
 
     // ----- Design system (dev uniquement) -----
     $r->get('/systeme', [SystemeController::class, 'index'], 'systeme');
@@ -97,6 +115,7 @@ $routeur->groupe('/api', [VerifierCsrf::class, IdentifierClient::class], functio
 });
 $routeur->groupe('/api', [VerifierCsrf::class], function ($r) {
     // Outil de développement (absent en production) : joue le mécano qui reçoit l'appel, en attendant M5
+    $r->get('/ping', [PagesController::class, 'ping']);                                       // X7 : le réseau est-il revenu ?
     $r->get('/dev/ice', [DevAppelController::class, 'ice']);
     $r->get('/dev/mecano/{id}/entrants', [DevAppelController::class, 'entrants']);
     $r->get('/dev/appel/{id}/signaux', [DevAppelController::class, 'signaux']);

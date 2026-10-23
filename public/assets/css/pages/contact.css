@@ -54,10 +54,6 @@
 .reponse-retour:active { transform: translateY(1px); }
 .reponse-retour[aria-busy="true"] { opacity: .6; }
 
-/* Lien à icône (84:1505, 86:1605) : 48 de haut, souligné 2 px */
-.lien-icone { text-decoration: none; display: inline-flex; align-items: center; gap: var(--esp-8); min-height: 48px; padding: 0; background: none; border: 0; color: inherit; cursor: pointer; text-align: left; }
-.lien-icone > span { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
-.lien-icone .icone { fill: none; }
 .retour__lien { color: var(--encre); }
 .retour__lien.lien--erreur { color: var(--erreur-texte); }
 

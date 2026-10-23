@@ -34,7 +34,7 @@ final class ContactService
      * @param array{recherche: ?string, lieu: ?string, repere: ?string, vehicule: ?string, panne: ?string, lat: ?float, lon: ?float} $contexte
      * @param ?string $precedent public_id du contact raté qui mène à celui-ci (RG-I5)
      * @param bool $webrtc le navigateur sait faire un appel intégré (détecté par le JS)
-     * @return array{public_id: string, canal: string, cible: string, prenom: string, mecano: string, statut: string}
+     * @return array{public_id: string, canal: string, cible: string, prenom: string, mecano: string, statut: string, memo: ?array{nom: string, telephone: string, portrait: ?string}}
      * @throws ContactException
      */
     public function creer(int $client, string $mecano, string $canal, bool $position, array $contexte, ?string $precedent = null, bool $webrtc = false): array
@@ -43,8 +43,10 @@ final class ContactService
             throw new ContactException('canal', 'Canal inconnu.');
         }
         $m = $this->db->un(
-            'SELECT id, public_id, prenom, telephone, whatsapp, etat, position_maj_le FROM mecaniciens
-              WHERE public_id = :p AND statut_dossier = \'valide\' AND supprime_le IS NULL',
+            'SELECT m.id, m.public_id, m.prenom, m.nom, m.telephone, m.whatsapp, m.etat, m.position_maj_le,
+                    ph.dossier, ph.largeurs, ph.ratio, ph.couleur_dominante, ph.focal_x, ph.focal_y
+               FROM mecaniciens m LEFT JOIN photos ph ON ph.mecanicien_id = m.id AND ph.type = \'portrait\' AND ph.active = 1
+              WHERE m.public_id = :p AND m.statut_dossier = \'valide\' AND m.supprime_le IS NULL',
             ['p' => $mecano]
         );
         if ($m === null || !$this->eligible($m)) {
@@ -89,6 +91,8 @@ final class ContactService
 
         return [
             'public_id' => $publicId, 'canal' => $canal, 'prenom' => (string) $m['prenom'], 'mecano' => (string) $m['public_id'], 'statut' => $occupe ? 'occupe' : 'initie',
+            // De quoi retrouver le mécano sans réseau (X7) : seulement pour un appel direct ou WhatsApp, où le numéro est révélé de toute façon (RG-A1)
+            'memo' => $canal === 'app' ? null : ['nom' => $m['prenom'] . ' ' . $m['nom'], 'telephone' => Format::telephoneE164((string) $m['telephone']), 'portrait' => PhotoService::portrait($m)['src'] ?? null],
             'cible' => $canal === 'app' ? '/appel/' . $publicId : ($canal === 'whatsapp' ? $this->lienWhatsApp($m, $contexte, $position, false) : 'tel:' . Format::telephoneE164((string) $m['telephone'])),
         ];
     }
