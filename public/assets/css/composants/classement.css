@@ -1,0 +1,60 @@
+/* Classement : repère carte S1 (49:32), ligne de classement compacte (54:251), ligne commune (56:734). */
+
+/* ---------- Repère carte : écrou-repère bitume, ancre = pointe ---------- */
+.repere { position: relative; display: inline-block; flex: none; width: var(--l); line-height: 0; }
+.repere__ecrou { display: block; width: var(--l); height: auto; overflow: visible; }
+.repere__ecrou path { fill: var(--bitume); }
+.repere__ecrou circle { fill: var(--beton); }
+/* Numéroté et sélectionné : liseré béton 2 px à l'extérieur + Ombre/repère */
+.repere--numerote .repere__ecrou, .repere--selectionne .repere__ecrou { filter: drop-shadow(var(--ombre-repere)); }
+.repere--numerote path, .repere--selectionne path { stroke: var(--beton); stroke-width: 4px; paint-order: stroke; vector-effect: non-scaling-stroke; }
+.repere__rang {
+  position: absolute; left: 0; right: 0; top: calc(var(--l) * 16.17 / 28); transform: translateY(-50%);
+  font-family: var(--police-marque); font-stretch: 100%; font-weight: 900; font-size: 12px; line-height: 1;
+  color: var(--bitume); text-align: center; font-variant-numeric: lining-nums tabular-nums;
+}
+.repere--numerote .repere__rang { font-size: 14px; }
+.repere__visage { position: absolute; left: calc(50% - 19px); top: calc(var(--l) * 16.17 / 28 - 19px); width: 38px; height: 38px; border-radius: 50%; object-fit: cover; }
+.repere__etiquette {
+  position: absolute; top: calc(100% + var(--esp-8)); left: 50%; transform: translateX(-50%);
+  padding: var(--esp-4) var(--esp-8); background: var(--bitume); color: var(--beton); white-space: nowrap; line-height: 18px;
+}
+
+/* ---------- Ligne de classement compacte ---------- */
+.ligne-classement {
+  display: flex; align-items: center; gap: var(--esp-12);
+  padding: var(--esp-12) var(--esp-4) var(--esp-12) 0;
+  border-bottom: 1px solid var(--filet);
+  color: var(--encre); text-decoration: none;
+  transition: background-color var(--t-etat) linear;
+}
+a.ligne-classement:hover, a.ligne-classement:active { background: var(--surface-creuse); }
+.ligne-classement__borne { display: flex; flex-direction: column; align-items: center; gap: var(--esp-4); flex: none; width: 72px; }
+.ligne-classement__borne .borne--l .borne__valeur { font-size: 28px; line-height: 28px; } /* Borne/L mobile, même sur desktop (Figma 154:146) */
+.ligne-classement__portrait { position: relative; flex: none; width: 52px; height: 52px; }
+.ligne-classement__portrait img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; }
+.ligne-classement__portrait .poincon { position: absolute; left: 36px; top: 34px; }
+.ligne-classement__texte { display: flex; flex: 1; flex-direction: column; gap: 2px; min-width: 0; }
+.ligne-classement__texte > * { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ligne-classement__nom { font-size: 19px; line-height: 24px; } /* Titre/3 mobile, même sur desktop */
+.ligne-classement__specialites { color: var(--encre-2); }
+.ligne-classement__specialites b { color: var(--encre); }
+.ligne-classement__meta { font-size: 14px; line-height: 20px; }
+.ligne-classement__chevron { width: 20px; height: 20px; color: var(--encre); }
+
+/* Poinçon posé sur une photo : bitume, coche béton, liseré béton 2 px */
+.poincon--photo { color: var(--bitume); --coche: var(--beton); }
+.poincon--photo .poincon__ecrou { stroke: var(--beton); stroke-width: 4px; paint-order: stroke; vector-effect: non-scaling-stroke; }
+
+/* ---------- Ligne commune : 52, commune Archivo 700/18, nombre en Borne/L ---------- */
+.ligne-commune {
+  display: flex; align-items: center; gap: var(--esp-12); height: 52px;
+  border-bottom: 1px solid var(--filet); color: var(--encre); text-decoration: none;
+}
+.ligne-commune__nom { flex: 1; min-width: 0; font-family: var(--police-marque); font-stretch: 100%; font-weight: 700; font-size: 18px; line-height: normal; }
+a.ligne-commune:hover .ligne-commune__nom { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.ligne-commune__nombre { display: flex; align-items: baseline; gap: var(--esp-4); white-space: nowrap; }
+.ligne-commune__nombre .t-borne-l { font-size: 28px; line-height: 28px; } /* Borne/L mobile, même sur desktop (Figma 154:297) */
+.ligne-commune__nombre .t-etiquette, .ligne-commune__statut { color: var(--encre-2); white-space: nowrap; }
+.ligne-commune__chevron { width: 20px; height: 20px; color: var(--encre); }
+.ligne-commune--bientot .ligne-commune__nom, .ligne-commune--bientot .ligne-commune__chevron { color: var(--encre-2); }

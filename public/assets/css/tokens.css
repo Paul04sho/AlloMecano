@@ -50,7 +50,11 @@
   --esp-24: 24px;
   --esp-32: 32px;
   --esp-48: 48px;
+  --esp-40: 40px;
+  --esp-56: 56px;
   --esp-72: 72px;
+  --esp-96: 96px;
+  --esp-104: 104px;
   --marge: 16px;               /* marge latérale mobile ; 80 desktop, 48 admin */
 
   /* ---- Rayons ---- */

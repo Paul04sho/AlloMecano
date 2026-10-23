@@ -1,8 +1,7 @@
-import { chargement, definirTheme, toast } from '../core/app.js';
+import { chargement, toast } from '../core/app.js';
+import { menuPanne } from '../composants/menu-panne.js';
 
-document.querySelectorAll('[data-theme-choix]').forEach((b) => {
-  b.addEventListener('click', () => definirTheme(b.dataset.themeChoix));
-});
+document.querySelectorAll('[data-menu-panne]').forEach(menuPanne);
 
 document.querySelector('[data-demo-toast]')?.addEventListener('click', () => {
   toast('Copié. Collez-le dans WhatsApp ou par SMS.', { icone: 'coche' });

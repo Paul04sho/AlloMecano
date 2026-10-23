@@ -32,7 +32,8 @@ for tb,col,rt,rc,od in LATE_FKS:
 out.append("SET FOREIGN_KEY_CHECKS = 1;\n")
 # ---- seed
 S=SEED; sd=["-- =====================================================================\n-- Données de départ (référentiels et paramètres)\n-- Coordonnées des communes : centres approximatifs, À VÉRIFIER.\n-- ====================================================================="]
-sd.append("INSERT INTO communes (nom,slug,lat,lon,rive,ordre) VALUES\n"+",\n".join(f"({q(n)},{q(s)},{la},{lo},{q(r)},{i+1})" for i,(n,s,la,lo,r) in enumerate(S['communes']))+";")
+# 6e valeur facultative d'une commune : ouverte (0 = « Bientôt » sur l'accueil ; 1 par défaut)
+sd.append("INSERT INTO communes (nom,slug,lat,lon,rive,ouverte,ordre) VALUES\n"+",\n".join(f"({q(n)},{q(s)},{la},{lo},{q(r)},{(o or [1])[0]},{i+1})" for i,(n,s,la,lo,r,*o) in enumerate(S['communes']))+";")
 sd.append("INSERT INTO types_vehicule (code,libelle,ordre) VALUES\n"+",\n".join(f"({q(c)},{q(l)},{o})" for c,l,o in S['types_vehicule'])+";")
 sd.append("INSERT INTO specialites (code,libelle,ordre) VALUES\n"+",\n".join(f"({q(c)},{q(l)},{i+1})" for i,(c,l) in enumerate(S['specialites']))+";")
 sd.append("INSERT INTO pannes (code,libelle,picto,est_danger,ordre) VALUES\n"+",\n".join(f"({q(c)},{q(l)},{q(p)},{d},{i+1})" for i,(c,l,p,d) in enumerate(S['pannes']))+";")

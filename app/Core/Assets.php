@@ -20,6 +20,8 @@ final class Assets
         'css/composants/signes.css',
         'css/composants/selecteurs.css',
         'css/composants/navigation.css',
+        'css/composants/classement.css',
+        'css/composants/blocs.css',
     ];
 
     public const JS_COMMUN = [

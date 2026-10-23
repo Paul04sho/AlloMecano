@@ -5,16 +5,15 @@
  * @var string $type      principal | secondaire | contour | contour-beton | danger
  * @var ?string $icone    nom dans le sprite (viseur, telephone, whatsapp…)
  * @var ?string $href     si présent : rend un <a>
- * @var int $hauteur      64 | 56 | 52 | 44
+ * @var int $hauteur      64 | 56 | 52 | 44 (56 par défaut, 52 sur desktop ; 56 passé explicitement reste 56 sur desktop)
  * @var bool $plein       pleine largeur
  * @var bool $desactive
  * @var ?string $chargement libellé affiché pendant le chargement (« Recherche… »), lu par le JS
  * @var array<string,string> $attrs attributs en plus (id, name, value, type, data-*)
  */
 $type ??= 'principal';
-$hauteur ??= 56;
 $classes = ['bouton', 'bouton--' . $type];
-if ($hauteur !== 56) { $classes[] = 'bouton--' . $hauteur; }
+if (isset($hauteur)) { $classes[] = 'bouton--' . (int) $hauteur; }
 if (!empty($plein)) { $classes[] = 'bouton--plein'; }
 $attrs ??= [];
 if (!empty($chargement)) { $attrs['data-chargement'] = $chargement; }

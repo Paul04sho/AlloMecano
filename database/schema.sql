@@ -636,20 +636,20 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- Coordonnées des communes : centres approximatifs, À VÉRIFIER.
 -- =====================================================================
 
-INSERT INTO communes (nom,slug,lat,lon,rive,ordre) VALUES
-('Abobo','abobo',5.419,-4.02,'nord',1),
-('Adjamé','adjame',5.36,-4.023,'nord',2),
-('Anyama','anyama',5.495,-4.052,'nord',3),
-('Attécoubé','attecoube',5.333,-4.04,'nord',4),
-('Bingerville','bingerville',5.355,-3.885,'nord',5),
-('Cocody','cocody',5.36,-3.97,'nord',6),
-('Koumassi','koumassi',5.297,-3.95,'sud',7),
-('Marcory','marcory',5.303,-3.98,'sud',8),
-('Plateau','plateau',5.323,-4.019,'nord',9),
-('Port-Bouët','port-bouet',5.256,-3.93,'sud',10),
-('Songon','songon',5.32,-4.26,'nord',11),
-('Treichville','treichville',5.293,-4.005,'sud',12),
-('Yopougon','yopougon',5.345,-4.09,'nord',13);
+INSERT INTO communes (nom,slug,lat,lon,rive,ouverte,ordre) VALUES
+('Abobo','abobo',5.419,-4.02,'nord',1,1),
+('Adjamé','adjame',5.36,-4.023,'nord',1,2),
+('Anyama','anyama',5.495,-4.052,'nord',1,3),
+('Attécoubé','attecoube',5.333,-4.04,'nord',1,4),
+('Bingerville','bingerville',5.355,-3.885,'nord',1,5),
+('Cocody','cocody',5.36,-3.97,'nord',1,6),
+('Koumassi','koumassi',5.297,-3.95,'sud',1,7),
+('Marcory','marcory',5.303,-3.98,'sud',1,8),
+('Plateau','plateau',5.323,-4.019,'nord',1,9),
+('Port-Bouët','port-bouet',5.256,-3.93,'sud',1,10),
+('Songon','songon',5.32,-4.26,'nord',0,11),
+('Treichville','treichville',5.293,-4.005,'sud',1,12),
+('Yopougon','yopougon',5.345,-4.09,'nord',1,13);
 
 INSERT INTO types_vehicule (code,libelle,ordre) VALUES
 ('voiture','Voiture',1),

@@ -459,7 +459,7 @@ LATE_FKS = [("suspensions","signalement_id","signalements","id","SET NULL")]
 SEED = {
  "communes": [("Abobo","abobo",5.4190,-4.0200,"nord"),("Adjamé","adjame",5.3600,-4.0230,"nord"),("Anyama","anyama",5.4950,-4.0520,"nord"),("Attécoubé","attecoube",5.3330,-4.0400,"nord"),
               ("Bingerville","bingerville",5.3550,-3.8850,"nord"),("Cocody","cocody",5.3600,-3.9700,"nord"),("Koumassi","koumassi",5.2970,-3.9500,"sud"),("Marcory","marcory",5.3030,-3.9800,"sud"),
-              ("Plateau","plateau",5.3230,-4.0190,"nord"),("Port-Bouët","port-bouet",5.2560,-3.9300,"sud"),("Songon","songon",5.3200,-4.2600,"nord"),("Treichville","treichville",5.2930,-4.0050,"sud"),("Yopougon","yopougon",5.3450,-4.0900,"nord")],
+              ("Plateau","plateau",5.3230,-4.0190,"nord"),("Port-Bouët","port-bouet",5.2560,-3.9300,"sud"),("Songon","songon",5.3200,-4.2600,"nord",0),("Treichville","treichville",5.2930,-4.0050,"sud"),("Yopougon","yopougon",5.3450,-4.0900,"nord")],
  "types_vehicule": [("voiture","Voiture",1),("moto","Moto",2),("camion","Camion",3)],
  "specialites": [("mecanique_generale","Mécanique générale"),("electricite_auto","Électricité auto"),("batterie","Batterie"),("demarreur_alternateur","Démarreur et alternateur"),
                  ("moteur","Moteur"),("refroidissement","Refroidissement"),("pneus","Pneus et vulcanisation"),("freins","Freins"),("boite_vitesses","Boîte de vitesses"),

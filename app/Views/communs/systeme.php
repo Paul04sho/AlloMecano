@@ -132,6 +132,58 @@ $icones = json_decode((string) file_get_contents(RACINE . '/scripts/icones.json'
   </section>
 
   <section class="rubrique">
+    <span class="t-etiquette">Repère carte · Figma 49:32 (rang · numéroté · sélectionné)</span>
+    <div class="systeme__ligne systeme__reperes">
+      <?= composant('repere-carte', ['type' => 'rang', 'rang' => 1]) ?>
+      <?= composant('repere-carte', ['type' => 'numerote', 'rang' => 1]) ?>
+      <?= composant('repere-carte', ['type' => 'selectionne', 'visage' => asset('img/accueil/koffi-rond-104.webp'), 'etiquette' => '1 · 1,2 km']) ?>
+      <?= composant('poincon', ['taille' => 18, 'surPhoto' => true]) ?>
+    </div>
+  </section>
+
+  <section class="rubrique">
+    <span class="t-etiquette">Ligne de classement · Figma 54:251 (compacte, avec et sans colonne borne)</span>
+    <div class="systeme__grille">
+      <?= composant('ligne-classement', ['href' => '#', 'nom' => 'Koffi Yao', 'portrait' => asset('img/accueil/koffi-rond-104.webp'), 'rang' => 1, 'distanceM' => 1200, 'specialites' => ['Électricité auto', 'Batterie', 'Démarreur'], 'specialitePanne' => 'Batterie', 'note' => 4.8, 'avis' => 37, 'quartier' => 'Riviera 3']) ?>
+      <?= composant('ligne-classement', ['nom' => 'Adama Traoré', 'portrait' => asset('img/accueil/adama-rond-104.webp'), 'specialites' => ['Mécanique générale', 'Moto'], 'note' => 4.6, 'avis' => 21]) ?>
+    </div>
+  </section>
+
+  <section class="rubrique">
+    <span class="t-etiquette">Ligne commune · Figma 56:734 (disponibles · aucun · bientôt)</span>
+    <div class="systeme__grille">
+      <div class="filet-haut">
+        <?= composant('ligne-commune', ['nom' => 'Cocody', 'slug' => 'cocody', 'etat' => 'disponibles', 'nombre' => 18]) ?>
+        <?= composant('ligne-commune', ['nom' => 'Attécoubé', 'slug' => 'attecoube', 'etat' => 'aucun', 'nombre' => 0]) ?>
+        <?= composant('ligne-commune', ['nom' => 'Songon', 'slug' => 'songon', 'etat' => 'bientot', 'nombre' => 0]) ?>
+      </div>
+    </div>
+  </section>
+
+  <section class="rubrique">
+    <span class="t-etiquette">Photo et légende-repère · Figma 49:254 · Spécimen CNI · Figma 56:705</span>
+    <div class="systeme__grille">
+      <?= composant('photo', ['image' => 'img/accueil/img-01', 'largeurs' => [780, 1264], 'sizes' => '420px', 'largeur' => 1264, 'hauteur' => 848, 'alt' => 'À Adjamé, un mécanicien répare un taxi.', 'legende' => 'Adjamé · 10:12']) ?>
+      <?= composant('photo', ['alt' => 'Photo à venir.', 'legende' => 'Marcory · 09:41', 'classe' => 'systeme__a-produire', 'aProduire' => ['titre' => 'Photo à produire · IMG-07', 'texte' => 'Emplacement réservé']]) ?>
+      <?= composant('specimen-cni') ?>
+    </div>
+  </section>
+
+  <section class="rubrique">
+    <span class="t-etiquette">Segment de formulaire · Figma 54:499 · Menu de panne · D0 154:92</span>
+    <form class="systeme__grille" onsubmit="return false">
+      <span class="champ__label" id="systeme-vehicule">Votre véhicule</span>
+      <?= composant('segment', ['nom' => 'vehicule-demo', 'options' => ['voiture' => 'Voiture', 'moto' => 'Moto', 'camion' => 'Camion'], 'decritPar' => 'systeme-vehicule']) ?>
+      <?= composant('menu-panne', ['nom' => 'panne-demo', 'label' => 'Votre panne', 'valeur' => 'batterie', 'pannes' => array_map(fn ($c, $l) => ['code' => $c, 'libelle' => $l, 'icone' => 'voyant-' . str_replace('_', '-', $c)], ['ne_demarre_pas', 'batterie', 'surchauffe', 'je_ne_sais_pas'], ['Ne démarre pas', 'Batterie', 'Surchauffe', 'Je ne sais pas'])]) ?>
+    </form>
+  </section>
+
+  <section class="rubrique">
+    <span class="t-etiquette">Urgences · C1 58:282 · D0 154:401 (numéros lus dans parametres)</span>
+    <?= composant('urgences') ?>
+  </section>
+
+  <section class="rubrique">
     <span class="t-etiquette">Barre de parcours · Figma 53:374</span>
     <?= composant('barre-parcours', ['etape' => 2, 'total' => 3, 'retour' => '#', 'annuler' => '#']) ?>
   </section>

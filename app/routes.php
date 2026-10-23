@@ -9,14 +9,14 @@ declare(strict_types=1);
  * @var App\Core\Router $routeur
  */
 
-use App\Controllers\Communs\PageController;
+use App\Controllers\Client\AccueilController;
 use App\Controllers\Communs\SystemeController;
 use App\Middleware\VerifierCsrf;
 
 $routeur->groupe('', [VerifierCsrf::class], function ($r) {
 
     // ----- Client (chantier A) -----
-    $r->get('/', [PageController::class, 'accueil'], 'accueil');                 // C1 · D0
+    $r->get('/', [AccueilController::class, 'index'], 'accueil');                 // C1 · D0
     // $r->get('/position', …)            C2a · Localisation        (à faire)
     // $r->get('/position/quartier', …)   C2b · Commune, quartier  (à faire)
     // $r->get('/panne', …)               C3 · Ma panne             (à faire)

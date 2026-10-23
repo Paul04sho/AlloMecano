@@ -90,6 +90,14 @@ document.addEventListener('click', (e) => {
   b.querySelector('use')?.setAttribute('href', `/assets/icones/sprite.svg#i-${visible ? 'oeil' : 'oeil-barre'}`);
 });
 
+// Choix du thème (pied de page, page Système) : Clair · Sombre · Auto
+document.addEventListener('click', (e) => {
+  const b = e.target.closest?.('[data-theme-choix]');
+  if (!b) return;
+  definirTheme(b.dataset.themeChoix);
+  b.parentElement.querySelectorAll('[data-theme-choix]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+});
+
 // Formulaire envoyé : le bouton passe en chargement (évite le double envoi)
 document.addEventListener('submit', (e) => {
   const bouton = e.submitter?.closest?.('.bouton');

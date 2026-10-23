@@ -1,21 +1,30 @@
 /* Navigation : barre client (56:322), barre desktop (56:337), barre de parcours (53:374),
    socle d'action (53:282), pied de page (56:636 / 56:670), onglets mécano (56:469), rail admin (56:635). */
 
-/* ---------- Barre client : logo 112 à gauche, « Espace pro » à droite ---------- */
+/* ---------- Barre client : mobile 56:322 (logo 112, « Espace pro » souligné), desktop 56:337 ---------- */
 .barre {
   position: sticky; top: 0; z-index: 40;
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  display: flex; align-items: center; justify-content: space-between; gap: var(--esp-16);
   height: var(--hauteur-barre); padding: 0 var(--marge);
   background: var(--surface);
-  border-bottom: 1px solid var(--filet);
 }
 .barre__logo { display: block; color: var(--encre); width: 112px; }
 .barre__logo svg { width: 100%; height: auto; }
-.barre__liens { display: flex; align-items: center; gap: 24px; }
-.barre__liens a { font-weight: 700; font-size: 15px; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.barre__liens { display: flex; align-items: center; gap: var(--esp-32); }
+.barre__liens a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; font-size: 15px; line-height: 20px; }
+.barre__pro { text-decoration: underline; text-underline-offset: 3px; }
+.barre__desktop { display: none !important; text-decoration: none; }
+.barre__desktop:hover { text-decoration: underline; text-underline-offset: 4px; }
 @media (min-width: 1024px) {
-  .barre { height: 72px; }
+  .barre { height: 72px; border-bottom: 1px solid var(--filet); }
   .barre__logo { width: 148px; }
+  .barre__desktop { display: inline-flex !important; }
+  /* « Espace pro » devient un bouton contour de 44 × 140 (Bouton 53:148, type contour) */
+  .barre__liens .barre__pro {
+    justify-content: center; min-width: 140px; height: 44px; padding: 0 var(--esp-24);
+    border-radius: var(--rayon); box-shadow: inset 0 0 0 2px var(--encre); text-decoration: none;
+    font-family: var(--police-marque); font-stretch: 100%; font-weight: 800; font-size: 18px; line-height: 20px;
+  }
 }
 
 /* ---------- Barre de parcours : retour · ÉTAPE 2 / 3 · Annuler + marquage ---------- */
@@ -55,15 +64,31 @@
   .avec-socle { padding-bottom: 0; }
 }
 
-/* ---------- Pied de page : bitume, logo blanc, slogan ---------- */
-.pied { background: var(--bitume); color: var(--beton); padding: 48px var(--marge) calc(32px + env(safe-area-inset-bottom)); }
-.pied__interieur { max-width: var(--largeur-contenu); margin-inline: auto; display: grid; gap: 32px; }
-.pied__logo { width: 140px; color: var(--beton); }
-.pied__liens { display: flex; flex-wrap: wrap; gap: 4px 24px; }
-.pied__liens a { display: inline-flex; align-items: center; min-height: 48px; font-weight: 700; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
-.pied__urgence { display: flex; flex-wrap: wrap; gap: 8px 24px; color: var(--gris-voyant); }
-.pied__urgence a { color: var(--beton); text-decoration: none; }
-.pied__mentions { color: var(--gris-voyant); font-size: 13px; line-height: 18px; }
+/* ---------- Pied de page : 56:636 (mobile) / 56:670 (desktop) ---------- */
+.pied { background: var(--bitume); color: var(--beton); padding: var(--esp-48) var(--marge) calc(var(--esp-40) + env(safe-area-inset-bottom)); }
+.pied__interieur { max-width: var(--largeur-contenu); margin-inline: auto; display: flex; flex-direction: column; gap: calc(var(--esp-24) + var(--esp-4)); }
+.pied__haut { display: flex; flex-direction: column; gap: var(--esp-16); }
+.pied__marque { display: flex; flex-direction: column; gap: var(--esp-16); }
+.pied__logo { display: block; width: 140px; color: var(--beton); }
+.pied__logo svg { width: 100%; height: auto; }
+.pied__slogan { color: var(--beton); }
+.pied__liens { display: flex; flex-direction: column; align-items: flex-start; gap: calc(var(--esp-12) + var(--esp-4) / 2); }
+.pied__liens a { font-weight: 700; font-size: 15px; line-height: 20px; text-decoration: none; }
+.pied__liens a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.pied__filet { width: 100%; height: 1px; margin: 0; border: 0; background: var(--filet-sombre); }
+.pied__bas { display: flex; flex-direction: column; align-items: flex-start; gap: var(--esp-16); }
+.pied__mention { color: var(--gris-voyant); }
+.pied__theme { display: inline-flex; border-radius: var(--rayon); box-shadow: inset 0 0 0 1px var(--gris-voyant); overflow: hidden; }
+.pied__theme button { padding: var(--esp-8) var(--esp-12); border: 0; background: none; color: var(--beton); font-weight: 700; font-size: 15px; line-height: 20px; }
+.pied__theme button[aria-pressed="true"] { background: var(--beton); color: var(--bitume); }
+.pied__copyright { color: var(--gris-voyant); }
+@media (min-width: 1024px) {
+  .pied { padding: var(--esp-72) var(--marge) var(--esp-48); }
+  .pied__interieur { gap: var(--esp-40); }
+  .pied__haut { flex-direction: row; justify-content: space-between; align-items: flex-start; }
+  .pied__liens { flex-direction: row; gap: var(--esp-32); }
+  .pied__bas { flex-direction: row; justify-content: space-between; align-items: flex-start; }
+}
 
 /* ---------- Onglets mécano : barre bitume de 64 en bas ---------- */
 .onglets {

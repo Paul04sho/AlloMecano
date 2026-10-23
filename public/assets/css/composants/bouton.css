@@ -23,7 +23,7 @@
 .sur-sombre .bouton--principal, .bouton--principal.bouton--sans-lisere { box-shadow: none; }
 .bouton--principal:active { background: var(--balise-presse); }
 
-.bouton--secondaire { background: var(--bitume); color: var(--beton); }
+.bouton--secondaire { background: var(--inverse-fond); color: var(--inverse-texte); } /* Secondaire = inverse/* (s'inverse en sombre) */
 .bouton--contour { background: transparent; color: var(--encre); box-shadow: inset 0 0 0 2px var(--encre); }
 .bouton--contour-beton { background: transparent; color: var(--beton); box-shadow: inset 0 0 0 2px var(--beton); }
 .bouton--danger { background: transparent; color: var(--erreur-texte); box-shadow: inset 0 0 0 2px var(--erreur-texte); }
@@ -38,6 +38,7 @@
 .bouton__voyant { display: none; width: 10px; height: 10px; border-radius: 50%; background: var(--bitume); }
 .bouton[aria-busy="true"] .bouton__voyant { display: block; animation: clignotant 1s steps(2, jump-none) infinite; }
 .bouton--secondaire[aria-busy="true"] .bouton__voyant { background: var(--balise); }
+.sur-sombre .bouton--secondaire { background: var(--bitume); color: var(--beton); }
 
 /* Lien (spec 7.2) */
 .bouton-lien {
@@ -54,5 +55,5 @@
 @keyframes clignotant { from { opacity: 1; } to { opacity: .25; } }
 
 @media (min-width: 1024px) {
-  .bouton:not(.bouton--64):not(.bouton--44) { --h: 52px; }
+  .bouton:not(.bouton--64):not(.bouton--56):not(.bouton--44) { --h: 52px; } /* --56 : écrans desktop dessinés en 56 (D0) */
 }

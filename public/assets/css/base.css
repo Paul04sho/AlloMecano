@@ -96,6 +96,10 @@ ul[role="list"], ol[role="list"] { list-style: none; padding: 0; }
 .coupe-m { clip-path: polygon(var(--coupe-m) 0, 100% 0, 100% 100%, 0 100%, 0 calc(var(--coupe-m) * .577)); }
 .coupe-l { clip-path: polygon(var(--coupe-l) 0, 100% 0, 100% 100%, 0 100%, 0 calc(var(--coupe-l) * .577)); }
 
+/* Blocs propres à un format (écrans dessinés en mobile ET en desktop) */
+@media (min-width: 1024px) { .seul-mobile { display: none !important; } }
+@media (max-width: 1023.98px) { .seul-desktop { display: none !important; } }
+
 /* Rubrique de section : Mono/Étiquette puis titre 12 px plus bas */
 .rubrique { display: flex; flex-direction: column; gap: 12px; }
 .rubrique > :first-child { color: var(--encre-2); }

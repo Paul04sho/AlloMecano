@@ -13,3 +13,5 @@
 .systeme__icones figure { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; color: var(--encre); }
 .systeme__icones figcaption { color: var(--encre-2); word-break: break-word; }
 @media (min-width: 1024px) { .systeme__grille { max-width: 520px; } }
+.systeme__reperes { align-items: flex-start; gap: 32px; padding-bottom: 40px; }
+.systeme__a-produire .photo__a-produire { aspect-ratio: 3 / 2; }

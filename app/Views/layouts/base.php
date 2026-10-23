@@ -18,6 +18,7 @@ $theme = in_array($theme, ['clair', 'sombre'], true) ? $theme : null;
 <html lang="fr"<?= $theme ? ' data-theme="' . e($theme) . '"' : '' ?>>
 <head>
   <meta charset="utf-8">
+  <script>document.documentElement.classList.add('js')</script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title><?= e(isset($titre) ? $titre . ' · allomécano' : 'allomécano · Le mécano vérifié le plus proche') ?></title>
   <meta name="description" content="<?= e($description ?? 'En panne à Abidjan ? Trouvez le mécanicien vérifié et disponible le plus proche, et appelez-le directement.') ?>">
@@ -31,6 +32,7 @@ $theme = in_array($theme, ['clair', 'sombre'], true) ? $theme : null;
   <?= View::bloc('tete') ?>
 </head>
 <body class="<?= e($classeCorps ?? '') ?>">
+  <?= composant('demarrage') ?>
   <a class="sr-only" href="#contenu">Aller au contenu</a>
   <?= View::bloc('contenu') ?>
   <div class="toasts" aria-live="polite" aria-atomic="false" data-toasts></div>
