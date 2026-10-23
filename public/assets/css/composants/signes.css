@@ -35,7 +35,7 @@
   white-space: nowrap;
 }
 .statut--disponible { color: var(--dispo-texte); padding-left: 0; }
-.statut--indisponible { color: var(--encre-2); padding-left: 0; }
+.statut--indisponible, .statut--plus-disponible { color: var(--encre-2); padding-left: 0; }
 .statut--brouillon { color: var(--encre); outline: 1.5px dashed var(--encre); outline-offset: -1.5px; }
 .statut--en-attente { color: var(--encre); box-shadow: inset 0 0 0 1.5px var(--encre); padding-left: 18px; }
 .statut--en-attente::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 8px; background: var(--bande); }

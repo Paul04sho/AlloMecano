@@ -9,6 +9,8 @@
  * @var list<array<string, mixed>> $pannes
  * @var int $rayonEtendu
  * @var list<int> $rayons
+ * @var ?string $panneau  panneau de la fiche ouverte (D1, ?fiche=slug)
+ * @var ?string $ouvert   slug de la fiche ouverte
  */
 use App\Core\Format;
 use App\Services\Parametres;
@@ -28,7 +30,7 @@ $contact = function (array $m, string $canal, string $contenu) use ($recherche):
         . '<input type="hidden" name="canal" value="' . e($canal) . '">' . $contenu . '</form>';
 };
 ?>
-<div class="resultats<?= $nb === 0 ? ' resultats--aucun' : '' ?>" data-resultats
+<div class="resultats<?= $nb === 0 ? ' resultats--aucun' : '' ?><?= !empty($panneau) ? ' resultats--fiche' : '' ?>" data-resultats data-recherche="<?= e($recherche['public_id']) ?>"
      data-lat="<?= e((string) $recherche['lat']) ?>" data-lon="<?= e((string) $recherche['lon']) ?>"
      data-precision="<?= (int) ($recherche['precision_m'] ?? 0) ?>" data-rayon="<?= (int) $recherche['rayon_km'] ?>"
      data-mecanos="<?= e(json_encode($mecanos, JSON_UNESCAPED_UNICODE)) ?>">
@@ -43,6 +45,7 @@ $contact = function (array $m, string $canal, string $contenu) use ($recherche):
       </div>
       <button type="button" data-recentrer aria-label="Recentrer sur ma position"><?= icone('viseur') ?></button>
     </div>
+    <?= $panneau ?? '' ?>
   </div>
   <template data-vous><?= composant('vous-etes-ici') ?></template>
   <?php foreach ($resultats as $m): ?>
@@ -83,8 +86,8 @@ $contact = function (array $m, string $canal, string $contenu) use ($recherche):
                 . $contact($m, 'whatsapp', composant('bouton', ['libelle' => 'WhatsApp', 'icone' => 'whatsapp', 'type' => 'secondaire', 'hauteur' => 56, 'attrs' => ['type' => 'submit']]));
               $commun = ['nom' => $nom, 'portrait' => $m['portrait'] ?? ['src' => ''], 'specialites' => $m['specialites'], 'specialitePanne' => $m['specialites_panne'],
                   'note' => $m['note'], 'avis' => $m['avis'], 'quartier' => $m['quartier'], 'rang' => $m['rang'], 'distanceM' => $m['distance_m'],
-                  'autreRive' => $m['autre_rive'], 'href' => '/mecano/' . $m['slug']]; ?>
-            <li class="resultats__mecano<?= $i === 0 ? ' choisi' : '' ?>" data-rang="<?= $m['rang'] ?>" data-specialiste="<?= $m['specialiste'] ? '1' : '0' ?>" data-note="<?= e((string) ($m['note'] ?? 0)) ?>">
+                  'autreRive' => $m['autre_rive'], 'href' => '/mecano/' . $m['slug'] . '?r=' . $recherche['public_id'], 'attrs' => ['data-fiche' => $m['slug']]]; ?>
+            <li class="resultats__mecano<?= $i === 0 ? ' choisi' : '' ?><?= ($ouvert ?? null) === $m['slug'] ? ' ouvert' : '' ?>" data-rang="<?= $m['rang'] ?>" data-specialiste="<?= $m['specialiste'] ? '1' : '0' ?>" data-note="<?= e((string) ($m['note'] ?? 0)) ?>">
               <?= composant('ligne-classement', $commun + ['format' => 'etendue', 'rubrique' => $i === 0 ? 'Le plus proche' : 'Choisi sur la carte', 'actions' => $actions, 'classe' => 'resultats__etendue']) ?>
               <?= composant('ligne-classement', $commun + ['classe' => 'resultats__compacte']) ?>
             </li>

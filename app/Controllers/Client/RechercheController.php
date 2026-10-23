@@ -98,7 +98,14 @@ final class RechercheController
         }
         $r = $donnees['recherche'];
         $accueil = AccueilService::depuisBase();
+        // D1 : l'adresse peut garder une fiche ouverte (?fiche=slug), pour la partager et la retrouver au rechargement
+        $ouvert = (string) $requete->query('fiche', '');
+        $panneau = null;
+        if ($ouvert !== '' && array_filter($donnees['resultats'], static fn (array $m): bool => $m['slug'] === $ouvert) !== []) {
+            $panneau = View::rendre('client/fiche-panneau', FicheController::donnees($ouvert, $r['public_id'], false));
+        }
         return $this->page('client/resultats', [
+            'panneau' => $panneau, 'ouvert' => $panneau !== null ? $ouvert : null,
             'titre' => $donnees['resultats'] === [] ? 'Aucun mécano disponible' : 'Mécanos disponibles',
             'recherche' => $r,
             'resultats' => $donnees['resultats'],
@@ -109,6 +116,7 @@ final class RechercheController
             'rayonEtendu' => Parametres::int('recherche.rayon_etendu_km', 20),
             'rayons' => [...Parametres::liste('recherche.rayons_km'), Parametres::int('recherche.rayon_etendu_km', 20)],
             'js' => [...self::JS, 'js/pages/resultats.js'],
+            'css' => [...self::CSS, 'css/pages/fiche.css'],
         ]);
     }
 

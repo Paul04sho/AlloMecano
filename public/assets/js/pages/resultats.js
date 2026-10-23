@@ -2,6 +2,7 @@
 // choix d'un mécano sur la carte (une seule ligne étendue à la fois), filtres légers et résumé modifiable (desktop).
 import { creerCarte } from '../composants/carte.js';
 import { feuilleBasse } from '../composants/feuille-basse.js';
+import { initialiserFiche } from '../composants/fiche.js';
 
 const racine = document.querySelector('[data-resultats]');
 const L = window.L;
@@ -43,6 +44,10 @@ if (precision > 0) L.circle(moi, { radius: precision, color: encre, weight: 1.5,
 // (haut : barre 100 + hauteur d'un repère, inutile sans repère)
 const marges = (haut = 180) => (mobile() ? { paddingTopLeft: [16, haut], paddingBottomRight: [16, panneau.hauteur() + 16] } : { padding: [64, 64] });
 
+// Rendus par le bloc « mécanos » ci-dessous, utilisés par le panneau de fiche (D1)
+let choisirMecano = () => {};
+let recadrer = () => {};
+
 if (mecanos.length === 0) {
   // C4c : la zone cherchée (rayon réellement utilisé), carte dézoomée
   const zone = L.circle(moi, { radius: rayonKm * 1000, color: encre, weight: 1.5, opacity: .5, dashArray: '6 6', fill: false, interactive: false }).addTo(carte);
@@ -75,7 +80,11 @@ if (mecanos.length === 0) {
   }, reduit ? 0 : 320 + 70 * mecanos.length + 120);
 
   const bornes = L.latLngBounds([moi, ...mecanos.filter((m) => m.lat !== null).map((m) => [m.lat, m.lon])]);
-  carte.fitBounds(bornes, { ...marges(), maxZoom: 16, animate: false });
+  // Fiche ouverte (D1) : la carte utile s'arrête au bord du panneau de 420 px
+  recadrer = (avecPanneau, animer = true) => carte.fitBounds(bornes, {
+    ...(avecPanneau ? { paddingTopLeft: [64, 64], paddingBottomRight: [64 + 420, 64] } : marges()), maxZoom: 16, animate: animer && !reduit,
+  });
+  recadrer(racine.classList.contains('resultats--fiche'), false);
 
   // Choix d'un mécano sur la carte : sa ligne devient l'étendue (une seule à la fois)
   function choisir(rang, depuisCarte) {
@@ -105,6 +114,8 @@ if (mecanos.length === 0) {
     if (sortant && !reduit) sortant.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateX(-12px)' }], { duration: 120, easing: 'cubic-bezier(.2,.8,.2,1)' }).finished.then(montrer);
     else montrer();
   }
+
+  choisirMecano = choisir;
 
   // ---------- Filtres légers (desktop) : masquent des lignes de la liste figée, sans relancer ----------
   const filtres = racine.querySelectorAll('[data-filtre]');
@@ -148,3 +159,70 @@ document.querySelectorAll('[data-resume-item]').forEach((item) => {
   item.addEventListener('keydown', (e) => { if (e.key === 'Escape') { fermer(); bouton.focus(); } });
   document.addEventListener('click', (e) => { if (!item.contains(e.target)) fermer(); });
 });
+
+// ---------- Fiche ouverte sur la carte (D1 · 158:542) : panneau de 420 px, la liste reste à gauche ----------
+const bureau = matchMedia('(min-width: 1024px)');
+const zoneCarte = racine.querySelector('.resultats__carte');
+const rechercheId = racine.dataset.recherche;
+
+function lierPanneau(panneau, ligne) {
+  const slug = panneau.dataset.slug;
+  initialiserFiche(panneau, slug);
+  panneau.querySelector('#panneau-nom')?.focus({ preventScroll: true });
+  panneau.querySelectorAll('[data-fermer-fiche]').forEach((b) => b.addEventListener('click', () => fermerFiche()));
+  if (ligne) choisirMecano(Number(ligne.dataset.rang), false);
+}
+
+async function ouvrirFiche(slug, ligne) {
+  const dejaOuvert = zoneCarte.querySelector('[data-panneau]');
+  if (dejaOuvert?.dataset.slug === slug) return;
+  let html;
+  try {
+    const r = await fetch(`/api/mecano/${encodeURIComponent(slug)}/fiche?r=${encodeURIComponent(rechercheId)}`, { credentials: 'same-origin', headers: { Accept: 'text/html' } });
+    if (!r.ok) throw new Error(String(r.status));
+    html = await r.text();
+  } catch {
+    location.href = `/mecano/${encodeURIComponent(slug)}?r=${encodeURIComponent(rechercheId)}`; // la fiche en pleine page prend le relais
+    return;
+  }
+  dejaOuvert?.remove();
+  zoneCarte.insertAdjacentHTML('beforeend', html); // gabarit fiche-panneau.php : tout le texte y passe par e()
+  const panneau = zoneCarte.querySelector('[data-panneau]');
+  if (dejaOuvert) panneau.style.animation = 'none'; // changement de fiche : pas de nouvelle glissade
+  racine.classList.add('resultats--fiche');
+  document.querySelectorAll('.resultats__mecano.ouvert').forEach((l) => l.classList.remove('ouvert'));
+  ligne?.classList.add('ouvert');
+  history.replaceState(null, '', `${location.pathname}?fiche=${encodeURIComponent(slug)}`);
+  lierPanneau(panneau, ligne);
+  recadrer(true);
+}
+
+function fermerFiche() {
+  const panneau = zoneCarte.querySelector('[data-panneau]');
+  if (!panneau) return;
+  const fin = () => {
+    panneau.remove();
+    racine.classList.remove('resultats--fiche');
+    recadrer(false);
+  };
+  const ligne = document.querySelector('.resultats__mecano.ouvert');
+  document.querySelectorAll('.resultats__mecano.ouvert').forEach((l) => l.classList.remove('ouvert'));
+  history.replaceState(null, '', location.pathname);
+  if (reduit) fin();
+  else { panneau.classList.add('ferme'); panneau.addEventListener('animationend', fin, { once: true }); }
+  ligne?.querySelector('a')?.focus({ preventScroll: true });
+}
+
+// Un appui sur une ligne ouvre la fiche à côté sur desktop ; sur mobile le lien mène à la fiche en pleine page
+racine.addEventListener('click', (e) => {
+  if (!bureau.matches || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey) return;
+  const lien = e.target.closest('a[href^="/mecano/"]');
+  const ligne = lien?.closest('[data-fiche]');
+  if (!ligne) return;
+  e.preventDefault();
+  ouvrirFiche(ligne.dataset.fiche, ligne.closest('.resultats__mecano'));
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && zoneCarte.querySelector('[data-panneau]') && !document.querySelector('.resume__panneau:not([hidden])')) fermerFiche(); });
+
+const present = zoneCarte.querySelector('[data-panneau]');
+if (present) lierPanneau(present, document.querySelector('.resultats__mecano.ouvert'));

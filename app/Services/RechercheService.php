@@ -137,7 +137,7 @@ final class RechercheService
     {
         $r = $this->db->un(
             'SELECT r.id, r.public_id, r.type_vehicule, r.precisions, r.source_position, r.lat, r.lon, r.precision_m, r.repere,
-                    r.rayon_km, r.nb_resultats, r.cree_le,
+                    r.rayon_km, r.nb_resultats, r.cree_le, r.position_effacee_le,
                     p.code AS panne, p.libelle AS panne_libelle, tv.libelle AS vehicule_libelle,
                     q.nom AS quartier, q.slug AS quartier_slug, q.lat AS quartier_lat, q.lon AS quartier_lon, co.nom AS commune
                FROM recherches r

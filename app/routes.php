@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 use App\Controllers\Api\ClientController;
 use App\Controllers\Client\AccueilController;
+use App\Controllers\Client\FicheController;
 use App\Controllers\Client\PanneController;
 use App\Controllers\Client\PositionController;
 use App\Controllers\Client\RechercheController;
@@ -37,8 +38,10 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
         $r->post('/recherche/rayon', [RechercheController::class, 'rayon']);                      // « Chercher jusqu'à 20 km »
         $r->post('/recherche/modifier', [RechercheController::class, 'modifier']);                 // D1 · résumé modifiable
         $r->get('/resultats/{id}', [RechercheController::class, 'resultats'], 'resultats');       // C4 · C4c · D1
+        $r->get('/mecano/{slug}', [FicheController::class, 'page'], 'fiche');                     // C5 · ?r=<recherche>
+        $r->get('/api/mecano/{slug}/fiche', [FicheController::class, 'panneau']);                 // D1 · panneau de 420 px
+        $r->get('/api/mecano/{slug}/avis', [FicheController::class, 'avis']);                     // C5 · « Lire les 37 avis »
     });
-    // $r->get('/mecano/{slug}', …)       C5                        (à faire)
     // $r->get('/contact/{id}', …)        C5c · C6                  (à faire)
     // $r->get('/avis/{id}', …)           C6b                       (à faire)
     // $r->get('/signaler/{slug}', …)     C7                        (à faire)

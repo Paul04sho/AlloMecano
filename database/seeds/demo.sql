@@ -43,7 +43,7 @@ SELECT m.id, s.id FROM mecaniciens m JOIN specialites s ON
 -- Portraits de démo (photos publiques, RG-DO9) : visages des maquettes, copiés dans public/medias/demo
 -- par scripts/installer-base.php --demo. En production, ils sont générés depuis la pièce validée.
 INSERT INTO photos (mecanicien_id,type,dossier,largeurs,ratio,couleur_dominante,focal_x,focal_y)
-SELECT m.id,'portrait',CONCAT('demo/',p.fichier),'160,360',p.ratio,p.couleur,0.50,0.30
+SELECT m.id,'portrait',CONCAT('demo/',p.fichier),IF(p.fichier='doyen','160,360,656','160,360,604'),p.ratio,p.couleur,0.50,0.30
 FROM mecaniciens m JOIN (
   SELECT '01JDEMO0000000000000000001' AS public_id,'koffi' AS fichier,0.798 AS ratio,'#6f665b' AS couleur UNION ALL
   SELECT '01JDEMO0000000000000000002','awa',0.798,'#786e64' UNION ALL
@@ -54,3 +54,55 @@ FROM mecaniciens m JOIN (
   SELECT '01JDEMO0000000000000000007','awa',0.798,'#786e64' UNION ALL
   SELECT '01JDEMO0000000000000000008','serge',0.798,'#8e8378'
 ) p ON p.public_id = m.public_id;
+
+-- Photo d'atelier (fiche C5 · « Son atelier ») : substitut IMG-01 en attendant IMG-10, comme dans la maquette.
+INSERT INTO photos (mecanicien_id,type,dossier,largeurs,ratio,couleur_dominante,focal_x,focal_y)
+SELECT id,'atelier','demo/atelier','780,1264',1.491,'#8f7f6c',0.50,0.50 FROM mecaniciens;
+
+-- Avis de démonstration (RG-AV1 à AV6) : autant d'avis que mecaniciens.nb_avis, répartis pour retrouver note_moyenne
+-- (sur 10 avis : round((note-4)×10) à 5 étoiles, les autres à 4). Chaque avis repose sur un contact terminé.
+INSERT INTO clients (jeton_hash,prenom) VALUES (SHA2('client-de-demonstration',256),'Démo');
+
+INSERT INTO contacts (public_id,client_id,mecanicien_id,canal,statut,cree_le,resume,quartier_libelle,position_partagee)
+SELECT CONCAT('01JDEMOC',LPAD(m.id,3,'0'),LPAD(n.k,15,'0')),
+       (SELECT id FROM clients WHERE jeton_hash=SHA2('client-de-demonstration',256)),
+       m.id,'tel','termine',
+       UTC_TIMESTAMP() - INTERVAL IF(n.k=1,3,IF(n.k=2,14,n.k*5+10)) DAY,
+       'Voiture · Batterie','Riviera 2',1
+FROM mecaniciens m
+JOIN (SELECT a.d+10*b.d+1 AS k FROM
+        (SELECT 0 d UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) a,
+        (SELECT 0 d UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) b) n
+  ON n.k <= m.nb_avis;
+
+INSERT INTO avis (contact_id,mecanicien_id,client_id,note,commentaire,prenom_affiche,panne_libelle,reponse_mecano,reponse_le,cree_le)
+SELECT c.id, c.mecanicien_id, c.client_id,
+       IF(MOD(k.k-1,10) < ROUND((m.note_moyenne-4)*10),5,4),
+       CASE WHEN m.id=1 AND k.k=1 THEN 'Arrivé en 20 minutes, batterie changée sur place. Il a annoncé le prix avant de commencer.'
+            WHEN m.id=1 AND k.k=2 THEN 'Démarreur bloqué devant chez moi. Il a trouvé le relais grillé en dix minutes et m’a montré la pièce.'
+            ELSE ELT(1+MOD(k.k,6),
+              'Il est venu vite et il a bien expliqué la panne avant de toucher à quoi que ce soit.',
+              'Prix annoncé au départ, prix payé à la fin. Je recommande.',
+              'Travail propre, il a gardé les pièces changées pour me les montrer.',
+              'Dépannée en moins d’une demi-heure, très poli.',
+              'Il a rappelé le lendemain pour vérifier que tout marchait.',
+              'Sérieux, ponctuel, et il connaît bien son métier.') END,
+       IF(m.id=1 AND k.k=1,'Aminata',IF(m.id=1 AND k.k=2,'Bintou',ELT(1+MOD(k.k+m.id,8),'Yao','Fatou','Kader','Mariam','Serge','Aïcha','Ibrahim',NULL))),
+       CASE m.id WHEN 1 THEN IF(k.k=1,'Batterie',IF(k.k=2,'Démarreur',ELT(1+MOD(k.k,3),'Batterie','Démarreur','Alternateur')))
+                 WHEN 2 THEN ELT(1+MOD(k.k,3),'Freins','Vidange','Diagnostic')
+                 WHEN 3 THEN ELT(1+MOD(k.k,3),'Pneu crevé','Équilibrage','Pneu crevé')
+                 WHEN 4 THEN ELT(1+MOD(k.k,3),'Surchauffe','Moteur','Joint de culasse')
+                 WHEN 5 THEN ELT(1+MOD(k.k,3),'Remorquage','Accident','Carrosserie')
+                 WHEN 6 THEN ELT(1+MOD(k.k,3),'Moto','Chaîne','Embrayage')
+                 WHEN 7 THEN ELT(1+MOD(k.k,3),'Batterie','Électronique','Climatisation')
+                 ELSE ELT(1+MOD(k.k,3),'Freins à air','Camion','Moteur') END,
+       IF(m.id=1 AND k.k=1,'Merci Aminata, bonne route !',NULL),
+       IF(m.id=1 AND k.k=1,c.cree_le + INTERVAL 2 HOUR,NULL),
+       c.cree_le + INTERVAL 1 HOUR
+FROM contacts c
+JOIN mecaniciens m ON m.id=c.mecanicien_id
+JOIN (SELECT CAST(SUBSTRING(public_id,12) AS UNSIGNED) AS k, id FROM contacts WHERE public_id LIKE '01JDEMOC%') k ON k.id=c.id
+WHERE c.public_id LIKE '01JDEMOC%';
+
+INSERT INTO avis_etiquettes (avis_id,etiquette_id)
+SELECT a.id, 1+MOD(a.id,5) FROM avis a WHERE a.note=5 AND MOD(a.id,2)=0;

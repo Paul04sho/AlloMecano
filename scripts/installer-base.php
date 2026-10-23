@@ -58,7 +58,7 @@ foreach ($fichiers as $fichier) {
     $pdo->exec((string) file_get_contents($fichier));
     echo 'Chargé : ' . basename($fichier) . "\n";
 }
-// Démo : portraits copiés dans public/medias/demo (dossier hors git, comme les vraies photos publiques)
+// Démo : photos (portraits, ateliers) copiées dans public/medias/demo (dossier hors git, comme les vraies photos publiques)
 if (in_array('--demo', $options, true)) {
     $source = dirname(__DIR__) . '/database/seeds/medias';
     $cible = dirname(__DIR__) . '/public/medias/demo';
@@ -68,7 +68,7 @@ if (in_array('--demo', $options, true)) {
     foreach (glob($source . '/*.webp') ?: [] as $f) {
         copy($f, $cible . '/' . basename($f));
     }
-    echo 'Portraits de démo copiés : ' . count(glob($cible . '/*.webp') ?: []) . "
+    echo 'Photos de démo copiées : ' . count(glob($cible . '/*.webp') ?: []) . "
 ";
 }
 $tables = $pdo->query("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = " . $pdo->quote($nom))->fetchColumn();

@@ -1,0 +1,178 @@
+/* C5 · Fiche mécanicien (Figma 76:1211, sombre 185:1697, plus disponible 78:1304) et panneau de D1 (158:542).
+   Composants de la fiche (portrait, bandeau de preuve, bornes, bloc message, interrupteur, avis, contact révélé) :
+   chargés avec la page, et par /systeme. */
+
+/* ---------- Portrait (76:1212 plein cadre · 158:828 panneau 4:5 coupe L) ---------- */
+.portrait-fiche { position: relative; overflow: hidden; background: var(--encre-2); }
+.portrait-fiche img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.portrait-fiche--plein { height: 360px; }
+.portrait-fiche__bouton { position: absolute; top: var(--esp-12); left: var(--esp-12); z-index: 1; }
+.portrait-fiche__puce {
+  position: absolute; right: var(--esp-12); bottom: var(--esp-12); z-index: 1;
+  padding: var(--esp-4) calc(var(--esp-8) + 2px); border-radius: var(--rayon);
+  background: var(--bitume); color: var(--beton); white-space: nowrap;
+  font-family: var(--police-donnee); font-weight: 500; font-size: 14px; line-height: 20px; font-variant-numeric: tabular-nums;
+}
+.portrait-fiche--panneau { aspect-ratio: 4 / 5; width: 100%; clip-path: polygon(var(--coupe-l) 0, 100% 0, 100% 100%, 0 100%, 0 calc(var(--coupe-l) * .577)); }
+.portrait-fiche--panneau .portrait-fiche__bouton { left: auto; right: var(--esp-12); }
+.portrait-fiche--panneau .portrait-fiche__puce { font-size: 13px; line-height: 18px; letter-spacing: .04em; text-transform: uppercase; padding-block: calc(var(--esp-4) + 2px); }
+/* La photo se révèle depuis sa couleur dominante (moment 5) : sans JS, elle est simplement là */
+.js :is([data-fiche], [data-panneau]) .portrait-fiche img { opacity: 0; transition: opacity var(--t-entree) linear; }
+.js :is([data-fiche], [data-panneau]) .portrait-fiche img.charge { opacity: 1; }
+
+/* ---------- Bandeau de preuve (76:1219 · 158:836) ---------- */
+.bandeau-preuve {
+  display: flex; align-items: center; gap: var(--esp-12); margin: 0; min-height: 56px;
+  padding: calc(var(--esp-12) + 2px) var(--esp-16); background: var(--section-sombre); color: var(--beton);
+  font-family: var(--police-donnee); font-weight: 500; font-size: 14px; line-height: 20px;
+}
+.bandeau-preuve__poincon { flex: none; display: inline-flex; }
+.bandeau-preuve .poincon { color: var(--beton); --coche: var(--bitume); }
+.js :is([data-fiche], [data-panneau]) .bandeau-preuve__poincon:not(.pose) { opacity: 0; }
+@media (min-width: 1024px) { .bandeau-preuve { font-size: 15px; line-height: 22px; padding-block: var(--esp-12); } }
+
+/* ---------- Fiche technique en bornes (76:1235 · 158:856) ---------- */
+.bornes-fiche { display: flex; border-block: 1px solid var(--filet); }
+.bornes-fiche__borne { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 6px; padding: var(--esp-16) var(--esp-8) var(--esp-16) var(--esp-12); }
+.bornes-fiche__borne:first-child { padding-left: 0; }
+.bornes-fiche__borne + .bornes-fiche__borne { border-left: 1px solid var(--filet); }
+.bornes-fiche__valeur, .bornes-fiche__libelle { margin: 0; }
+.bornes-fiche__valeur, .fiche__tarifs .borne__valeur { white-space: nowrap; word-spacing: 3px; } /* « 5 000 » : l'espace d'Archivo est trop serrée (76:1243) */
+.bornes-fiche__unite { margin-left: 6px; letter-spacing: .04em; color: var(--encre); }
+.bornes-fiche--panneau .bornes-fiche__borne { flex: 0 1 auto; gap: var(--esp-4); padding: 10px var(--esp-16); }
+.bornes-fiche--panneau .bornes-fiche__borne:last-child { flex: 1 1 0; padding-right: 0; }
+.bornes-fiche--panneau .bornes-fiche__borne:first-child { padding-left: 0; }
+
+/* ---------- Interrupteur « Lien de ma position » (54:686) ---------- */
+.interrupteur { position: relative; display: inline-flex; align-items: center; gap: var(--esp-8); min-height: 44px; cursor: pointer; }
+.interrupteur__champ { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.interrupteur__piste { position: relative; flex: none; width: 36px; height: 20px; border-radius: 10px; background: var(--bord-champ); transition: background-color var(--t-etat) linear; }
+.interrupteur__piste::after {
+  content: ""; position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%;
+  background: var(--surface); transition: transform var(--t-etat) var(--ease-sortie);
+}
+.interrupteur__champ:checked + .interrupteur__piste { background: var(--encre); }
+.interrupteur__champ:checked + .interrupteur__piste::after { transform: translateX(16px); }
+.interrupteur__champ:focus-visible + .interrupteur__piste { outline: 3px solid var(--encre); outline-offset: 3px; }
+.interrupteur__libelle { font-size: 15px; line-height: 22px; }
+
+/* ---------- Bloc « Ce qu'il faut lui dire » (54:675) ---------- */
+.bloc-message {
+  position: relative; display: flex; flex-direction: column; gap: var(--esp-12);
+  padding: var(--esp-16) var(--esp-16) var(--esp-16) var(--esp-20); background: var(--surface-creuse); border-radius: var(--rayon);
+}
+.bloc-message::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--encre); }
+.bloc-message > * { margin: 0; }
+.bloc-message__texte { overflow-wrap: anywhere; }
+.bloc-message__texte [data-message-position] { transition: opacity var(--t-etat) linear; }
+.bloc-message__texte [data-message-position].efface { opacity: 0; }
+.bloc-message__actions { display: flex; align-items: center; flex-wrap: wrap; column-gap: var(--esp-16); }
+.bloc-message__copier {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0; background: none; border: 0; color: var(--encre);
+  cursor: pointer; text-decoration: underline; text-underline-offset: 3px;
+}
+
+/* ---------- Avis (54:674) ---------- */
+.avis { display: flex; flex-direction: column; align-items: flex-start; gap: var(--esp-8); padding-block: var(--esp-16); border-bottom: 1px solid var(--filet); }
+.avis > * { margin: 0; }
+.avis__etoiles { display: flex; gap: 2px; color: var(--etoile); }
+.avis__etoile { flex: none; fill: currentColor; stroke: currentColor; stroke-width: 1.16667; stroke-linecap: square; stroke-linejoin: bevel; } /* tracé de 54:674 */
+.avis__etoile--vide { fill: none; }
+.avis__citation { overflow-wrap: anywhere; }
+.avis__reponse { display: flex; flex-direction: column; gap: var(--esp-4); width: 100%; padding-left: 14px; border-left: 2px solid var(--encre); }
+.avis__reponse > * { margin: 0; }
+
+/* ---------- Contact · numéro révélé (159:858) ---------- */
+.contact-revele { display: flex; flex-direction: column; gap: var(--esp-8); }
+.contact-revele > p { margin: 0; }
+.contact-revele__ligne { display: flex; align-items: center; gap: var(--esp-16); }
+.contact-revele__qr { flex: none; width: 112px; height: 112px; color: var(--bitume); background: var(--blanc); }
+.contact-revele__qr svg { display: block; width: 100%; height: 100%; }
+.contact-revele__numero { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.contact-revele__numero > p { margin: 0; }
+.contact-revele__chiffres { display: flex; align-items: center; justify-content: space-between; white-space: nowrap; }
+.contact-revele__copier { width: 40px; height: 40px; }
+.contact-revele .bouton { margin-top: var(--esp-4); }
+
+/* ---------- Page C5 (mobile ; en colonne centrée sur desktop quand on ouvre la fiche sans passer par la liste) ---------- */
+.fiche { display: block; max-width: 560px; margin-inline: auto; padding-bottom: calc(var(--hauteur-socle) + var(--esp-56) + env(safe-area-inset-bottom)); }
+.fiche__corps { display: flex; flex-direction: column; gap: var(--esp-40); padding: var(--esp-24) var(--marge) var(--esp-40); }
+.fiche__identite { display: flex; flex-direction: column; align-items: flex-start; gap: var(--esp-8); }
+.fiche__identite > h1, .fiche__identite > p { margin: 0; }
+.fiche__identite .bornes-fiche { align-self: stretch; margin-top: var(--esp-16); }
+.fiche__section { display: flex; flex-direction: column; gap: var(--esp-16); }
+.fiche__section > p { margin: 0; }
+.fiche__entete { display: flex; flex-direction: column; gap: var(--esp-12); }
+.fiche__entete > * { margin: 0; text-wrap: balance; }
+.fiche__tarifs { margin: 0; border-top: 1px solid var(--filet); }
+.fiche__tarifs > div { display: flex; align-items: center; justify-content: space-between; padding-block: var(--esp-12); border-bottom: 1px solid var(--filet); }
+.fiche__tarifs dt, .fiche__tarifs dd { margin: 0; }
+.fiche .etiquettes-choix { padding: 0; margin: 0; list-style: none; }
+.etiquette-choix--fixe { cursor: default; }
+.fiche__atelier-bloc { display: flex; flex-direction: column; gap: var(--esp-12); }
+.fiche__atelier-bloc > p { margin: 0; }
+.fiche__atelier img { height: auto; aspect-ratio: 780 / 523; }
+.fiche__avis { border-top: 1px solid var(--filet); }
+.fiche__section > .lien { align-self: flex-start; }
+.lien--erreur { color: var(--erreur-texte); }
+.fiche__signaler { display: flex; align-items: center; min-height: 48px; margin: 0; padding-top: var(--esp-16); border-top: 1px solid var(--filet); }
+.fiche__signaler .lien { display: inline-flex; align-items: center; gap: var(--esp-8); }
+.fiche__signaler .icone { fill: none; }
+.fiche .socle__actions > form:first-child { flex: 1; min-width: 0; }
+.fiche .socle__actions > form:last-child { flex: none; }
+.fiche .formulaire-contact { display: contents; }
+.fiche .socle__actions > .bouton { flex: 1; }
+.fiche .socle__actions form .bouton { width: 100%; gap: 10px; padding-inline: var(--esp-16); }
+.fiche .socle__actions form:last-child .bouton { width: 136px; padding-inline: var(--esp-8); }
+/* Sous 390 px : « Appeler Koffi » reste sur une ligne (libellés en 16, marges de 12), WhatsApp prend sa largeur utile */
+@media (max-width: 389.98px) {
+  .fiche .socle__actions form .bouton { gap: var(--esp-8); padding-inline: var(--esp-12); font-size: 16px; }
+  .fiche .socle__actions form:last-child .bouton { width: auto; }
+}
+.fiche .socle__actions .bouton__libelle { white-space: nowrap; }
+@media (min-width: 1024px) { .fiche .socle { padding: 0 var(--marge) var(--esp-24); } .fiche { padding-bottom: 0; } }
+
+/* ---------- Panneau de D1 (158:804) : 420 px, glisse depuis la droite sur la carte ---------- */
+.fiche-panneau { display: none; }
+@media (min-width: 1024px) {
+  .fiche-panneau {
+    position: absolute; z-index: 1000; top: 0; right: 0; bottom: 0; width: 420px; display: flex; flex-direction: column;
+    background: var(--surface); border-left: 1px solid var(--filet); box-shadow: var(--ombre-feuille);
+    animation: panneau-entre var(--t-entree) var(--ease-sortie) both;
+  }
+  .fiche-panneau.ferme { animation: panneau-sort 200ms var(--ease-sortie) both; }
+  .fiche-panneau__contenu { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow-y: auto; padding: var(--esp-24) var(--esp-24) var(--esp-32); scrollbar-width: none; } /* défile sans barre : les 372 px de la maquette restent entiers */
+  .fiche-panneau__contenu > * { flex: none; }
+  .fiche-panneau__identite { display: flex; flex-direction: column; gap: var(--esp-4); margin-top: 14px; }
+  .fiche-panneau__identite > p { margin: 0; }
+  .fiche-panneau__nom { display: flex; align-items: center; justify-content: space-between; gap: var(--esp-12); }
+  .fiche-panneau__nom > h2 { margin: 0; white-space: nowrap; }
+  .fiche-panneau .bornes-fiche { margin-top: 14px; }
+  .fiche-panneau .bloc-message { margin-top: var(--esp-24); }
+  .fiche-panneau__avis { display: flex; flex-direction: column; margin-top: var(--esp-32); }
+  .fiche-panneau__avis > h3 { margin: 0; }
+  .fiche-panneau__avis > .lien { align-self: flex-start; margin-top: var(--esp-16); }
+  .fiche-panneau .fiche__signaler { margin-top: var(--esp-24); padding-top: 0; border-top: 0; min-height: 26px; }
+  .fiche-panneau__contact { flex: none; display: flex; flex-direction: column; gap: var(--esp-8); padding: var(--esp-16) var(--esp-24) var(--esp-20); background: var(--surface); border-top: 1px solid var(--filet); }
+  .fiche-panneau__contact > p { margin: 0; }
+  /* Avant la révélation (RG-A1), les deux boutons de la ligne ouverte (54:235) sont empilés : le panneau de 372 px ne porte pas les deux sur une ligne */
+  .fiche-panneau__actions { display: flex; flex-direction: column; gap: var(--esp-8); }
+  .fiche-panneau__actions .formulaire-contact { display: contents; }
+  .fiche-panneau__actions .bouton { width: 100%; gap: 10px; }
+  .fiche-panneau h2:focus-visible { outline: none; } /* focus posé à l'ouverture pour les lecteurs d'écran, pas un contrôle */
+  .fiche-panneau .bouton-icone:focus-visible { outline-color: var(--beton); }
+
+  /* Fiche ouverte : la liste redevient compacte (le détail est dans le panneau), la ligne ouverte est marquée */
+  .resultats--fiche .resultats__etendue { display: none; }
+  .resultats--fiche .resultats__mecano.choisi .resultats__compacte { display: flex; }
+  .resultats--fiche .resultats__mecano.ouvert .ligne-classement { background: var(--surface-elevee); box-shadow: inset 4px 0 0 var(--encre); }
+  .resultats--fiche .carte-controles { right: calc(var(--esp-16) + 420px); transition: right var(--t-entree) var(--ease-sortie); }
+}
+@keyframes panneau-entre { from { transform: translateX(100%); } }
+@keyframes panneau-sort { to { transform: translateX(100%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .js :is([data-fiche], [data-panneau]) .portrait-fiche img { transition: none; }
+  .fiche-panneau, .fiche-panneau.ferme { animation: none; }
+  .interrupteur__piste, .interrupteur__piste::after, .bloc-message__texte [data-message-position] { transition: none; }
+}

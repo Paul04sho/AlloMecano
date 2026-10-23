@@ -28,6 +28,7 @@
   --inverse-fond: #15171c;
   --inverse-texte: #f4f5f2;
   --section-sombre: #15171c;
+  --etoile: #15171c;           /* étoiles des avis (54:674) : bitume en clair, jaune en sombre */
   --carte-sol: #e9eae5;
   --carte-ilot: #f7f7f4;
   --carte-route: #ffffff;
@@ -110,6 +111,7 @@
     --inverse-fond: #f4f5f2;
     --inverse-texte: #15171c;
     --section-sombre: #22252c;
+    --etoile: #ffcb05;
     --carte-sol: #1b1e23;
     --carte-ilot: #23262c;
     --carte-route: #30343b;
@@ -136,6 +138,7 @@
   --inverse-fond: #f4f5f2;
   --inverse-texte: #15171c;
   --section-sombre: #22252c;
+  --etoile: #ffcb05;
   --carte-sol: #1b1e23;
   --carte-ilot: #23262c;
   --carte-route: #30343b;

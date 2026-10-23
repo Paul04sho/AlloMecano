@@ -26,6 +26,8 @@ final class AccueilServiceTest extends TestCase
             self::markTestSkipped('Base indisponible : ' . $e->getMessage());
         }
         $this->db->pdo()->beginTransaction();
+        $this->db->executer('DELETE FROM avis'); // avis de démo : RESTRICT sur les mécanos, annulé à la fin
+        $this->db->executer('DELETE FROM contacts');
         $this->db->executer('DELETE FROM mecaniciens');
     }
 

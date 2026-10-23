@@ -101,7 +101,7 @@ $icones = json_decode((string) file_get_contents(RACINE . '/scripts/icones.json'
       <span class="etiquette-verifie"><?= composant('poincon', ['taille' => 14]) ?>Vérifié</span>
     </div>
     <div class="systeme__ligne">
-      <?php foreach (['disponible', 'indisponible', 'brouillon', 'en_attente', 'valide', 'a_reprendre', 'refuse', 'suspendu'] as $s): ?><?= composant('statut', ['statut' => $s]) ?><?php endforeach ?>
+      <?php foreach (['disponible', 'indisponible', 'plus_disponible', 'brouillon', 'en_attente', 'valide', 'a_reprendre', 'refuse', 'suspendu'] as $s): ?><?= composant('statut', ['statut' => $s]) ?><?php endforeach ?>
     </div>
   </section>
 
@@ -216,6 +216,36 @@ $icones = json_decode((string) file_get_contents(RACINE . '/scripts/icones.json'
         <a class="ligne-choix ligne-choix--lien" href="#"><span>Cocody</span><?= icone('chevron', 20) ?></a>
       </div>
       <?= composant('recap', ['etiquette' => 'Ce qu’on donnera au mécano', 'texte' => 'Riviera 2 · près de la pharmacie des Jardins']) ?>
+    </div>
+  </section>
+
+  <section class="rubrique">
+    <span class="t-etiquette">Fiche mécano · portrait 76:1212 · bandeau de preuve 76:1219 · bornes 76:1235 · statut « plus disponible » 78:1322</span>
+    <div class="systeme__grille systeme__fiche">
+      <div>
+        <?= composant('portrait-fiche', ['photo' => ['src' => '/medias/demo/koffi-360.webp', 'srcset' => '/medias/demo/koffi-360.webp 360w, /medias/demo/koffi-604.webp 604w', 'couleur' => '#6f665b', 'cadrage' => '50% 30%'], 'nom' => 'Koffi Yao', 'mode' => 'plein', 'retour' => '#', 'puce' => '1,2 km · Riviera 3']) ?>
+        <?= composant('bandeau-preuve', ['date' => '12 mars 2026']) ?>
+      </div>
+      <?= composant('bornes', ['bornes' => [['valeur' => '4,8', 'libelle' => '37 avis'], ['valeur' => '12', 'libelle' => 'ans de métier'], ['valeur' => '5 000', 'unite' => 'FCFA', 'libelle' => 'diagnostic dès']]]) ?>
+      <?= composant('bornes', ['unitesAParts' => true, 'bornes' => [['valeur' => '4,8', 'libelle' => '37 avis'], ['valeur' => '12', 'libelle' => 'ans de métier'], ['valeur' => '5 000', 'unite' => 'FCFA', 'libelle' => 'diagnostic dès']]]) ?>
+    </div>
+  </section>
+
+  <section class="rubrique">
+    <span class="t-etiquette">Bloc « Ce qu’il faut lui dire » 54:675 · interrupteur 54:686 · avis 54:674 (étoiles bitume en clair, jaunes en sombre)</span>
+    <div class="systeme__grille">
+      <?= composant('bloc-message', ['idInterrupteur' => 'position-demo', 'message' => ['sans' => 'Bonjour Koffi, je vous contacte via allomécano. Je suis en panne à Riviera 2, près de la pharmacie des Jardins. Voiture, batterie.', 'position' => "Ma position\u{202F}: https://osm.org/?mlat=5.3571&mlon=-3.9672"]]) ?>
+      <div>
+        <?= composant('avis', ['note' => 5, 'commentaire' => 'Arrivé en 20 minutes, batterie changée sur place. Il a annoncé le prix avant de commencer.', 'prenom' => 'Aminata', 'panne' => 'Batterie', 'depuis' => 'il y a 3 jours', 'reponse' => 'Merci Aminata, bonne route !', 'prenomMecano' => 'Koffi']) ?>
+        <?= composant('avis', ['note' => 4, 'commentaire' => 'Sérieux, ponctuel, et il connaît bien son métier.', 'prenom' => 'Un client', 'panne' => 'Démarreur', 'depuis' => 'il y a 2 semaines']) ?>
+      </div>
+    </div>
+  </section>
+
+  <section class="rubrique">
+    <span class="t-etiquette">Contact · numéro révélé 159:858 (QR code maison, numéro fictif · branché en partie 6)</span>
+    <div class="systeme__grille">
+      <?= composant('contact-revele', ['prenom' => 'Koffi', 'telephone' => '+2250707123456', 'lienWhatsApp' => '#']) ?>
     </div>
   </section>
 
