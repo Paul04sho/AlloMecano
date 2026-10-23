@@ -119,6 +119,10 @@ final class Database
      */
     public function transaction(callable $travail): mixed
     {
+        // Déjà dans une transaction (appel imbriqué, tests) : le travail en fait partie
+        if ($this->pdo->inTransaction()) {
+            return $travail($this);
+        }
         $this->pdo->beginTransaction();
         try {
             $resultat = $travail($this);

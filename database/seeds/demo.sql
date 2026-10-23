@@ -39,3 +39,18 @@ SELECT m.id, s.id FROM mecaniciens m JOIN specialites s ON
   OR (m.public_id='01JDEMO0000000000000000006' AND s.code IN ('moto'))
   OR (m.public_id='01JDEMO0000000000000000007' AND s.code IN ('electricite_auto','batterie'))
   OR (m.public_id='01JDEMO0000000000000000008' AND s.code IN ('freins','moteur','mecanique_generale'));
+
+-- Portraits de démo (photos publiques, RG-DO9) : visages des maquettes, copiés dans public/medias/demo
+-- par scripts/installer-base.php --demo. En production, ils sont générés depuis la pièce validée.
+INSERT INTO photos (mecanicien_id,type,dossier,largeurs,ratio,couleur_dominante,focal_x,focal_y)
+SELECT m.id,'portrait',CONCAT('demo/',p.fichier),'160,360',p.ratio,p.couleur,0.50,0.30
+FROM mecaniciens m JOIN (
+  SELECT '01JDEMO0000000000000000001' AS public_id,'koffi' AS fichier,0.798 AS ratio,'#6f665b' AS couleur UNION ALL
+  SELECT '01JDEMO0000000000000000002','awa',0.798,'#786e64' UNION ALL
+  SELECT '01JDEMO0000000000000000003','adama',0.798,'#8a7969' UNION ALL
+  SELECT '01JDEMO0000000000000000004','serge',0.798,'#8e8378' UNION ALL
+  SELECT '01JDEMO0000000000000000005','doyen',0.928,'#93877d' UNION ALL
+  SELECT '01JDEMO0000000000000000006','adama',0.798,'#8a7969' UNION ALL
+  SELECT '01JDEMO0000000000000000007','awa',0.798,'#786e64' UNION ALL
+  SELECT '01JDEMO0000000000000000008','serge',0.798,'#8e8378'
+) p ON p.public_id = m.public_id;

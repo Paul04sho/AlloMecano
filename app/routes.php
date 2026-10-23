@@ -13,6 +13,7 @@ use App\Controllers\Api\ClientController;
 use App\Controllers\Client\AccueilController;
 use App\Controllers\Client\PanneController;
 use App\Controllers\Client\PositionController;
+use App\Controllers\Client\RechercheController;
 use App\Controllers\Communs\SystemeController;
 use App\Middleware\IdentifierClient;
 use App\Middleware\VerifierCsrf;
@@ -31,8 +32,12 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
         $r->get('/panne', [PanneController::class, 'formulaire'], 'panne');                       // C3
         $r->post('/panne', [PanneController::class, 'enregistrer']);
         $r->post('/panne/effacer', [PanneController::class, 'effacerContact']);
+        $r->get('/recherche', [RechercheController::class, 'chargement'], 'recherche');           // C4b
+        $r->post('/recherche', [RechercheController::class, 'lancerFormulaire']);
+        $r->post('/recherche/rayon', [RechercheController::class, 'rayon']);                      // « Chercher jusqu'à 20 km »
+        $r->post('/recherche/modifier', [RechercheController::class, 'modifier']);                 // D1 · résumé modifiable
+        $r->get('/resultats/{id}', [RechercheController::class, 'resultats'], 'resultats');       // C4 · C4c · D1
     });
-    // $r->get('/resultats/{id}', …)      C4 · C4b · C4c · D1       (à faire)
     // $r->get('/mecano/{slug}', …)       C5                        (à faire)
     // $r->get('/contact/{id}', …)        C5c · C6                  (à faire)
     // $r->get('/avis/{id}', …)           C6b                       (à faire)
@@ -62,6 +67,9 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
 });
 
 // ----- API JSON (appel intégré, recherche, push) : routes ajoutées par les chantiers -----
+$routeur->groupe('/api', [VerifierCsrf::class, IdentifierClient::class], function ($r) {
+    $r->post('/recherches', [RechercheController::class, 'lancerApi']);                          // C4b → C4
+});
 $routeur->groupe('/api', [VerifierCsrf::class], function ($r) {
     $r->post('/client/restaurer', [ClientController::class, 'restaurer']);                    // RG-C7
     $r->post('/client/effacer', [ClientController::class, 'effacer']);                        // C3 · « Effacer »

@@ -1,7 +1,8 @@
 // Carte (Fond de carte 56:736) : Leaflet + tuiles Protomaps servies par nous, couleurs carte/* du thème.
 // Leaflet (window.L) et protomaps-leaflet (window.protomapsL) sont chargés avant, en scripts classiques.
 
-const ABIDJAN = [[5.10, -4.50], [5.70, -3.65]];
+// Au sud, de la marge sur la mer : sur mobile la feuille basse couvre le bas de la carte, la vue doit pouvoir descendre sous la côte (C4c, rayon 10 km)
+const ABIDJAN = [[4.90, -4.50], [5.70, -3.65]];
 
 const jeton = (nom) => getComputedStyle(document.documentElement).getPropertyValue(nom).trim();
 

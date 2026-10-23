@@ -144,6 +144,25 @@ $icones = json_decode((string) file_get_contents(RACINE . '/scripts/icones.json'
   </section>
 
   <section class="rubrique">
+    <span class="t-etiquette">Ligne de classement étendue · Figma 60:409 · autre rive · squelette (C4b 73:942)</span>
+    <div class="systeme__grille">
+      <?= composant('ligne-classement', ['format' => 'etendue', 'href' => '#', 'nom' => 'Koffi Yao', 'portrait' => ['src' => '/medias/demo/koffi-160.webp', 'srcset' => '/medias/demo/koffi-160.webp 160w, /medias/demo/koffi-360.webp 360w'], 'rang' => 1, 'distanceM' => 1200, 'specialites' => ['Électricité auto', 'Batterie', 'Démarreur'], 'specialitePanne' => 'Batterie', 'note' => 4.8, 'avis' => 37, 'quartier' => 'Riviera 3', 'rubrique' => 'Le plus proche', 'actions' => composant('bouton', ['libelle' => 'Appeler Koffi', 'icone' => 'telephone', 'plein' => true]) . composant('bouton', ['libelle' => 'WhatsApp', 'icone' => 'whatsapp', 'type' => 'secondaire', 'hauteur' => 56])]) ?>
+      <div>
+        <?= composant('ligne-classement', ['href' => '#', 'nom' => 'Serge Kouamé', 'portrait' => '/medias/demo/serge-160.webp', 'rang' => 4, 'distanceM' => 3900, 'autreRive' => true, 'specialites' => ['Mécanique générale'], 'note' => 4.5, 'avis' => 12, 'quartier' => 'Treichville']) ?>
+        <?= composant('ligne-classement', ['format' => 'squelette', 'largeurs' => [150, 214]]) ?>
+      </div>
+    </div>
+  </section>
+
+  <section class="rubrique">
+    <span class="t-etiquette">Vous êtes ici · Figma 49:130 (repos · recherche C4b)</span>
+    <div class="systeme__ligne systeme__reperes">
+      <?= composant('vous-etes-ici') ?>
+      <?= composant('vous-etes-ici', ['recherche' => true]) ?>
+    </div>
+  </section>
+
+  <section class="rubrique">
     <span class="t-etiquette">Ligne commune · Figma 56:734 (disponibles · aucun · bientôt)</span>
     <div class="systeme__grille">
       <div class="filet-haut">

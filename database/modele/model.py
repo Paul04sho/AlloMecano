@@ -528,6 +528,7 @@ SEED = {
   ("recherche.rayons_km","2,5,10","liste","RG-R5 · paliers d'élargissement"),
   ("recherche.min_resultats","3","int","RG-R5 · on élargit tant qu'on a moins que ça"),
   ("recherche.max_resultats","10","int","RG-R6 · repères affichés au maximum"),
+  ("recherche.rayon_etendu_km","20","int","RG-R5 · « Chercher jusqu'à 20 km » : jamais automatique, seulement à la demande du client"),
   ("recherche.bonus_specialiste","0.75","decimal","RG-R6 · distance d'un spécialiste multipliée par ce facteur"),
   ("dispo.position_perimee_h","2","int","RG-D2 · « Mettre à jour ma position » devient l'action principale"),
   ("dispo.duree_max_h","12","int","RG-D3 · passage automatique en indisponible"),
