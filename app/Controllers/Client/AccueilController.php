@@ -18,7 +18,7 @@ final class AccueilController
     {
         $service = AccueilService::depuisBase();
         $client = Session::get('client_id');
-        $bandeau = is_int($client) ? ContactService::depuisBase()->enAttenteDeReponse($client) : null; // RG-I4
+        $bandeau = is_int($client) ? \App\Services\AvisService::bandeauClient($client) : null; // RG-I4, RG-AV7
         return Response::html(View::rendre('client/accueil', [
             'titre' => null,
             'communes' => $service->communes(),

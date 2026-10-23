@@ -105,4 +105,4 @@ JOIN (SELECT CAST(SUBSTRING(public_id,12) AS UNSIGNED) AS k, id FROM contacts WH
 WHERE c.public_id LIKE '01JDEMOC%';
 
 INSERT INTO avis_etiquettes (avis_id,etiquette_id)
-SELECT a.id, 1+MOD(a.id,5) FROM avis a WHERE a.note=5 AND MOD(a.id,2)=0;
+SELECT a.id, 1+MOD(a.id,4) FROM avis a WHERE a.note=5 AND MOD(a.id,2)=0;

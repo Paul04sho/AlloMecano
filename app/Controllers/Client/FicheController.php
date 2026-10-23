@@ -87,7 +87,7 @@ final class FicheController
             'avis' => $avis['avis'],
             'totalAvis' => $avis['total'],
             'message' => FicheService::message($fiche['prenom'], compact('lieu', 'repere', 'vehicule', 'panne'), $lat, $lon),
-            'bandeauContact' => is_int(Session::get('client_id')) ? \App\Services\ContactService::depuisBase()->enAttenteDeReponse(Session::get('client_id')) : null, // RG-I4
+            'bandeauContact' => is_int(Session::get('client_id')) ? \App\Services\AvisService::bandeauClient(Session::get('client_id')) : null, // RG-I4, RG-AV7
             'recherche' => $recherche['recherche'] ?? null,
             'retour' => $recherche !== null ? '/resultats/' . $recherche['recherche']['public_id'] : ($position !== null ? '/recherche' : '/'),
         ];

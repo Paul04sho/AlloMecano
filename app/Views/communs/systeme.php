@@ -267,6 +267,18 @@ $icones = json_decode((string) file_get_contents(RACINE . '/scripts/icones.json'
   </section>
 
   <section class="rubrique">
+    <span class="t-etiquette">Votre avis · barre de formulaire 87:1577 · étoiles de saisie 87:1600 · étiquette à cocher 87:1625</span>
+    <div class="systeme__grille">
+      <?= composant('barre-formulaire', ['icone' => 'fermer', 'retour' => '#', 'rubrique' => 'Votre avis', 'action' => 'Plus tard']) ?>
+      <?= composant('etoiles-saisie', ['nom' => 'demo-note', 'valeur' => 4]) ?>
+      <div class="etiquettes-choix">
+        <label class="etiquette-choix etiquette-choix--44"><input type="checkbox" checked><span><?= icone('coche', 16) ?>Rapide</span></label>
+        <label class="etiquette-choix etiquette-choix--44"><input type="checkbox"><span><?= icone('coche', 16) ?>Prix clair</span></label>
+      </div>
+    </div>
+  </section>
+
+  <section class="rubrique">
     <span class="t-etiquette">Appel intégré · anneau 269:1827 / 269:1873 · commande 269:1849 / 269:1891 · état 269:1837 / 269:1881 / 270:1853 · repère carte W44 270:1862</span>
     <div class="systeme__grille systeme__appel">
       <div class="appel appel--sombre sur-sombre systeme__appel-sombre">

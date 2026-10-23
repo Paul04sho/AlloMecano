@@ -12,6 +12,7 @@ declare(strict_types=1);
 use App\Controllers\Api\ClientController;
 use App\Controllers\Client\AccueilController;
 use App\Controllers\Client\AppelController;
+use App\Controllers\Client\AvisController;
 use App\Controllers\Client\ContactController;
 use App\Controllers\Client\FicheController;
 use App\Controllers\Client\PanneController;
@@ -48,8 +49,10 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
         $r->get('/contact/{id}', [ContactController::class, 'page'], 'contact');                  // C6 · « Avez-vous pu le joindre ? »
         $r->post('/contact/{id}/issue', [ContactController::class, 'issue']);
         $r->get('/appel/{id}', [AppelController::class, 'page'], 'appel');                        // C5c · appel intégré
+        $r->get('/avis/{contact}', [AvisController::class, 'formulaire'], 'avis');                 // C6b · RG-AV1
+        $r->post('/avis/{contact}', [AvisController::class, 'publier']);
+        $r->get('/avis/{contact}/merci', [AvisController::class, 'merci']);
     });
-    // $r->get('/avis/{id}', …)           C6b                       (à faire)
     // $r->get('/signaler/{slug}', …)     C7                        (à faire)
 
     // ----- Mécano (chantier B) -----

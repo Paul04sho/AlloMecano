@@ -522,8 +522,8 @@ SEED = {
                       "pneu_creve":["pneus"],"huile_fuite":["moteur","mecanique_generale"],"freins":["freins"],"choc_accident":["carrosserie","remorquage"],
                       "bruit_fumee":["moteur","mecanique_generale"],"je_ne_sais_pas":["mecanique_generale"]},
  "types_piece": [("cni_recto","Pièce d'identité (recto)",1,1),("cni_verso","Pièce d'identité (verso)",1,2),("permis","Permis de conduire",1,3),("diplome","Diplôme ou attestation de métier",1,4),("portrait","Photo de vous",1,5),("atelier","Photo de l'atelier",0,6)],
- "etiquettes_avis": [("rapide","Arrivé vite","positive"),("prix_respecte","Prix respecté","positive"),("bon_travail","Travail propre","positive"),("explique","A bien expliqué","positive"),("poli","Poli","positive"),
-                     ("en_retard","En retard","negative"),("prix_change","Prix changé","negative"),("pas_repare","Pas réparé","negative")],
+ "etiquettes_avis": [("rapide","Arrivé vite","positive"),("prix_clair","Prix clair","positive"),("bon_travail","Travail propre","positive"),("poli","Poli","positive"),
+                     ("en_retard","En retard","negative"),("plus_cher","Plus cher qu’annoncé","negative")],
  "parametres": [
   ("recherche.rayons_km","2,5,10","liste","RG-R5 · paliers d'élargissement"),
   ("recherche.min_resultats","3","int","RG-R5 · on élargit tant qu'on a moins que ça"),

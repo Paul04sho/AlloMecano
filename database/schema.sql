@@ -802,13 +802,11 @@ INSERT INTO types_piece (code,libelle,obligatoire,ordre) VALUES
 
 INSERT INTO etiquettes_avis (code,libelle,polarite,ordre) VALUES
 ('rapide','Arrivé vite','positive',1),
-('prix_respecte','Prix respecté','positive',2),
+('prix_clair','Prix clair','positive',2),
 ('bon_travail','Travail propre','positive',3),
-('explique','A bien expliqué','positive',4),
-('poli','Poli','positive',5),
-('en_retard','En retard','negative',6),
-('prix_change','Prix changé','negative',7),
-('pas_repare','Pas réparé','negative',8);
+('poli','Poli','positive',4),
+('en_retard','En retard','negative',5),
+('plus_cher','Plus cher qu’annoncé','negative',6);
 
 INSERT INTO parametres (cle,valeur,type,description) VALUES
 ('recherche.rayons_km','2,5,10','liste','RG-R5 · paliers d''élargissement'),
