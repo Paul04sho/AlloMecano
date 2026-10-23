@@ -247,9 +247,9 @@ $communes = [
         <h2 id="accueil-urgence" class="t-titre-2"><?= $texte('Blessé ou en danger ? Appelez d’abord les secours.') ?></h2>
       </div>
       <div class="accueil__numeros">
-        <a class="accueil__numero" href="tel:185"><strong class="t-borne-l"><?= e(Format::typo('185')) ?></strong><span class="t-etiquette"><?= $texte('SAMU') ?></span></a>
-        <a class="accueil__numero" href="tel:180"><strong class="t-borne-l"><?= e(Format::typo('180')) ?></strong><span class="t-etiquette"><?= $texte('Pompiers') ?></span></a>
-        <a class="accueil__numero" href="tel:170"><strong class="t-borne-l"><?= e(Format::typo('170')) ?></strong><span class="t-etiquette"><?= $texte('Police') ?></span></a>
+        <a class="accueil__numero" href="tel:185"><strong class="t-borne-l"><?= $texte('185') ?></strong><span class="t-etiquette"><?= $texte('SAMU') ?></span></a>
+        <a class="accueil__numero" href="tel:180"><strong class="t-borne-l"><?= $texte('180') ?></strong><span class="t-etiquette"><?= $texte('Pompiers') ?></span></a>
+        <a class="accueil__numero" href="tel:170"><strong class="t-borne-l"><?= $texte('170') ?></strong><span class="t-etiquette"><?= $texte('Police') ?></span></a>
       </div>
       <p class="t-micro t-secondaire"><?= $texte('N’attendez pas un mécanicien pour vous mettre en sécurité.') ?></p>
     </div>
