@@ -1,0 +1,34 @@
+/* Carte et repérage : écrou-repère grand format (C2a), bulle d'aide (67:588), panneau coupé L (67:619),
+   fond de carte Leaflet (56:736). Chargé sur les pages qui montrent une position. */
+
+/* ---------- Écrou-repère ---------- */
+.ecrou-repere { display: inline-block; flex: none; line-height: 0; }
+.ecrou-repere svg { display: block; overflow: visible; }
+.ecrou-repere--figure .ecrou-repere__ecrou { fill: var(--encre); }
+.ecrou-repere--figure .ecrou-repere__trou { fill: var(--surface); }
+.ecrou-repere--carte svg { filter: drop-shadow(var(--ombre-repere)); }
+.ecrou-repere--carte .ecrou-repere__ecrou { fill: var(--bitume); stroke: var(--beton); stroke-width: 4px; paint-order: stroke; vector-effect: non-scaling-stroke; }
+.ecrou-repere--carte .ecrou-repere__trou { fill: var(--beton); }
+.ecrou-repere__voyant { fill: var(--balise); stroke: var(--bitume); stroke-width: 6.04; transform-box: fill-box; transform-origin: center; }
+
+/* ---------- Bulle d'aide ---------- */
+.bulle { position: relative; display: inline-flex; flex-direction: column; align-items: center; }
+.bulle__texte { display: inline-flex; align-items: center; height: 30px; padding: 0 var(--esp-12); background: var(--bitume); color: var(--beton); border-radius: var(--rayon); white-space: nowrap; }
+.bulle::after { content: ""; width: 12px; height: 8px; background: var(--bitume); clip-path: polygon(0 0, 100% 0, 50% 100%); }
+
+/* ---------- Panneau coupé L : surface, coupe 24 × 13,85 en haut à gauche, ombre vers le haut ---------- */
+.panneau { position: relative; filter: drop-shadow(0 -8px 12px color-mix(in srgb, var(--bitume) 18%, transparent)); }
+.panneau__interieur {
+  background: var(--surface); padding: var(--esp-24) var(--marge) var(--esp-16);
+  clip-path: polygon(var(--coupe-l) 0, 100% 0, 100% 100%, 0 100%, 0 calc(var(--coupe-l) * .577));
+}
+
+/* ---------- Fond de carte ---------- */
+.carte { position: relative; overflow: hidden; background: var(--carte-sol); touch-action: none; }
+.carte .leaflet-container { background: var(--carte-sol); font: inherit; }
+.carte__attribution {
+  position: absolute; z-index: 500; right: var(--esp-8); bottom: var(--esp-8);
+  padding: 2px calc(var(--esp-4) + 2px); background: var(--surface); color: var(--encre-2);
+}
+.carte__attribution a { color: inherit; text-decoration: none; }
+.carte .leaflet-control-zoom { display: none; } /* pas de boutons : on glisse et on pince */

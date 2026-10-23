@@ -46,7 +46,10 @@ final class Assets
     {
         $html = '';
         foreach ([...self::JS_COMMUN, ...$enPlus] as $f) {
-            $html .= '<script type="module" src="' . e(asset($f)) . '"></script>' . "\n";
+            // Bibliothèques tierces (vendor/) : scripts classiques différés, exécutés dans l'ordre avant les modules
+            $html .= str_starts_with($f, 'vendor/')
+                ? '<script defer src="' . e(asset($f)) . '"></script>' . "\n"
+                : '<script type="module" src="' . e(asset($f)) . '"></script>' . "\n";
         }
         return $html;
     }

@@ -9,6 +9,7 @@
  */
 use App\Core\Assets;
 use App\Core\Csrf;
+use App\Core\Session;
 use App\Core\View;
 
 $theme = $_COOKIE['theme'] ?? null;
@@ -24,6 +25,9 @@ $theme = in_array($theme, ['clair', 'sombre'], true) ? $theme : null;
   <meta name="description" content="<?= e($description ?? 'En panne à Abidjan ? Trouvez le mécanicien vérifié et disponible le plus proche, et appelez-le directement.') ?>">
   <meta name="theme-color" content="#15171c">
   <meta name="csrf" content="<?= e(Csrf::jeton()) ?>">
+  <?php if ($jetonClient = Session::get('client_jeton_neuf')): Session::oublier('client_jeton_neuf'); /* RG-C7 : copie confiée une fois au navigateur */ ?>
+  <meta name="client-jeton" content="<?= e($jetonClient) ?>">
+  <?php endif ?>
   <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="preload" href="/assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>

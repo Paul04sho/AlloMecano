@@ -1,5 +1,5 @@
 import os, sys; sys.path.insert(0, os.path.dirname(__file__))
-from model import T, LATE_FKS, SEED, DOMAINS
+from model import T, LATE_FKS, SEED, DOMAINS, QUARTIERS
 def q(s): return "'"+str(s).replace("'","''")+"'"
 out=[]
 out.append("""-- =====================================================================
@@ -34,6 +34,8 @@ out.append("SET FOREIGN_KEY_CHECKS = 1;\n")
 S=SEED; sd=["-- =====================================================================\n-- Données de départ (référentiels et paramètres)\n-- Coordonnées des communes : centres approximatifs, À VÉRIFIER.\n-- ====================================================================="]
 # 6e valeur facultative d'une commune : ouverte (0 = « Bientôt » sur l'accueil ; 1 par défaut)
 sd.append("INSERT INTO communes (nom,slug,lat,lon,rive,ouverte,ordre) VALUES\n"+",\n".join(f"({q(n)},{q(s)},{la},{lo},{q(r)},{(o or [1])[0]},{i+1})" for i,(n,s,la,lo,r,*o) in enumerate(S['communes']))+";")
+# Quartiers (C2b) : slug = commune-quartier, centres À VÉRIFIER
+sd.append("INSERT INTO quartiers (commune_id,nom,slug,alias,lat,lon) VALUES\n"+",\n".join(f"((SELECT id FROM communes WHERE slug={q(c)}),{q(n)},{q(c+'-'+s)},{q(a) if a else 'NULL'},{la:.4f},{lo:.4f})" for c,n,s,a,la,lo in QUARTIERS)+";")
 sd.append("INSERT INTO types_vehicule (code,libelle,ordre) VALUES\n"+",\n".join(f"({q(c)},{q(l)},{o})" for c,l,o in S['types_vehicule'])+";")
 sd.append("INSERT INTO specialites (code,libelle,ordre) VALUES\n"+",\n".join(f"({q(c)},{q(l)},{i+1})" for i,(c,l) in enumerate(S['specialites']))+";")
 sd.append("INSERT INTO pannes (code,libelle,picto,est_danger,ordre) VALUES\n"+",\n".join(f"({q(c)},{q(l)},{q(p)},{d},{i+1})" for i,(c,l,p,d) in enumerate(S['pannes']))+";")

@@ -16,6 +16,7 @@ $classes = ['bouton', 'bouton--' . $type];
 if (isset($hauteur)) { $classes[] = 'bouton--' . (int) $hauteur; }
 if (!empty($plein)) { $classes[] = 'bouton--plein'; }
 $attrs ??= [];
+if (isset($attrs['class'])) { $classes[] = $attrs['class']; unset($attrs['class']); } // classes en plus (js-seul…)
 if (!empty($chargement)) { $attrs['data-chargement'] = $chargement; }
 $balise = isset($href) ? 'a' : 'button';
 if ($balise === 'button') { $attrs['type'] ??= 'button'; }

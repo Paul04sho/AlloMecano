@@ -111,3 +111,14 @@ if (flash) toast(flash.dataset.flash, { icone: flash.dataset.flashIcone || null 
 // Le socle laisse la place aux toasts
 const socle = document.querySelector('[data-socle]');
 if (socle) document.documentElement.style.setProperty('--decalage-socle', `${socle.offsetHeight}px`);
+
+// RG-C7 · client anonyme : le serveur confie un jeton neuf une fois (meta). Si le navigateur en avait déjà un
+// (cookie perdu), on reprend l'ancien pour garder l'historique ; sinon on garde une copie du neuf.
+const jetonNeuf = document.querySelector('meta[name="client-jeton"]')?.content;
+if (jetonNeuf) {
+  let ancien = null;
+  try { ancien = localStorage.getItem('am_client'); } catch {}
+  const garder = () => { try { localStorage.setItem('am_client', jetonNeuf); } catch {} };
+  if (ancien && ancien !== jetonNeuf) api('/api/client/restaurer', { methode: 'POST', donnees: { jeton: ancien } }).catch(garder);
+  else garder();
+}

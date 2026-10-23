@@ -15,3 +15,5 @@
 @media (min-width: 1024px) { .systeme__grille { max-width: 520px; } }
 .systeme__reperes { align-items: flex-start; gap: 32px; padding-bottom: 40px; }
 .systeme__a-produire .photo__a-produire { aspect-ratio: 3 / 2; }
+.systeme__carte-fond { display: inline-block; padding: 24px; background: var(--carte-sol); }
+.systeme__panneau { display: block; padding: 48px 0 0; max-width: 420px; }

@@ -184,6 +184,36 @@ $icones = json_decode((string) file_get_contents(RACINE . '/scripts/icones.json'
   </section>
 
   <section class="rubrique">
+    <span class="t-etiquette">Écrou-repère grand format · C2a 66:457 (figure) · 67:585 (carte) · bulle 67:588</span>
+    <div class="systeme__ligne systeme__reperes">
+      <?= composant('ecrou-repere', ['type' => 'figure']) ?>
+      <?= composant('ecrou-repere', ['type' => 'figure', 'voyant' => true]) ?>
+      <span class="systeme__carte-fond"><?= composant('ecrou-repere', ['type' => 'carte']) ?></span>
+      <?= composant('bulle', ['texte' => 'Déplacez la carte pour ajuster']) ?>
+    </div>
+  </section>
+
+  <section class="rubrique">
+    <span class="t-etiquette">Ligne de choix · Figma 54:467 (radio · case · lien) · Récapitulatif · C2b 68:660</span>
+    <div class="systeme__grille">
+      <div class="lignes-choix" role="radiogroup" aria-label="Démonstration">
+        <?= composant('ligne-choix', ['nom' => 'demo-quartier', 'valeur' => 'r2', 'libelle' => 'Riviera 2', 'coche' => true]) ?>
+        <?= composant('ligne-choix', ['nom' => 'demo-quartier', 'valeur' => 'r3', 'libelle' => 'Riviera 3']) ?>
+        <?= composant('ligne-choix', ['nom' => 'demo-cgu', 'valeur' => '1', 'type' => 'checkbox', 'libelle' => 'J’accepte les conditions d’utilisation']) ?>
+        <a class="ligne-choix ligne-choix--lien" href="#"><span>Cocody</span><?= icone('chevron', 20) ?></a>
+      </div>
+      <?= composant('recap', ['etiquette' => 'Ce qu’on donnera au mécano', 'texte' => 'Riviera 2 · près de la pharmacie des Jardins']) ?>
+    </div>
+  </section>
+
+  <section class="rubrique">
+    <span class="t-etiquette">Panneau coupé L · Figma 67:619</span>
+    <div class="systeme__carte-fond systeme__panneau">
+      <?= composant('panneau', ['contenu' => '<p class="t-titre-2">Riviera 2, Cocody</p><p class="t-donnee t-secondaire">5,3571° N · 3,9672° O · ± 18 M</p>']) ?>
+    </div>
+  </section>
+
+  <section class="rubrique">
     <span class="t-etiquette">Barre de parcours · Figma 53:374</span>
     <?= composant('barre-parcours', ['etape' => 2, 'total' => 3, 'retour' => '#', 'annuler' => '#']) ?>
   </section>

@@ -14,6 +14,7 @@ final class Request
      * @param array<string, mixed> $post
      * @param array<string, mixed> $serveur
      * @param array<string, mixed> $fichiers
+     * @param array<string, mixed> $cookies
      */
     public function __construct(
         public readonly string $methode,
@@ -23,6 +24,7 @@ final class Request
         private readonly array $serveur,
         private readonly array $fichiers,
         private readonly string $corps = '',
+        private readonly array $cookies = [],
     ) {
     }
 
@@ -35,7 +37,7 @@ final class Request
         if ($methode === 'POST' && isset($_POST['_methode'])) {
             $methode = strtoupper((string) $_POST['_methode']);
         }
-        return new self($methode, $chemin, $_GET, $_POST, $_SERVER, $_FILES, (string) file_get_contents('php://input'));
+        return new self($methode, $chemin, $_GET, $_POST, $_SERVER, $_FILES, (string) file_get_contents('php://input'), $_COOKIE);
     }
 
     public function query(string $cle, mixed $defaut = null): mixed
@@ -69,6 +71,12 @@ final class Request
     {
         $f = $this->fichiers[$cle] ?? null;
         return is_array($f) && ($f['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE ? $f : null;
+    }
+
+    public function cookie(string $nom): ?string
+    {
+        $v = $this->cookies[$nom] ?? null;
+        return is_string($v) ? $v : null;
     }
 
     public function entete(string $nom): ?string

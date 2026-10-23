@@ -18,6 +18,7 @@
 | Assets de prod | `composer assets` |
 | Clés Web Push | `composer vapid` |
 | Vitrine des composants | http://localhost:8000/systeme (masquée en prod) |
+| Fond de carte (20 Mo, hors git) | `pmtiles extract https://build.protomaps.com/<AAAAMMJJ>.pmtiles public/assets/carte/abidjan.pmtiles --bbox=-4.35,5.20,-3.80,5.60 --maxzoom=15` ([go-pmtiles](https://github.com/protomaps/go-pmtiles/releases)) |
 
 Installation pas à pas : `docs/installation-xampp.md`. Comptes de démo : `README.md`.
 
@@ -55,7 +56,7 @@ Nouveau composant : fichier dans `composants/` + CSS + **démonstration sur `/sy
 - **Sécurité** : CSRF sur tout POST (`csrf_champ()` dans les formulaires, `api()` côté JS), validation serveur avec `Validator` même si le JS valide, fichiers privés dans `storage/`.
 - **CSS** : uniquement les variables de `tokens.css` (`var(--encre)`, `var(--esp-16)`, `var(--coupe-m)`, `var(--t-etat)`…). Aucune valeur copiée de Figma. **Si un jeton manque : le signaler avant d'en créer un.** Classes de texte `.t-…` = noms des styles Figma (`base.css`). Clair et sombre via les jetons (`data-theme` + `prefers-color-scheme`).
 - **JS** : modules ES natifs, pas de framework, amélioration progressive (la page marche sans JS quand c'est possible).
-- **Dépendances** : Composer limité à web-push, phpmailer, phpunit. Rien d'autre sans accord. Côté navigateur : Leaflet + Protomaps (PMTiles hébergé chez nous).
+- **Dépendances** : Composer limité à web-push, phpmailer, phpunit. Rien d'autre sans accord. Côté navigateur : Leaflet 1.9.4 et protomaps-leaflet 5.1.0 dans `public/assets/vendor/` (scripts classiques : `Assets::js` les charge en `defer` si le chemin commence par `vendor/`), fond PMTiles servi par nous (zoom max 15). Le serveur intégré sert les plages d'octets du `.pmtiles` via `public/index.php`.
 - **Textes** : exactement ceux de Figma, français soigné. Espaces fines avant `; : ! ?` (`fr_typo()` / `Format::typo`, ou `&#8239;` dans le HTML), montants `Format::fcfa()`, distances `Format::distance()` / `borne()`, dates `Format::date()`, téléphones `Format::telephone()`.
 - **Icônes** : `icone('nom', taille)`. 24 par défaut, voyants 32, véhicules 40.
 

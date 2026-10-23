@@ -455,6 +455,58 @@ table("journal_taches","sys","Exécutions des tâches planifiées (cron), pour v
 
 LATE_FKS = [("suspensions","signalement_id","signalements","id","SET NULL")]
 
+# Quartiers par commune (C2b) : centres approximatifs À VÉRIFIER sur OpenStreetMap avant la mise en ligne.
+# (commune, nom, slug sans la commune, alias pour l'autocomplétion, lat, lon), dans l'ordre d'affichage : les plus connus d'abord
+QUARTIERS = [
+ ("abobo","Abobo Gare","gare","Gare d'Abobo",5.4160,-4.0180),("abobo","PK 18","pk-18","PK18",5.4560,-4.0450),
+ ("abobo","Avocatier","avocatier",None,5.4300,-4.0350),("abobo","Sagbé","sagbe","Sagbe",5.4330,-4.0480),
+ ("abobo","Anonkoua-Kouté","anonkoua-koute","Anonkoua",5.4480,-4.0050),("abobo","Akeikoi","akeikoi","Akéikoi",5.4580,-4.0200),
+ ("abobo","Abobo Baoulé","baoule","Baoulé",5.4210,-3.9990),("abobo","N'Dotré","ndotre","Ndotre, N'Dotre",5.4600,-4.0650),
+ ("abobo","Samaké","samake","Samake",5.4060,-4.0300),("abobo","Belleville","belleville",None,5.4100,-4.0050),
+ ("adjame","Adjamé Liberté","liberte","Liberté",5.3580,-4.0180),("adjame","Williamsville","williamsville","Williams",5.3720,-4.0220),
+ ("adjame","Bracodi","bracodi",None,5.3530,-4.0230),("adjame","220 Logements","220-logements","220 logts",5.3650,-4.0130),
+ ("adjame","Marie-Thérèse","marie-therese","Marie Therese",5.3600,-4.0300),("adjame","Habitat Extension","habitat-extension","Extension",5.3700,-4.0150),
+ ("adjame","Gare Nord","gare-nord","Gare UTB",5.3640,-4.0260),
+ ("anyama","Anyama centre","centre","Anyama",5.4950,-4.0520),("anyama","Ebimpé","ebimpe","Ebimpe",5.4700,-4.0900),
+ ("anyama","Akoupé-Zeudji","akoupe-zeudji","Akoupé",5.5200,-4.0600),("anyama","Anyama Adjamé","adjame","Adjamé d'Anyama",5.4920,-4.0450),
+ ("anyama","Thomasset","thomasset",None,5.5050,-4.0400),
+ ("attecoube","Attécoubé centre","centre","Attécoubé",5.3330,-4.0400),("attecoube","Locodjro","locodjro","Locodjoro",5.3330,-4.0600),
+ ("attecoube","Santé","sante","Sante",5.3400,-4.0400),("attecoube","Agban","agban","Agban village",5.3480,-4.0320),
+ ("attecoube","Boribana","boribana",None,5.3270,-4.0300),("attecoube","Abobo-Doumé","abobo-doume","Abobo Doume",5.3170,-4.0450),
+ ("attecoube","Sébroko","sebroko","Sebroko",5.3420,-4.0500),
+ ("bingerville","Bingerville centre","centre","Bingerville",5.3550,-3.8850),("bingerville","Akandjé","akandje","Akandje",5.3800,-3.9000),
+ ("bingerville","Gbagba","gbagba",None,5.3460,-3.8730),("bingerville","Abatta","abatta",None,5.3700,-3.9300),
+ ("bingerville","Feh Kessé","feh-kesse","Fehkessé",5.3620,-3.8700),("bingerville","Santai","santai",None,5.3450,-3.9050),
+ ("cocody","Riviera 2","riviera-2","Riv 2, Riviera II",5.3600,-3.9600),("cocody","Riviera 3","riviera-3","Riv 3, Riviera III",5.3650,-3.9480),
+ ("cocody","Riviera Palmeraie","riviera-palmeraie","Palmeraie",5.3720,-3.9350),("cocody","Angré 8e tranche","angre-8e-tranche","Angre, 8e tranche, Angré",5.3950,-3.9900),
+ ("cocody","Deux-Plateaux Vallon","deux-plateaux-vallon","2 Plateaux, Vallons, II Plateaux",5.3700,-4.0000),
+ ("cocody","Riviera Golf","riviera-golf","Golf",5.3380,-3.9550),("cocody","Angré Château","angre-chateau","Château",5.3950,-3.9780),
+ ("cocody","Cocody centre","centre","Cocody",5.3470,-3.9950),("cocody","Blockhaus","blockhaus",None,5.3360,-3.9850),
+ ("cocody","Danga","danga",None,5.3380,-4.0050),("cocody","Faya","faya",None,5.3850,-3.9200),("cocody","M'Pouto","mpouto","Mpouto",5.3300,-3.9450),
+ ("koumassi","Koumassi centre","centre","Koumassi",5.2970,-3.9500),("koumassi","Remblais","remblais",None,5.2900,-3.9600),
+ ("koumassi","Sicogi","sicogi",None,5.3000,-3.9420),("koumassi","Campement","campement",None,5.2950,-3.9300),
+ ("koumassi","Prodomo","prodomo",None,5.3050,-3.9520),("koumassi","Grand Marché","grand-marche","Marché de Koumassi",5.2990,-3.9450),
+ ("marcory","Zone 4","zone-4","Zone IV",5.2900,-3.9750),("marcory","Biétry","bietry","Bietry",5.2830,-3.9700),
+ ("marcory","Marcory Résidentiel","residentiel","Résidentiel",5.3050,-3.9850),("marcory","Anoumabo","anoumabo",None,5.3000,-3.9950),
+ ("marcory","Sans Fil","sans-fil","Sans-fil",5.3100,-3.9800),("marcory","Champroux","champroux",None,5.3080,-3.9900),
+ ("plateau","Plateau centre","centre","Plateau",5.3230,-4.0190),("plateau","Indénié","indenie","Indenie",5.3330,-4.0130),
+ ("plateau","Cité administrative","cite-administrative","Cité admin",5.3250,-4.0230),("plateau","Plateau Sud","sud",None,5.3160,-4.0200),
+ ("port-bouet","Port-Bouët centre","centre","Port-Bouet",5.2550,-3.9400),("port-bouet","Gonzagueville","gonzagueville","Gonzague",5.2450,-3.8750),
+ ("port-bouet","Vridi","vridi","Vridi canal",5.2600,-4.0000),("port-bouet","Aéroport","aeroport","Aeroport",5.2560,-3.9300),
+ ("port-bouet","Adjouffou","adjouffou",None,5.2500,-3.9200),("port-bouet","Jean Folly","jean-folly",None,5.2580,-3.9500),
+ ("songon","Songon Agban","agban","Songon",5.3200,-4.2600),("songon","Songon Kassemblé","kassemble","Kassemble",5.3100,-4.2900),
+ ("songon","Songon M'Brathé","mbrathe","Mbrathe",5.3300,-4.2300),("songon","Songon Dagbé","dagbe","Dagbe",5.3150,-4.2450),
+ ("treichville","Treichville centre","centre","Treichville",5.2930,-4.0050),("treichville","Arras","arras",None,5.2950,-4.0050),
+ ("treichville","Biafra","biafra",None,5.2970,-4.0120),("treichville","Belleville","belleville",None,5.2880,-4.0100),
+ ("treichville","Gare de Bassam","gare-de-bassam","Gare Bassam",5.2920,-3.9970),("treichville","Zone portuaire","zone-portuaire","Port",5.2850,-4.0150),
+ ("yopougon","Niangon","niangon","Niangon Nord, Niangon Sud",5.3350,-4.1050),("yopougon","Sideci","sideci","Sidéci",5.3350,-4.0750),
+ ("yopougon","Selmer","selmer",None,5.3500,-4.0800),("yopougon","Maroc","maroc",None,5.3480,-4.0700),
+ ("yopougon","Port-Bouët 2","port-bouet-2","PB2",5.3380,-4.0920),("yopougon","Toits Rouges","toits-rouges",None,5.3550,-4.0850),
+ ("yopougon","Andokoi","andokoi","Andokoua",5.3650,-4.0900),("yopougon","Wassakara","wassakara",None,5.3400,-4.0650),
+ ("yopougon","Banco","banco","Banco 2",5.3600,-4.0700),("yopougon","Koweït","koweit","Koweit",5.3300,-4.0900),
+ ("yopougon","Gesco","gesco",None,5.3550,-4.1100),("yopougon","Yopougon Kouté","koute","Kouté",5.3220,-4.0700),
+]
+
 # ------------------------------------------------------------------ Données de départ
 SEED = {
  "communes": [("Abobo","abobo",5.4190,-4.0200,"nord"),("Adjamé","adjame",5.3600,-4.0230,"nord"),("Anyama","anyama",5.4950,-4.0520,"nord"),("Attécoubé","attecoube",5.3330,-4.0400,"nord"),

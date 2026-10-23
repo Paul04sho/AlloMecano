@@ -35,7 +35,7 @@
 .marquage { display: flex; gap: 6px; padding: 0 var(--marge); }
 .marquage > i { flex: 1; height: 4px; background: var(--filet); position: relative; overflow: hidden; }
 .marquage > i.fait::after { content: ""; position: absolute; inset: 0; background: var(--encre); transform-origin: left; }
-.marquage > i.courant::after { animation: marquage-trace var(--t-entree) var(--ease-sortie) 200ms both; }
+.marquage > i.courant::after { right: 45%; animation: marquage-trace var(--t-entree) var(--ease-sortie) 200ms both; } /* étape en cours : remplie à 55 % (Figma 53:301) */
 @keyframes marquage-trace { from { transform: scaleX(0); } }
 
 /* ---------- Socle d'action : barre basse bitume ---------- */

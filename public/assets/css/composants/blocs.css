@@ -47,3 +47,6 @@
   .urgences__numeros a { padding: 0; }
   .urgences__numero { font-size: 36px; line-height: 36px; }
 }
+
+/* ---------- Récapitulatif (68:660) : surface creuse, filet bitume de 4 à gauche ---------- */
+.recap { display: flex; flex-direction: column; gap: calc(var(--esp-4) + 2px); padding: var(--esp-16); background: var(--surface-creuse); box-shadow: inset 4px 0 0 var(--encre); }
