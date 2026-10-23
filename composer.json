@@ -29,7 +29,10 @@
     },
     "scripts": {
         "test": "phpunit",
-        "serve": "php -S localhost:8000 -t public public/index.php",
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "php -S localhost:8000 -t public public/index.php"
+        ],
         "sprite": "php scripts/generer-sprite.php",
         "assets": "php scripts/construire-assets.php",
         "db:installer": "php scripts/installer-base.php",
@@ -41,5 +44,9 @@
         "platform": {
             "php": "8.2"
         }
+    },
+    "scripts-descriptions": {
+        "serve": "Lance le site sur http://localhost:8000 (Ctrl+C pour arrêter)",
+        "db:demo": "Recrée la base locale avec les mécanos de démo (efface la base)"
     }
 }
