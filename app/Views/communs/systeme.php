@@ -250,6 +250,23 @@ $icones = json_decode((string) file_get_contents(RACINE . '/scripts/icones.json'
   </section>
 
   <section class="rubrique">
+    <span class="t-etiquette">Retour d’appel · réponse 82:1413 · conseils 86:1588 · lien à icône 84:1505 · bandeau « Avez-vous pu joindre ? » (RG-I4)</span>
+    <div class="systeme__grille">
+      <div class="retour__reponses">
+        <?= composant('reponse-retour', ['contact' => '01JDEMOC00100000000000001', 'issue' => 'arrive', 'libelle' => 'Oui, il arrive']) ?>
+        <?= composant('reponse-retour', ['contact' => '01JDEMOC00100000000000001', 'issue' => 'pas_entendus', 'libelle' => 'Oui, mais on ne s’est pas entendus']) ?>
+        <?= composant('reponse-retour', ['contact' => '01JDEMOC00100000000000001', 'issue' => 'pas_reponse', 'libelle' => 'Non, pas de réponse']) ?>
+      </div>
+      <?= composant('conseils', ['conseils' => ['Convenez du prix avant qu’il commence.', 'Ne payez rien d’avance.', 'Restez visible, feux de détresse allumés.']]) ?>
+      <div class="systeme__ligne">
+        <button type="button" class="lien-icone t-gras"><?= icone('telephone', 20) ?><span>Réessayer Koffi</span></button>
+        <a class="lien-icone t-gras" href="#"><?= icone('liste', 20) ?><span>Revoir la liste des mécanos</span></a>
+      </div>
+      <?= composant('bandeau-retour', ['public_id' => '01JDEMOC00100000000000001', 'prenom' => 'Koffi']) ?>
+    </div>
+  </section>
+
+  <section class="rubrique">
     <span class="t-etiquette">Panneau coupé L · Figma 67:619</span>
     <div class="systeme__carte-fond systeme__panneau">
       <?= composant('panneau', ['contenu' => '<p class="t-titre-2">Riviera 2, Cocody</p><p class="t-donnee t-secondaire">5,3571° N · 3,9672° O · ± 18 M</p>']) ?>

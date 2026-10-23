@@ -45,7 +45,7 @@ function bornes(racine) {
 }
 
 /** « Copier » et l'interrupteur « Lien de ma position » : la fin du message disparaît en fondu (160 ms). */
-function message(racine) {
+export function initialiserMessage(racine) {
   const bloc = racine.querySelector('[data-bloc-message]');
   if (!bloc) return;
   const debut = bloc.querySelector('[data-message-debut]');
@@ -105,6 +105,6 @@ export function initialiserFiche(racine, slug) {
   photo(racine);
   poincon(racine, slug);
   bornes(racine);
-  message(racine);
+  initialiserMessage(racine);
   avis(racine, slug);
 }

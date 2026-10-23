@@ -176,3 +176,6 @@
   .fiche-panneau, .fiche-panneau.ferme { animation: none; }
   .interrupteur__piste, .interrupteur__piste::after, .bloc-message__texte [data-message-position] { transition: none; }
 }
+
+/* « Ouvrir WhatsApp Web » tient sur une ligne dans les 244 px de 159:860 */
+.contact-revele .bouton { gap: var(--esp-8); padding-inline: var(--esp-12); white-space: nowrap; }

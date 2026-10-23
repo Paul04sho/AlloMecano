@@ -57,7 +57,7 @@ $lieu = implode(' · ', array_filter([$f['distance_m'] !== null ? Format::distan
   <div class="fiche-panneau__contact">
     <?php if ($dispo): ?>
       <div class="fiche-panneau__actions" data-contact>
-        <?= composant('formulaire-contact', ['mecano' => $f['public_id'], 'recherche' => $rechercheId, 'canal' => 'tel',
+        <?= composant('formulaire-contact', ['mecano' => $f['public_id'], 'recherche' => $rechercheId, 'canal' => 'tel', 'reveler' => true,
             'contenu' => composant('bouton', ['libelle' => 'Afficher le numéro', 'icone' => 'telephone', 'hauteur' => 56, 'plein' => true, 'attrs' => ['type' => 'submit']])]) ?>
         <?= composant('formulaire-contact', ['mecano' => $f['public_id'], 'recherche' => $rechercheId, 'canal' => 'whatsapp',
             'contenu' => composant('bouton', ['libelle' => 'WhatsApp', 'icone' => 'whatsapp', 'type' => 'secondaire', 'hauteur' => 56, 'attrs' => ['type' => 'submit']])]) ?>

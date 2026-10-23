@@ -7,6 +7,7 @@
  * @var list<array{code: string, libelle: string, icone: string, danger: bool}> $pannes
  * @var list<array{nom: string, image: string, court: string, metiers: string, quartier: string}> $trombinoscope
  * @var DateTimeImmutable $maintenant
+ * @var ?array{public_id: string, prenom: string} $bandeauContact contact sans réponse depuis moins de 24 h (RG-I4)
  */
 use App\Core\Format;
 
@@ -23,6 +24,7 @@ $visiblesMobile = 6;
 $lienWhatsapp = 'https://wa.me/?text=' . rawurlencode(url('/'));
 ?>
 <div class="accueil">
+  <?php if (!empty($bandeauContact)): ?><?= composant('bandeau-retour', $bandeauContact) ?><?php endif ?>
 
   <!-- Héros : photo IMG-01, accroche, action (mobile : bouton ; desktop : formulaire intégré) -->
   <section class="heros" aria-labelledby="heros-titre">

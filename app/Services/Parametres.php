@@ -21,7 +21,8 @@ final class Parametres
     private const DEFAUTS = [
         'recherche.rayons_km' => '2,5,10', 'recherche.min_resultats' => '3', 'recherche.max_resultats' => '10',
         'recherche.bonus_specialiste' => '0.75', 'recherche.malus_autre_rive' => '1.30', 'recherche.rayon_etendu_km' => '20',
-        'appel.sonnerie_s' => '30', 'appel.relance_push_s' => '5', 'appel.echec_reseau_s' => '15',
+        'appel.sonnerie_s' => '30', 'appel.relance_push_s' => '5', 'appel.echec_reseau_s' => '15', 'appel.integre_actif' => '0',
+        'retour.absence_min_s' => '3', 'retour.bandeau_h' => '24', 'antiabus.contacts_client_10min' => '5', 'antiabus.contacts_meca_h' => '3',
         'urgence.samu' => '185', 'urgence.pompiers' => '180', 'urgence.police' => '170',
     ];
 

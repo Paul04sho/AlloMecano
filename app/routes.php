@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 use App\Controllers\Api\ClientController;
 use App\Controllers\Client\AccueilController;
+use App\Controllers\Client\ContactController;
 use App\Controllers\Client\FicheController;
 use App\Controllers\Client\PanneController;
 use App\Controllers\Client\PositionController;
@@ -41,8 +42,10 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
         $r->get('/mecano/{slug}', [FicheController::class, 'page'], 'fiche');                     // C5 · ?r=<recherche>
         $r->get('/api/mecano/{slug}/fiche', [FicheController::class, 'panneau']);                 // D1 · panneau de 420 px
         $r->get('/api/mecano/{slug}/avis', [FicheController::class, 'avis']);                     // C5 · « Lire les 37 avis »
+        $r->post('/contacter', [ContactController::class, 'creerFormulaire']);                    // RG-A1 : le contact d'abord, puis tel: ou WhatsApp
+        $r->get('/contact/{id}', [ContactController::class, 'page'], 'contact');                  // C6 · « Avez-vous pu le joindre ? »
+        $r->post('/contact/{id}/issue', [ContactController::class, 'issue']);
     });
-    // $r->get('/contact/{id}', …)        C5c · C6                  (à faire)
     // $r->get('/avis/{id}', …)           C6b                       (à faire)
     // $r->get('/signaler/{slug}', …)     C7                        (à faire)
 
@@ -72,6 +75,10 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
 // ----- API JSON (appel intégré, recherche, push) : routes ajoutées par les chantiers -----
 $routeur->groupe('/api', [VerifierCsrf::class, IdentifierClient::class], function ($r) {
     $r->post('/recherches', [RechercheController::class, 'lancerApi']);                          // C4b → C4
+    $r->post('/contacts', [ContactController::class, 'creerApi']);                               // RG-A1 · D1 : numéro révélé
+    $r->get('/contacts/{id}/retour', [ContactController::class, 'retourApi']);                   // C6 · feuille de retour d'appel
+    $r->post('/contacts/{id}/absence', [ContactController::class, 'absence']);                   // RG-A12
+    $r->post('/contacts/{id}/issue', [ContactController::class, 'issue']);                       // RG-I4
 });
 $routeur->groupe('/api', [VerifierCsrf::class], function ($r) {
     $r->post('/client/restaurer', [ClientController::class, 'restaurer']);                    // RG-C7

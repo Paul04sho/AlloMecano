@@ -25,7 +25,7 @@ $mecanos = array_map(fn ($m) => [
 ], $resultats);
 // Formulaires de contact (RG-A1 : chaque appui crée un contact AVANT d'ouvrir l'appel) : branchés en partie 6
 $contact = function (array $m, string $canal, string $contenu) use ($recherche): string {
-    return '<form method="post" action="/contact">' . csrf_champ()
+    return '<form method="post" action="/contacter">' . csrf_champ()
         . '<input type="hidden" name="mecano" value="' . e($m['public_id']) . '"><input type="hidden" name="recherche" value="' . e($recherche['public_id']) . '">'
         . '<input type="hidden" name="canal" value="' . e($canal) . '">' . $contenu . '</form>';
 };

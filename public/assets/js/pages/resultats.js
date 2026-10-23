@@ -3,6 +3,7 @@
 import { creerCarte } from '../composants/carte.js';
 import { feuilleBasse } from '../composants/feuille-basse.js';
 import { initialiserFiche } from '../composants/fiche.js';
+import { initialiserContacts, surveillerRetour } from '../composants/contact.js';
 
 const racine = document.querySelector('[data-resultats]');
 const L = window.L;
@@ -168,6 +169,7 @@ const rechercheId = racine.dataset.recherche;
 function lierPanneau(panneau, ligne) {
   const slug = panneau.dataset.slug;
   initialiserFiche(panneau, slug);
+  initialiserContacts(panneau);
   panneau.querySelector('#panneau-nom')?.focus({ preventScroll: true });
   panneau.querySelectorAll('[data-fermer-fiche]').forEach((b) => b.addEventListener('click', () => fermerFiche()));
   if (ligne) choisirMecano(Number(ligne.dataset.rang), false);
@@ -226,3 +228,7 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && zoneCart
 
 const present = zoneCarte.querySelector('[data-panneau]');
 if (present) lierPanneau(present, document.querySelector('.resultats__mecano.ouvert'));
+
+// Retour d'appel : la liste est la page où l'on revient quand on a appelé depuis la ligne ouverte (RG-I4)
+initialiserContacts(racine);
+surveillerRetour();

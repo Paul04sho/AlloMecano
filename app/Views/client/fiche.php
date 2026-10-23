@@ -8,6 +8,7 @@
  * @var array{sans: string, position: ?string} $message
  * @var ?array<string, mixed> $recherche
  * @var string $retour
+ * @var ?array{public_id: string, prenom: string} $bandeauContact contact sans réponse depuis moins de 24 h (RG-I4)
  */
 use App\Core\Format;
 
@@ -34,6 +35,7 @@ $sections = fn (string $surtitre, string $titre, string $id) => '<header class="
   <?php if ($f['verifie_le'] !== null): ?><?= composant('bandeau-preuve', ['date' => $f['verifie_le']]) ?><?php endif ?>
 
   <div class="fiche__corps">
+    <?php if (!empty($bandeauContact)): ?><?= composant('bandeau-retour', $bandeauContact) ?><?php endif ?>
     <header class="fiche__identite">
       <h1 class="t-titre-1"><?= e($f['nom_complet']) ?></h1>
       <p class="t-base t-secondaire"><?= e($f['metier']) ?> · <?= $f['annees'] ?><?= $nbsp ?>ans de métier</p>

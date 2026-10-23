@@ -29,7 +29,7 @@ final class FicheController
         return Response::html(View::rendre('client/fiche', $d + [
             'titre' => $d['fiche']['nom_complet'] . ' · ' . $d['fiche']['metier'],
             'sansBarre' => true, 'sansPied' => true, 'classeCorps' => 'page-fiche',
-            'css' => ['css/pages/fiche.css'], 'js' => ['js/pages/fiche.js'],
+            'css' => ['css/pages/fiche.css', 'css/pages/contact.css'], 'js' => ['js/pages/fiche.js'],
         ], 'layouts/client'));
     }
 
@@ -64,9 +64,8 @@ final class FicheController
     public static function donnees(string $slug, ?string $recherchePublic, bool $tousLesAvis): array
     {
         $service = FicheService::depuisBase();
-        $client = Session::get('client_id');
-        $recherche = $recherchePublic !== null && is_int($client) ? RechercheService::depuisBase()->lire($recherchePublic, $client) : null;
-        $parcours = ParcoursService::lire();
+        $contexte = self::contexte($recherchePublic);
+        $recherche = $contexte['liste'];
         $position = ParcoursService::position();
 
         // Distance : celle de la liste figée si on vient d'une recherche, sinon depuis la position du client
@@ -79,30 +78,8 @@ final class FicheController
             if ($ligne !== null) {
                 $fiche['distance_m'] = $ligne['distance_m'];
             }
-        } elseif ($recherchePublic !== null) {
-            $recherchePublic = null; // pas la recherche de ce client : on ne s'y réfère pas (RG-C7)
         }
-
-        $accueil = AccueilService::depuisBase();
-        $pannes = array_column($accueil->pannes(), 'libelle', 'code');
-        if ($recherche !== null) {
-            $r = $recherche['recherche'];
-            $lieu = $r['quartier'] ?? null;
-            $repere = $r['repere'] ?? null;
-            $vehicule = $r['vehicule_libelle'];
-            $panne = $r['panne_libelle'];
-            $exacte = $r['position_effacee_le'] === null; // RG-P1 : plus de lien de position après 24 h
-            $lat = $exacte ? (float) $r['lat'] : null;
-            $lon = $exacte ? (float) $r['lon'] : null;
-        } else {
-            $quartier = $position !== null && $position['quartier'] !== null ? PositionService::depuisBase()->quartier($position['quartier']) : null;
-            $lieu = $quartier['nom'] ?? null;
-            $repere = $position['repere'] ?? null;
-            $vehicule = isset($parcours['vehicule']) ? ($accueil->vehicules()[$parcours['vehicule']] ?? null) : null;
-            $panne = isset($parcours['panne']) ? ($pannes[$parcours['panne']] ?? null) : null;
-            $lat = $position['lat'] ?? null;
-            $lon = $position['lon'] ?? null;
-        }
+        ['lieu' => $lieu, 'repere' => $repere, 'vehicule' => $vehicule, 'panne' => $panne, 'lat' => $lat, 'lon' => $lon] = $contexte;
         $avis = $service->avis($fiche['public_id'], $tousLesAvis ? 50 : self::AVIS_VISIBLES);
 
         return [
@@ -110,9 +87,37 @@ final class FicheController
             'avis' => $avis['avis'],
             'totalAvis' => $avis['total'],
             'message' => FicheService::message($fiche['prenom'], compact('lieu', 'repere', 'vehicule', 'panne'), $lat, $lon),
+            'bandeauContact' => is_int(Session::get('client_id')) ? \App\Services\ContactService::depuisBase()->enAttenteDeReponse(Session::get('client_id')) : null, // RG-I4
             'recherche' => $recherche['recherche'] ?? null,
             'retour' => $recherche !== null ? '/resultats/' . $recherche['recherche']['public_id'] : ($position !== null ? '/recherche' : '/'),
         ];
+    }
+
+    /**
+     * Ce que le client a dit de sa panne et de sa position : celle de la recherche d'où il vient (liste figée, RG-R7),
+     * sinon celle de sa session. Sert au message prêt de la fiche et aux contacts (RG-A11).
+     *
+     * @return array{recherche: ?string, liste: ?array<string, mixed>, lieu: ?string, repere: ?string, vehicule: ?string, panne: ?string, lat: ?float, lon: ?float}
+     */
+    public static function contexte(?string $recherchePublic): array
+    {
+        $client = Session::get('client_id');
+        $liste = $recherchePublic !== null && is_int($client) ? RechercheService::depuisBase()->lire($recherchePublic, $client) : null; // RG-C7 : la sienne seulement
+        $accueil = AccueilService::depuisBase();
+        if ($liste !== null) {
+            $r = $liste['recherche'];
+            $exacte = $r['position_effacee_le'] === null; // RG-P1 : plus de position exacte après 24 h
+            return ['recherche' => $r['public_id'], 'liste' => $liste, 'lieu' => $r['quartier'] ?? null, 'repere' => $r['repere'] ?? null,
+                'vehicule' => $r['vehicule_libelle'], 'panne' => $r['panne_libelle'], 'lat' => $exacte ? (float) $r['lat'] : null, 'lon' => $exacte ? (float) $r['lon'] : null];
+        }
+        $parcours = ParcoursService::lire();
+        $position = ParcoursService::position();
+        $quartier = $position !== null && $position['quartier'] !== null ? PositionService::depuisBase()->quartier($position['quartier']) : null;
+        $pannes = array_column($accueil->pannes(), 'libelle', 'code');
+        return ['recherche' => null, 'liste' => null, 'lieu' => $quartier['nom'] ?? null, 'repere' => $position['repere'] ?? null,
+            'vehicule' => isset($parcours['vehicule']) ? ($accueil->vehicules()[$parcours['vehicule']] ?? null) : null,
+            'panne' => isset($parcours['panne']) ? ($pannes[$parcours['panne']] ?? null) : null,
+            'lat' => $position['lat'] ?? null, 'lon' => $position['lon'] ?? null];
     }
 
     /** Recherche d'où l'on vient, si l'adresse la donne (ULID de 26 caractères). */

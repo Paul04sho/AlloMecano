@@ -116,7 +116,7 @@ final class RechercheController
             'rayonEtendu' => Parametres::int('recherche.rayon_etendu_km', 20),
             'rayons' => [...Parametres::liste('recherche.rayons_km'), Parametres::int('recherche.rayon_etendu_km', 20)],
             'js' => [...self::JS, 'js/pages/resultats.js'],
-            'css' => [...self::CSS, 'css/pages/fiche.css'],
+            'css' => [...self::CSS, 'css/pages/fiche.css', 'css/pages/contact.css'],
         ]);
     }
 
