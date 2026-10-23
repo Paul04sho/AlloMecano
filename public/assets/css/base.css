@@ -103,3 +103,66 @@ ul[role="list"], ol[role="list"] { list-style: none; padding: 0; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; scroll-behavior: auto !important; }
 }
+
+/* =====================================================================
+   Sélecteur de Thème (Ajusté d'après la maquette)
+   ===================================================================== */
+
+/* Conteneur aligné à gauche sous les mentions */
+.pied__theme-selecteur {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+/* Bouton au format carré/rectangle discret */
+.accueil__theme-btn {
+  background-color: rgba(255, 255, 255, 0.08); /* Fond sombre très transparent */
+  border: 0;
+  padding: 6px 12px;
+  border-radius: 4px; /* Coins légèrement arrondis et non en capsule */
+  cursor: pointer;
+  transition: background-color var(--t-etat) linear;
+}
+
+/* Style du texte par défaut */
+.accueil__theme-btn .t-etiquette {
+  color: var(--beton) !important; /* Texte de couleur béton gris clair */
+  font-size: 11px; /* Plus petit et compact comme sur l'image */
+  opacity: 0.6;
+}
+
+/* État survolé */
+.accueil__theme-btn:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+.accueil__theme-btn:hover .t-etiquette {
+  opacity: 1;
+}
+
+/* LE BOUTON ACTIF : Devient un bloc blanc uni */
+.accueil__theme-btn--actif {
+  background-color: var(--beton) !important; /* Fond béton/blanc clair */
+}
+
+/* Texte noir sur le bouton actif pour une lisibilité parfaite */
+.accueil__theme-btn--actif .t-etiquette {
+  color: var(--bitume) !important; /* Écrit en bitume foncé */
+  opacity: 1 !important;
+  font-weight: 700;
+}
+
+/* =====================================================================
+   Ajustement du filet de séparation du footer en Mode Sombre
+   ===================================================================== */
+
+/* Par défaut en mode clair : le liseré est transparent ou très discret */
+.pied.filet-haut {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* En mode sombre : on illumine légèrement le filet pour créer la coupure visuelle */
+[data-theme="dark"] .pied.filet-haut {
+  border-top: 1px solid var(--filet-sombre, rgba(255, 255, 255, 0.12));
+}

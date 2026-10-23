@@ -35,5 +35,6 @@ $theme = in_array($theme, ['clair', 'sombre'], true) ? $theme : null;
   <?= View::bloc('contenu') ?>
   <div class="toasts" aria-live="polite" aria-atomic="false" data-toasts></div>
   <?= Assets::js($js ?? []) ?>
+  <script src="/assets/js/theme.js"></script>
 </body>
 </html>
