@@ -88,7 +88,7 @@ $communes = [
 
     <div class="accueil__hero-contenu">
       <p class="t-etiquette accueil__surtitre"><?= $texte('Le bon réflexe en cas de panne') ?></p>
-      <h1 id="accueil-titre" class="t-titre-1"><?= $texte('En panne ?') ?><span class="accueil__hero-sous-titre"><?= $texte('Le mécano vérifié le plus proche.') ?></span></h1>
+      <h1 id="accueil-titre" class="t-titre-1"><?= $texte('En panne ?') ?><span class="accueil__hero-sous-titre t-titre-2"><?= $texte('Le mécano vérifié le plus proche.') ?></span></h1>
       <p class="t-lead accueil__intro"><?= $texte('Trouvez un mécanicien vérifié près de vous. Vous l’appelez directement.') ?></p>
       <div class="accueil__action">
         <?= composant('bouton', ['libelle' => 'Trouver un mécano', 'icone' => 'viseur', 'href' => '/position', 'hauteur' => 64, 'plein' => true]) ?>
