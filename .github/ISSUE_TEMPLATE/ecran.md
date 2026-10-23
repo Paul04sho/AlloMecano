@@ -17,5 +17,5 @@ labels: écran
 
 ### Terminé quand
 - Fidèle au Figma, mobile + ordinateur, clair + sombre
-- Animations du dossier Mouvement
+- Animations de docs/mouvement-et-interactions.html
 - Relu par un autre membre de l'équipe

@@ -42,7 +42,7 @@ correctif · le numéro +225 refusait les espaces
 
 - Fidèle au Figma : espacements, typographie, couleurs par jetons (jamais de couleur en dur), tous les états dessinés (vide, chargement, erreur, succès).
 - Mobile 360 px et ordinateur 1440 px. Clair et sombre.
-- Animations du dossier Mouvement, avec la version « animations réduites ».
+- Animations de docs/mouvement-et-interactions.html, avec la version « animations réduites ».
 - Utilisable au clavier, focus visible, libellés sur tous les champs.
 - Testé sur un vrai Android d'entrée de gamme, en 3G si possible.
 - Règles métier respectées et citées. Aucune requête SQL hors requête préparée.

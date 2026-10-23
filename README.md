@@ -68,6 +68,8 @@ docs/            modele-donnees.html (tables + 64 règles métier), organisation
 - **Maquettes** : [Figma allomécano](https://www.figma.com/design/G6hAhkXOYCY3z6ugFyojoO/). Ne coder que les pages Système, Mobile · Client, Mobile · Mécano, Communs, Desktop, Admin. Tout ce qui est marqué « Archive V1 » est à ignorer.
 - **Modèle de données et règles métier** : [`docs/modele-donnees.html`](docs/modele-donnees.html). Chaque règle a un code (RG-R6, RG-A5…) à citer dans les commits et les PR.
 - **Organisation de l'équipe** : [`docs/organisation.md`](docs/organisation.md).
+- **Animations et interactions** : [`docs/mouvement-et-interactions.html`](docs/mouvement-et-interactions.html) (prototype à ouvrir dans le navigateur).
+- **Démarrer avec Claude Code en local** : [`docs/prompts/01-demarrage-parcours-client.md`](docs/prompts/01-demarrage-parcours-client.md).
 
 ## Mise en ligne (Systalink)
 

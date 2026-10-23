@@ -15,7 +15,7 @@
 - [ ] Fidèle au Figma (espacements, typo, états)
 - [ ] Mobile 360 px et ordinateur 1440 px
 - [ ] Mode clair et mode sombre
-- [ ] Animations du dossier Mouvement (et version « animations réduites »)
+- [ ] Animations de docs/mouvement-et-interactions.html (et version « animations réduites »)
 - [ ] Clavier : focus visible, ordre logique
 - [ ] Testé sur un vrai Android d'entrée de gamme
 - [ ] `vendor/bin/phpunit` passe
