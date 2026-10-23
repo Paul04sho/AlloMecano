@@ -47,7 +47,7 @@ if (boutonGps instanceof HTMLButtonElement && statut instanceof HTMLElement) {
 
         const precision = Math.max(1, Math.round(position.coords.accuracy));
         afficherStatut(
-          `Position détectée avec une précision d’environ ${precision} m. Vous pourrez vérifier le repère à l’étape de confirmation.`,
+          `Position détectée avec une précision d’environ ${precision} m.`,
           'succes',
         );
 
