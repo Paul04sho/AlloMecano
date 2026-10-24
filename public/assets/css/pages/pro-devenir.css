@@ -121,7 +121,7 @@
   .m0-temoignage .m0-rubrique { grid-area: rubrique; }
   .m0-temoignage__photo { grid-area: photo; justify-self: center; width: min(100%, calc(var(--esp-104) * 2 + var(--esp-16) * 2)); }
   .m0-temoignage__citation { grid-area: citation; }
-  .m0-temoignage > .t-titre-3 { grid-area: nom; }
+  .m0-temoignage > p.t-titre-3 { grid-area: nom; }
   .m0-temoignage__metier { grid-area: metier; }
   .m0-temoignage > .t-petit { grid-area: texte; }
   .m0-engagements__liste li { grid-template-columns: calc(var(--esp-16) + var(--esp-4)) minmax(0, 1fr); }

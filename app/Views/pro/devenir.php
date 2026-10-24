@@ -66,7 +66,7 @@ use App\Core\Format;
             <p class="t-etiquette">RIVIERA 2 · À 1,4 KM</p>
             <div class="m0-notification__action t-petit"><?= icone('telephone', 18) ?><span>Rappeler</span></div>
           </article>
-          <p class="t-base">Un client à proximité a besoin de vous.</p>
+          <p class="t-base">Un client à 1,4 km t’appelle : batterie, Riviera 2.</p>
         </div>
       </li>
       <li class="m0-timeline__item">
@@ -118,7 +118,7 @@ use App\Core\Format;
       <div class="m0-piece m0-piece--5 t-micro"><span class="m0-piece__rang">5</span><span>Photo de vous</span></div>
       <div class="m0-piece m0-piece--6 t-micro"><span class="m0-piece__rang">6</span><span>Photo de l’atelier <span class="m0-optionnel t-micro">facultatif</span></span></div>
     </div>
-    <p class="m0-note-document t-petit">Chaque pièce est regardée par une personne de l’équipe.</p>
+    <p class="m0-note-document t-petit">Chaque pièce est regardée par une personne.</p>
   </section>
 
   <section class="m0-section m0-disponibilite" id="disponibilite" aria-labelledby="m0-dispo-titre">
@@ -157,7 +157,7 @@ use App\Core\Format;
     <blockquote class="m0-temoignage__citation t-titre-3">« Avant, il fallait que les clients passent devant mon atelier. »</blockquote>
     <p class="t-titre-3">Serge Kouassi</p>
     <p class="t-etiquette m0-temoignage__metier">DIESEL ET UTILITAIRES · MARCORY</p>
-    <p class="t-petit">Maintenant, les automobilistes du quartier peuvent le trouver quand il est disponible.</p>
+    <p class="t-petit">Depuis son inscription, il reçoit des demandes de clients voisins.</p>
   </section>
 
   <section class="m0-section m0-engagements" aria-labelledby="m0-engagements-titre">
@@ -188,7 +188,7 @@ use App\Core\Format;
       </details>
       <details>
         <summary class="t-petit">Je n’ai pas de diplôme, je peux m’inscrire ?</summary>
-        <p class="t-petit">Oui. Une attestation signée par le responsable de votre atelier peut remplacer le diplôme dans votre dossier.</p>
+        <p class="t-petit">Oui. Une attestation signée par un patron d’atelier suffit. Elle remplace le diplôme dans votre dossier.</p>
       </details>
       <details>
         <summary class="t-petit">Que se passe-t-il si mon dossier est refusé ?</summary>
