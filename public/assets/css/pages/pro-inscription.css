@@ -1,0 +1,79 @@
+/* M1a · Compte mécanicien : reprend les composants de formulaire du design system. */
+.page-pro-inscription { min-height: 100svh; }
+.page-pro-inscription main#contenu { min-height: 100svh; }
+.m1-inscription { min-height: 100svh; background: var(--surface); color: var(--encre); overflow-x: clip; }
+.m1-navigation {
+  position: relative; z-index: 2; display: grid; grid-template-columns: calc(var(--esp-32) + var(--esp-8)) minmax(0, 1fr) auto;
+  align-items: center; gap: var(--esp-8); min-height: var(--hauteur-barre); padding: env(safe-area-inset-top, 0) var(--marge) 0;
+  background: var(--surface);
+}
+.m1-navigation__retour { display: inline-grid; place-items: center; width: calc(var(--esp-32) + var(--esp-8)); height: calc(var(--esp-32) + var(--esp-8)); margin-left: calc(-1 * var(--esp-8)); color: var(--encre); text-decoration: none; }
+.m1-navigation__retour .icone { width: var(--esp-20); height: var(--esp-20); }
+.m1-navigation__etape { display: flex; justify-content: center; gap: var(--esp-8); color: var(--encre); white-space: nowrap; }
+.m1-navigation__plus-tard { justify-self: end; min-height: calc(var(--esp-32) + var(--esp-8)); display: inline-flex; align-items: center; color: var(--encre); font-weight: 700; text-decoration: underline; text-decoration-thickness: calc(var(--esp-4) / 2); text-underline-offset: var(--esp-4); white-space: nowrap; }
+.m1-progression { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: calc(var(--esp-4) / 2); padding: 0 var(--marge); height: var(--esp-4); }
+.m1-progression span { position: relative; overflow: hidden; background: var(--filet); }
+.m1-progression .m1-progression__done { background: var(--encre); }
+.m1-progression .m1-progression__current::after { content: ""; position: absolute; inset: 0 45% 0 0; background: var(--encre); }
+.m1-brouillon { display: flex; align-items: center; justify-content: space-between; gap: var(--esp-12); min-height: calc(var(--esp-32) + var(--esp-8)); padding: var(--esp-8) var(--marge); color: var(--encre-2); }
+.m1-brouillon__texte { font-family: var(--police-donnee); letter-spacing: .035em; }
+.m1-brouillon__icone { display: inline-flex; flex: none; color: var(--encre-2); }
+.m1-brouillon__icone svg { display: block; width: calc(var(--esp-20) + var(--esp-4)); height: calc(var(--esp-20) + var(--esp-4)); }
+.m1-contenu { width: 100%; max-width: calc(var(--largeur-contenu) * .4375); margin-inline: auto; padding: var(--esp-8) var(--marge) calc(var(--esp-96) + var(--esp-40)); }
+.m1-titre { margin: var(--esp-4) 0 var(--esp-8); text-wrap: balance; }
+.m1-introduction { max-width: 48ch; color: var(--encre-2); }
+.m1-message { margin-top: var(--esp-16); padding: var(--esp-8) var(--esp-12); background: var(--surface-creuse); border-left: calc(var(--esp-4) / 2) solid var(--encre); color: var(--encre); }
+.m1-google-verifie { display: flex; align-items: center; gap: var(--esp-8); margin-top: var(--esp-12); color: var(--encre); overflow-wrap: anywhere; }
+.m1-google-verifie .icone { flex: none; }
+.m1-google { display: flex; align-items: center; justify-content: center; gap: var(--esp-12); min-height: calc(var(--esp-48) + var(--esp-8)); margin-top: var(--esp-20); padding: 0 var(--esp-16); border: calc(var(--esp-4) / 2) solid var(--encre); border-radius: var(--rayon); background: transparent; color: var(--encre); text-decoration: none; font-family: var(--police-marque); font-stretch: 100%; font-weight: 800; text-align: center; transition: background-color var(--t-etat) linear, color var(--t-etat) linear; }
+.m1-google:hover { background: var(--surface-creuse); }
+.m1-google:focus-visible { outline: calc(var(--esp-4) / 2) solid var(--encre); outline-offset: calc(var(--esp-4) / 2); }
+.m1-google[aria-busy="true"] { pointer-events: none; opacity: .65; }
+.m1-google__logo { display: block; flex: none; width: var(--esp-24); height: var(--esp-24); }
+.m1-separateur { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: var(--esp-12); margin: var(--esp-16) 0 var(--esp-20); color: var(--encre-2); font-family: var(--police-donnee); }
+.m1-separateur span:first-child, .m1-separateur span:last-child { height: calc(var(--esp-4) / 4); background: var(--filet); }
+.m1-formulaire { display: grid; gap: var(--esp-16); }
+.m1-formulaire .champ { gap: var(--esp-8); }
+.m1-formulaire .champ__aide { margin-top: calc(-1 * var(--esp-4)); }
+.m1-formulaire .champ__boite { min-height: calc(var(--esp-48) + var(--esp-8)); }
+.m1-formulaire .champ__prefixe { width: calc(var(--esp-48) + var(--esp-16)); }
+.m1-formulaire #champ-telephone { font-family: var(--police-donnee); font-variant-numeric: tabular-nums; letter-spacing: .025em; }
+.m1-formulaire #champ-mot_de_passe { letter-spacing: .08em; }
+.m1-mot-de-passe { display: grid; gap: var(--esp-8); }
+.m1-regles { display: grid; gap: var(--esp-4); margin: 0; padding: 0; list-style: none; color: var(--encre-2); }
+.m1-regles li { display: flex; align-items: center; gap: var(--esp-8); min-height: var(--esp-20); }
+.m1-regles li > .icone { flex: none; color: var(--encre-2); opacity: .3; }
+.m1-regles li.is-ok { color: var(--encre); }
+.m1-regles li.is-ok > .icone { opacity: 1; color: var(--encre); }
+.m1-regles__case { display: block; flex: none; width: var(--esp-16); height: var(--esp-16); border: calc(var(--esp-4) / 4) solid var(--encre-2); }
+.m1-regles li.is-ok .m1-regles__case { display: grid; place-items: center; border-color: var(--encre); background: var(--encre); }
+.m1-regles li.is-ok .m1-regles__case::after { content: ""; display: block; width: var(--esp-8); height: calc(var(--esp-4) / 2); border-left: calc(var(--esp-4) / 2) solid var(--surface); border-bottom: calc(var(--esp-4) / 2) solid var(--surface); transform: rotate(-45deg) translateY(calc(var(--esp-4) / -4)); }
+.m1-connexion { margin-top: var(--esp-8); color: var(--encre-2); }
+.m1-connexion .lien { margin-left: var(--esp-4); color: var(--encre); font-weight: 700; text-decoration: underline; text-decoration-thickness: calc(var(--esp-4) / 2); text-underline-offset: var(--esp-4); }
+.m1-socle { position: fixed; z-index: 40; inset: auto 0 0; display: flex; padding: var(--esp-16) var(--marge) calc(var(--esp-16) + env(safe-area-inset-bottom)); background: var(--bitume); border-top: calc(var(--esp-4) / 4) solid var(--filet-sombre); }
+.m1-socle .bouton { width: 100%; }
+.m1-socle .bouton--principal { box-shadow: none; }
+.m1-socle .bouton:focus-visible { outline: calc(var(--esp-4) / 2) solid var(--beton); outline-offset: calc(var(--esp-4) / 2); }
+.m1-inscription a:focus-visible, .m1-inscription button:focus-visible { outline: calc(var(--esp-4) / 2) solid var(--encre); outline-offset: calc(var(--esp-4) / 2); }
+.m1-inscription [aria-invalid="true"] { scroll-margin-block: var(--esp-24); }
+
+/* M1b : étape métier provisoire en attendant sa maquette dédiée. */
+.m1-metier .m1-contenu { display: grid; gap: var(--esp-16); }
+.m1-metier__formulaire { display: grid; gap: var(--esp-16); }
+.m1-metier__select, .m1-metier__nombre { width: 100%; min-height: calc(var(--esp-32) + var(--esp-8)); padding: 0 var(--esp-12); border: 0; box-shadow: inset 0 0 0 calc(var(--esp-4) / 4) var(--bord-champ); background: var(--surface-elevee); color: var(--encre); font: inherit; border-radius: var(--rayon); }
+.m1-metier__aide { color: var(--encre-2); }
+.m1-metier__compte { display: flex; flex-direction: column; gap: var(--esp-4); padding: var(--esp-12); background: var(--surface-creuse); }
+
+@media (min-width: 1024px) {
+  .m1-navigation { max-width: calc(var(--largeur-contenu) / 2); margin-inline: auto; padding-top: var(--esp-8); }
+  .m1-progression { max-width: calc(var(--largeur-contenu) / 2); margin-inline: auto; }
+  .m1-brouillon { max-width: calc(var(--largeur-contenu) / 2); margin-inline: auto; }
+  .m1-contenu { padding-top: var(--esp-16); padding-bottom: var(--esp-24); }
+  .m1-titre { margin-top: var(--esp-8); }
+  .m1-socle { position: static; justify-content: center; padding: var(--esp-16) var(--marge) var(--esp-24); border-top: 0; background: transparent; }
+  .m1-socle .bouton { max-width: calc(var(--largeur-contenu) * .4375); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .m1-google { transition: none; }
+}

@@ -19,6 +19,8 @@ use App\Controllers\Client\FicheController;
 use App\Controllers\Client\PanneController;
 use App\Controllers\Client\PositionController;
 use App\Controllers\Client\RechercheController;
+use App\Controllers\Pro\DevenirController;
+use App\Controllers\Pro\InscriptionController;
 use App\Controllers\Communs\DevAppelController;
 use App\Controllers\Communs\MediasDemoController;
 use App\Controllers\Communs\SystemeController;
@@ -29,6 +31,15 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
 
     // ----- Client (chantier A) -----
     $r->get('/', [AccueilController::class, 'index'], 'accueil');                 // C1 · D0
+    $r->get('/pro/devenir', [DevenirController::class, 'index'], 'pro-devenir');     // M0 · Accueil mécano
+    // ----- Inscription mécanicien (M1) -----
+    $r->get('/pro/inscription/1', [InscriptionController::class, 'compte'], 'pro-inscription-compte');
+    $r->post('/pro/inscription/1', [InscriptionController::class, 'continuer']);
+    $r->post('/pro/inscription/brouillon', [InscriptionController::class, 'brouillon']);
+    $r->get('/pro/inscription/google', [InscriptionController::class, 'google'], 'pro-inscription-google');
+    $r->get('/pro/inscription/google/retour', [InscriptionController::class, 'retourGoogle'], 'pro-inscription-google-retour');
+    $r->get('/pro/inscription/2', [InscriptionController::class, 'etapeMetier'], 'pro-inscription-metier');
+    $r->post('/pro/inscription/2', [InscriptionController::class, 'enregistrerMetier']);
     $r->groupe('', [IdentifierClient::class], function ($r) {                     // RG-C7 : client anonyme
         $r->get('/position', [PositionController::class, 'gps'], 'position');                   // C2a
         $r->post('/position', [PositionController::class, 'enregistrerGps']);
@@ -60,8 +71,7 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
     });
 
     // ----- Mécano (chantier B) -----
-    // $r->get('/pro/devenir', …)         M0                        (à faire)
-    // $r->get('/pro/inscription/{etape}', …)  M1a → M1d · M1f     (à faire)
+    // M1a (compte/Google) et M1b (métier, raccord provisoire) sont activés ci-dessus ; M1c/M1d/M1f restent à faire.
     // $r->get('/pro', …)                 M2 · M2a · M2b            (à faire)
     // $r->get('/pro/demandes', …)        M3                        (à faire)
     // $r->get('/pro/avis', …)            M3 · Avis                 (à faire)
