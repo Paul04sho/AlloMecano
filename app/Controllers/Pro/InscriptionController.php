@@ -196,7 +196,7 @@ final class InscriptionController
         }
 
         try {
-            if (!$db instanceof Database) {
+            if (!($db instanceof Database)) {
                 $db = Database::instance();
             }
             $sous = $google['sub'] ?? ($ligneExistante['google_sub'] ?? null);
