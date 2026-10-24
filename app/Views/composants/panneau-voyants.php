@@ -10,7 +10,7 @@
 use App\Core\Format;
 ?>
 <fieldset class="panneau-voyants"<?= !empty($erreur) ? ' aria-describedby="' . e($nom) . '-erreur"' : '' ?>>
-  <legend class="t-etiquette"><?= e(Format::typo('Qu’est-ce qui s’allume ?')) ?></legend>
+  <legend class="t-etiquette"><?= e(Format::typo('Quelle est la panne ?')) ?></legend>
   <div class="voyants">
     <?php foreach ($pannes as $p): ?>
       <label class="tuile-voyant<?= $p['code'] === 'je_ne_sais_pas' ? ' tuile-voyant--large' : '' ?>">
