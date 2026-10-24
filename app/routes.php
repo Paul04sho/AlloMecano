@@ -19,6 +19,7 @@ use App\Controllers\Client\FicheController;
 use App\Controllers\Client\PanneController;
 use App\Controllers\Client\PositionController;
 use App\Controllers\Client\RechercheController;
+use App\Controllers\Pro\DevenirController;
 use App\Controllers\Communs\DevAppelController;
 use App\Controllers\Communs\MediasDemoController;
 use App\Controllers\Communs\SystemeController;
@@ -29,6 +30,7 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
 
     // ----- Client (chantier A) -----
     $r->get('/', [AccueilController::class, 'index'], 'accueil');                 // C1 · D0
+    $r->get('/pro/devenir', [DevenirController::class, 'index'], 'pro-devenir');     // M0 · Accueil mécano
     $r->groupe('', [IdentifierClient::class], function ($r) {                     // RG-C7 : client anonyme
         $r->get('/position', [PositionController::class, 'gps'], 'position');                   // C2a
         $r->post('/position', [PositionController::class, 'enregistrerGps']);
@@ -60,7 +62,6 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
     });
 
     // ----- Mécano (chantier B) -----
-    // $r->get('/pro/devenir', …)         M0                        (à faire)
     // $r->get('/pro/inscription/{etape}', …)  M1a → M1d · M1f     (à faire)
     // $r->get('/pro', …)                 M2 · M2a · M2b            (à faire)
     // $r->get('/pro/demandes', …)        M3                        (à faire)
