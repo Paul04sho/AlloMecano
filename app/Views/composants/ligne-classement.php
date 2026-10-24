@@ -80,7 +80,8 @@ $balise = isset($href) ? 'a' : 'div'; ?>
     </span>
   <?php endif ?>
   <span class="ligne-classement__portrait">
-    <img src="<?= e($photo['src']) ?>" width="52" height="52" alt="" loading="lazy" decoding="async"<?= !empty($photo['couleur']) ? ' style="background:' . e($photo['couleur']) . '"' : '' ?>>
+    <img src="<?= e($photo['src']) ?>"<?= !empty($photo['srcset']) ? ' srcset="' . e($photo['srcset']) . '" sizes="52px"' : '' ?> width="52" height="52" alt="" loading="lazy" decoding="async"
+         style="<?= !empty($photo['couleur']) ? 'background:' . e($photo['couleur']) . ';' : '' ?><?= !empty($photo['cadrage']) ? 'object-position:' . e($photo['cadrage']) : '' ?>">
     <?php if ($verifie): ?><?= composant('poincon', ['taille' => 18, 'surPhoto' => true]) ?><?php endif ?>
   </span>
   <span class="ligne-classement__texte"><?= $texte ?></span>
