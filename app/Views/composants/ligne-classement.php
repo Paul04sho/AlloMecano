@@ -42,6 +42,8 @@ $enGras = is_array($specialitePanne ?? null) ? $specialitePanne : (isset($specia
 $meta = [Format::note($note ?? null) . Format::INSECABLE . '★', $avis . Format::INSECABLE . 'avis'];
 if (!empty($quartier) && ($format ?? 'compacte') !== 'etendue') { $meta[] = $quartier; } // l'étendue (60:409) n'affiche que note et avis
 $photo = is_array($portrait) ? $portrait : ['src' => $portrait];
+// Pas de photo (pas encore livrée ou fichier absent) : initiales sur surface creuse, jamais un <img src=""> cassé
+$initiales = mb_strtoupper(implode('', array_map(fn ($m) => mb_substr($m, 0, 1), array_slice(preg_split('/[\s-]+/u', trim($nom)) ?: [], 0, 2))));
 $html = '';
 foreach (array_filter($attrs ?? [], fn ($v) => $v !== null) as $k => $v) { $html .= ' ' . e($k) . '="' . e($v) . '"'; }
 $specialitesHtml = '';
@@ -64,8 +66,10 @@ if ($format === 'etendue'): ?>
       <?php if (!empty($rubrique)): ?><span class="ligne-classement__rubrique t-etiquette"><?= e($rubrique) ?></span><?php endif ?>
       <?php if (isset($href)): ?><a class="ligne-classement__lien" href="<?= e($href) ?>"><?= $texte ?></a><?php else: ?><?= $texte ?><?php endif ?>
     </span>
+    <?php if (empty($photo['src'])): ?><span class="ligne-classement__portrait45 ligne-classement__initiales" aria-hidden="true"><?= e($initiales) ?></span><?php else: ?>
     <img class="ligne-classement__portrait45" src="<?= e($photo['src']) ?>"<?= !empty($photo['srcset']) ? ' srcset="' . e($photo['srcset']) . '" sizes="80px"' : '' ?> width="80" height="100" alt=""
          style="<?= !empty($photo['couleur']) ? 'background:' . e($photo['couleur']) . ';' : '' ?><?= !empty($photo['cadrage']) ? 'object-position:' . e($photo['cadrage']) : '' ?>" decoding="async">
+    <?php endif ?>
   </div>
   <?php if (!empty($actions)): ?><div class="ligne-classement__actions"><?= $actions ?></div><?php endif ?>
 </article>
@@ -80,8 +84,10 @@ $balise = isset($href) ? 'a' : 'div'; ?>
     </span>
   <?php endif ?>
   <span class="ligne-classement__portrait">
+    <?php if (!empty($photo['src'])): ?>
     <img src="<?= e($photo['src']) ?>"<?= !empty($photo['srcset']) ? ' srcset="' . e($photo['srcset']) . '" sizes="52px"' : '' ?> width="52" height="52" alt="" loading="lazy" decoding="async"
          style="<?= !empty($photo['couleur']) ? 'background:' . e($photo['couleur']) . ';' : '' ?><?= !empty($photo['cadrage']) ? 'object-position:' . e($photo['cadrage']) : '' ?>">
+    <?php else: ?><span class="ligne-classement__initiales" aria-hidden="true"><?= e($initiales) ?></span><?php endif ?>
     <?php if ($verifie): ?><?= composant('poincon', ['taille' => 18, 'surPhoto' => true]) ?><?php endif ?>
   </span>
   <span class="ligne-classement__texte"><?= $texte ?></span>
