@@ -156,8 +156,8 @@ final class InscriptionController
 
                 $paramsTelephone = ['telephone' => $telephone];
                 $paramsEmail = ['email' => $emailBrut];
-                $sqlTelephone = 'SELECT id FROM mecaniciens WHERE telephone = :telephone AND supprime_le IS NULL';
-                $sqlEmail = 'SELECT id FROM mecaniciens WHERE email = :email AND supprime_le IS NULL';
+                $sqlTelephone = 'SELECT id FROM mecaniciens WHERE telephone = :telephone';
+                $sqlEmail = 'SELECT id FROM mecaniciens WHERE email = :email';
                 if ($idExistant !== null) {
                     $sqlTelephone .= ' AND id <> :id_exclu';
                     $sqlEmail .= ' AND id <> :id_exclu';
@@ -303,11 +303,11 @@ final class InscriptionController
         try {
             $profil = (new GoogleOAuthService())->profilDepuisCode((string) $requete->query('code'), (string) $oauth['nonce']);
             $db = Database::instance();
-            if ($db->valeur('SELECT id FROM mecaniciens WHERE google_sub = :sub AND supprime_le IS NULL LIMIT 1', ['sub' => $profil['sub']]) !== null) {
+            if ($db->valeur('SELECT id FROM mecaniciens WHERE google_sub = :sub LIMIT 1', ['sub' => $profil['sub']]) !== null) {
                 Session::flash('m1a_message', 'Ce compte Google est déjà associé à un compte mécanicien. La connexion à un compte existant sera disponible dans l’espace pro.');
                 return Response::redirection('/pro/inscription/1');
             }
-            if ($db->valeur('SELECT id FROM mecaniciens WHERE email = :email AND supprime_le IS NULL LIMIT 1', ['email' => $profil['email']]) !== null) {
+            if ($db->valeur('SELECT id FROM mecaniciens WHERE email = :email LIMIT 1', ['email' => $profil['email']]) !== null) {
                 Session::flash('m1a_message', 'Cette adresse e-mail possède déjà un compte mécanicien. Connectez-vous plutôt que de créer un doublon.');
                 return Response::redirection('/pro/inscription/1');
             }
