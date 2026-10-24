@@ -1,7 +1,8 @@
 <?php
 /**
  * Crée la base et charge le schéma + les données de départ (+ démo avec --demo).
- * Usage : php scripts/installer-base.php [--demo] [--reinitialiser]
+ * Usage : php scripts/installer-base.php [--demo] [--medias-demo] [--reinitialiser]
+ * --medias-demo seul recopie uniquement les photos de démonstration, sans toucher à MySQL.
  * ATTENTION : --reinitialiser supprime toutes les tables. Jamais en production.
  */
 declare(strict_types=1);
@@ -12,6 +13,53 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 Env::charger(dirname(__DIR__) . '/.env');
 
 $options = array_slice($argv, 1);
+
+/**
+ * Copie les photos de démonstration dans public/medias/demo.
+ * Ce dossier est ignoré par Git : il doit être matérialisé localement depuis les fichiers suivis.
+ */
+$copierMediasDemo = static function (): int {
+    $source = dirname(__DIR__) . '/database/seeds/medias';
+    $cible = dirname(__DIR__) . '/public/medias/demo';
+    $fichiers = glob($source . '/*.webp') ?: [];
+
+    if ($fichiers === []) {
+        throw new RuntimeException("Aucune photo de démonstration trouvée dans : $source");
+    }
+    if (!is_dir($cible) && !mkdir($cible, 0775, true) && !is_dir($cible)) {
+        throw new RuntimeException("Impossible de créer le dossier de destination : $cible");
+    }
+
+    $copies = 0;
+    foreach ($fichiers as $fichier) {
+        if (!copy($fichier, $cible . '/' . basename($fichier))) {
+            throw new RuntimeException("Impossible de copier la photo : " . basename($fichier));
+        }
+        $copies++;
+    }
+    return $copies;
+};
+
+// Mode de réparation sûr : synchroniser uniquement les images, sans connexion ni requête SQL.
+// Ne pas combiner avec --demo ou --reinitialiser, qui sont des opérations de base de données.
+if (
+    in_array('--medias-demo', $options, true)
+    && !in_array('--demo', $options, true)
+    && !in_array('--reinitialiser', $options, true)
+) {
+    if (Env::enProduction()) {
+        fwrite(STDERR, "Refusé : les photos de démonstration ne doivent pas être copiées en production.\\n");
+        exit(1);
+    }
+    try {
+        $nombre = $copierMediasDemo();
+        echo "Photos de démonstration copiées : $nombre\\n";
+        exit(0);
+    } catch (RuntimeException $e) {
+        fwrite(STDERR, $e->getMessage() . "\\n");
+        exit(1);
+    }
+}
 $nom = (string) Env::get('DB_NOM', 'allomecano');
 if (in_array('--reinitialiser', $options, true) && Env::enProduction()) {
     fwrite(STDERR, "Refusé : --reinitialiser est interdit en production.\n");
@@ -58,18 +106,9 @@ foreach ($fichiers as $fichier) {
     $pdo->exec((string) file_get_contents($fichier));
     echo 'Chargé : ' . basename($fichier) . "\n";
 }
-// Démo : photos (portraits, ateliers) copiées dans public/medias/demo (dossier hors git, comme les vraies photos publiques)
+// Démo : photos (portraits, ateliers) copiées dans public/medias/demo (dossier hors git).
 if (in_array('--demo', $options, true)) {
-    $source = dirname(__DIR__) . '/database/seeds/medias';
-    $cible = dirname(__DIR__) . '/public/medias/demo';
-    if (!is_dir($cible)) {
-        mkdir($cible, 0775, true);
-    }
-    foreach (glob($source . '/*.webp') ?: [] as $f) {
-        copy($f, $cible . '/' . basename($f));
-    }
-    echo 'Photos de démo copiées : ' . count(glob($cible . '/*.webp') ?: []) . "
-";
+    echo 'Photos de démo copiées : ' . $copierMediasDemo() . "\n";
 }
 $tables = $pdo->query("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = " . $pdo->quote($nom))->fetchColumn();
 echo "Base « $nom » prête : $tables tables.\n";
