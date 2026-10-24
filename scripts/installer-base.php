@@ -48,15 +48,15 @@ if (
     && !in_array('--reinitialiser', $options, true)
 ) {
     if (Env::enProduction()) {
-        fwrite(STDERR, "Refusé : les photos de démonstration ne doivent pas être copiées en production.\\n");
+        fwrite(STDERR, "Refusé : les photos de démonstration ne doivent pas être copiées en production.\n");
         exit(1);
     }
     try {
         $nombre = $copierMediasDemo();
-        echo "Photos de démonstration copiées : $nombre\\n";
+        echo "Photos de démonstration copiées : $nombre\n";
         exit(0);
     } catch (RuntimeException $e) {
-        fwrite(STDERR, $e->getMessage() . "\\n");
+        fwrite(STDERR, $e->getMessage() . "\n");
         exit(1);
     }
 }
