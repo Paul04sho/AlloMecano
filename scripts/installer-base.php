@@ -70,6 +70,8 @@ if (in_array('--demo', $options, true)) {
     }
     echo 'Photos de démo copiées : ' . count(glob($cible . '/*.webp') ?: []) . "
 ";
+    // Démo de l'administration : dossiers à examiner (pièces factices) et un mois de mises en relation
+    require dirname(__DIR__) . '/database/seeds/demo-admin.php';
 }
 $tables = $pdo->query("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = " . $pdo->quote($nom))->fetchColumn();
 echo "Base « $nom » prête : $tables tables.\n";

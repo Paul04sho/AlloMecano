@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @var App\Core\Router $routeur
  */
 
+use App\Controllers\Admin\TableauController;
 use App\Controllers\Api\ClientController;
 use App\Controllers\Client\AccueilController;
 use App\Controllers\Client\AppelController;
@@ -24,6 +25,7 @@ use App\Controllers\Communs\DevAppelController;
 use App\Controllers\Communs\MotDePasseController;
 use App\Controllers\Communs\PagesController;
 use App\Controllers\Communs\SystemeController;
+use App\Middleware\ExigerAdmin;
 use App\Middleware\IdentifierClient;
 use App\Middleware\VerifierCsrf;
 
@@ -70,7 +72,11 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
     // $r->get('/pro/profil', …)          M4                        (à faire)
 
     // ----- Admin (chantier B) -----
-    // $r->get('/admin', …)               A0 … A5                   (à faire)
+    $r->groupe('/admin', [ExigerAdmin::class], function ($r) {                                  // RG-C5 : admins connectés seulement
+        $r->get('', [TableauController::class, 'tableau'], 'admin');                              // A0
+        $r->get('/dossiers', [TableauController::class, 'dossiers'], 'admin-dossiers');           // A1
+        $r->get('/dossiers/{id}/portrait', [TableauController::class, 'portrait']);               // vignette de la file
+    });
 
     // ----- Communs (chantier C) -----
     $r->get('/connexion', [ConnexionController::class, 'formulaire'], 'connexion');           // X1

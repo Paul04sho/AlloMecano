@@ -6,6 +6,7 @@
  * @var list<string> $css  feuilles propres à la page
  * @var list<string> $js   modules propres à la page
  * @var ?string $classeCorps
+ * @var bool $noindex  l'administration n'est jamais indexée
  */
 use App\Core\Assets;
 use App\Core\Csrf;
@@ -23,6 +24,7 @@ $theme = in_array($theme, ['clair', 'sombre'], true) ? $theme : null;
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title><?= e(isset($titre) ? $titre . ' · allomécano' : 'allomécano · Le mécano vérifié le plus proche') ?></title>
   <meta name="description" content="<?= e($description ?? 'En panne à Abidjan ? Trouvez le mécanicien vérifié et disponible le plus proche, et appelez-le directement.') ?>">
+  <?php if (!empty($noindex)): ?><meta name="robots" content="noindex, nofollow"><?php endif ?>
   <meta name="theme-color" content="#15171c">
   <meta name="csrf" content="<?= e(Csrf::jeton()) ?>">
   <?php if ($jetonClient = Session::get('client_jeton_neuf')): Session::oublier('client_jeton_neuf'); /* RG-C7 : copie confiée une fois au navigateur */ ?>

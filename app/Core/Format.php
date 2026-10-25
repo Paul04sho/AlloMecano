@@ -13,6 +13,7 @@ final class Format
     public const FINE = "\u{202F}";      // espace fine insécable (avant ? ! : ; et dans les milliers)
     public const INSECABLE = "\u{00A0}";
 
+    private const JOURS = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
     private const MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
 
     /** 1 359 m → « 1,4 » ; 820 m → « 0,8 ». L'unité KM est posée à part (Borne). */
@@ -86,6 +87,16 @@ final class Format
         $d = $date instanceof \DateTimeInterface ? $date : new \DateTimeImmutable($date, new \DateTimeZone('UTC'));
         $jour = (int) $d->format('j');
         return ($jour === 1 ? '1er' : (string) $jour) . ' ' . self::MOIS[(int) $d->format('n') - 1] . ' ' . $d->format('Y');
+    }
+
+    /** « mercredi 21 octobre 2026 » (l'admin le passe en capitales avec .t-etiquette) */
+    public static function dateLongue(\DateTimeInterface|string|null $date): string
+    {
+        if ($date === null || $date === '') {
+            return '';
+        }
+        $d = $date instanceof \DateTimeInterface ? $date : new \DateTimeImmutable($date, new \DateTimeZone('UTC'));
+        return self::JOURS[(int) $d->format('w')] . ' ' . self::date($d);
     }
 
     /** « 10:14 » (Mono dans les vues) */

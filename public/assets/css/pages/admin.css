@@ -1,0 +1,143 @@
+/* Administration (desktop) · A0 Tableau de bord (Figma 164:14), A1 File des dossiers (167:88). Rail admin 56:470. */
+
+/* L'administration n'a que le gabarit desktop : l'échelle typographique ≥ 1024 s'applique partout ici. */
+.admin .t-titre-1 { font-size: 44px; line-height: 48px; }
+.admin .t-titre-2 { font-size: 30px; line-height: 36px; }
+.admin .t-titre-3 { font-size: 22px; line-height: 28px; }
+.admin .t-borne-xl { font-size: 64px; line-height: 64px; }
+.admin .t-base, .admin .t-gras { font-size: 18px; line-height: 28px; }
+.admin .t-donnee { font-size: 15px; line-height: 22px; }
+.admin .t-bouton-compact { font-size: 15px; }
+
+.admin { display: grid; grid-template-columns: var(--rail-admin, 248px) minmax(0, 1fr); min-height: 100vh; min-width: 1100px; --rail-admin: 248px; }
+.admin__contenu { display: flex; flex-direction: column; gap: var(--esp-24); width: 100%; max-width: 1192px; padding: var(--esp-32) var(--esp-48) var(--esp-48); }
+.admin__contenu > * { margin: 0; }
+.admin__entete { display: flex; flex-direction: column; gap: var(--esp-12); }
+.admin__entete > p { margin: 0; }
+.admin__titre { margin: 0; font-family: var(--police-marque); font-stretch: 75%; font-weight: 800; font-size: 44px; line-height: 48px; letter-spacing: -.005em; text-wrap: balance; }
+.admin__rubrique { display: flex; flex-direction: column; gap: var(--esp-12); }
+.admin__rubrique > * { margin: 0; }
+.admin__vide { margin: var(--esp-24) 0 0; }
+
+/* ---------- Rail (56:470) ---------- */
+.rail-admin { position: sticky; top: 0; align-self: start; display: flex; flex-direction: column; gap: var(--esp-4); height: 100vh; padding: 28px var(--esp-16) var(--esp-24); background: var(--bitume); color: var(--beton); }
+.rail-admin__logo { display: block; width: 140px; height: 28px; color: var(--beton); }
+.rail-admin__logo svg { display: block; width: 100%; height: 100%; }
+.rail-admin__rubrique { margin: 0 0 var(--esp-20); color: var(--gris-voyant); }
+.rail-admin__entrees { display: flex; flex-direction: column; gap: var(--esp-4); }
+.rail-admin__entree { position: relative; display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px 0 14px; color: var(--gris-voyant); text-decoration: none; }
+.rail-admin__entree > span:first-child { flex: 1; }
+.rail-admin__entree:hover { color: var(--beton); }
+.rail-admin__entree--active { background: var(--panneau); color: var(--beton); }
+.rail-admin__entree--active::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--balise); }
+.rail-admin__admin { display: flex; flex-direction: column; gap: 2px; margin-top: auto; }
+.rail-admin__admin > p { margin: 0; }
+.rail-admin__admin button { align-self: flex-start; padding: 0; background: none; border: 0; color: var(--gris-voyant); text-align: left; cursor: pointer; }
+.rail-admin__admin button:hover { color: var(--beton); text-decoration: underline; text-underline-offset: 3px; }
+.sur-sombre :focus-visible { outline-color: var(--beton); }
+
+/* ---------- A0 : indicateurs (164:64) ---------- */
+.indicateurs { display: flex; border-block: 1px solid var(--filet); }
+.indicateur { display: flex; flex: 1; flex-direction: column; gap: 10px; min-width: 0; padding: 20px var(--esp-24) 22px; border-left: 1px solid var(--filet); }
+.indicateur:first-child { padding-left: 0; border-left: 0; }
+.indicateur > p { margin: 0; }
+.indicateur__valeur { display: flex; align-items: baseline; gap: 3px; letter-spacing: -.01em; }
+.indicateur__etat { display: flex; align-items: center; gap: var(--esp-8); }
+.indicateur__etat--erreur { color: var(--erreur-texte); }
+.indicateur__etat--dispo { color: var(--dispo-texte); }
+
+/* ---------- A0 : colonnes ---------- */
+.admin__colonnes { display: flex; gap: var(--esp-24); align-items: flex-start; }
+.admin__file { display: flex; flex: 0 0 min(629px, 57%); flex-direction: column; gap: var(--esp-16); min-width: 0; }
+.admin__liste { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--filet); }
+.admin__voir { align-self: flex-start; min-height: 28px; }
+.admin__activite { display: flex; flex: 1; flex-direction: column; gap: var(--esp-24); min-width: 0; }
+.admin__activite > section { display: flex; flex-direction: column; gap: var(--esp-12); }
+.admin__axe { display: flex; justify-content: space-between; margin: 0; }
+
+/* ---------- Ligne de dossier (164:93 · 167:177) ---------- */
+.ligne-dossier__portrait { position: relative; display: block; flex: none; width: 40px; height: 40px; border-radius: 50%; overflow: hidden; background: var(--surface-creuse); }
+.ligne-dossier__portrait img { display: block; width: 40px; height: 40px; object-fit: cover; }
+.ligne-dossier__portrait--vide { display: grid; place-items: center; }
+.ligne-dossier__portrait--vide .icone { fill: none; }
+.ligne-dossier--liste { display: flex; align-items: center; gap: var(--esp-16); padding-block: 14px; border-bottom: 1px solid var(--filet); }
+.ligne-dossier__identite { flex: 1; min-width: 0; }
+.ligne-dossier__identite > p { margin: 0; }
+.ligne-dossier .bouton { flex: none; }
+.ligne-dossier .bouton .icone { fill: none; }
+
+/* ---------- Jauge d'attente (164:99) ---------- */
+.jauge-attente { display: flex; flex-direction: column; gap: 6px; max-width: 100%; }
+.jauge-attente > p { margin: 0; color: var(--encre); white-space: nowrap; }
+.jauge-attente__segments { display: flex; gap: var(--esp-4); }
+.jauge-attente__segments i { flex: 1; height: 4px; background: var(--filet); }
+.jauge-attente__segments i.plein { background: var(--encre); }
+.jauge-attente--alerte > p { color: var(--erreur-texte); }
+.jauge-attente--alerte .jauge-attente__segments i.plein { background: var(--erreur); }
+
+/* ---------- Pastilles des pièces (167:204) ---------- */
+.pastilles-pieces { display: inline-flex; gap: var(--esp-4); }
+.pastilles-pieces--legende { display: flex; flex-wrap: wrap; align-items: center; gap: var(--esp-16); margin: 0; padding: 0; list-style: none; }
+.pastilles-pieces--legende li { display: flex; align-items: center; gap: 6px; }
+.pastilles-pieces--legende span { white-space: nowrap; }
+.pastille { display: block; flex: none; width: 12px; height: 12px; border-radius: var(--rayon); }
+.pastille--envoyee { background: var(--encre); }
+.pastille--manquante { box-shadow: inset 0 0 0 1.5px var(--bord-champ); }
+.pastille--facultative { border: 1.5px dashed var(--bord-champ); }
+.pastille--a-reprendre { background: var(--erreur); }
+
+/* ---------- A0 : barres par commune (164:238) ---------- */
+.barres-communes { display: flex; flex-direction: column; gap: 3px; margin: 0; padding: 0; list-style: none; }
+.barres-communes__ligne { display: flex; align-items: center; gap: var(--esp-12); font-size: 13px; line-height: 18px; }
+.barres-communes__nom { flex: none; width: 96px; }
+.barres-communes__piste { position: relative; flex: 1; min-width: 0; height: 18px; }
+.barres-communes__barre { position: absolute; left: 0; top: 4px; height: 10px; background: var(--encre); }
+.barres-communes__piste > span { color: var(--encre-2); white-space: nowrap; }
+.barres-communes__nombre { flex: none; width: 24px; text-align: right; }
+.barres-communes__ligne--vide .barres-communes__nom { color: var(--encre-2); }
+
+/* ---------- A0 : histogramme (164:308) ---------- */
+.histogramme { display: flex; align-items: flex-end; gap: var(--esp-4); height: 85px; border-bottom: 1px solid var(--filet); }
+.histogramme__barre { display: block; flex: 1; min-height: 2px; background: var(--encre); }
+.histogramme__barre--en-cours { background: none; box-shadow: inset 0 0 0 1.5px var(--encre); }
+
+/* ---------- A1 : outils (167:138) ---------- */
+.dossiers__outils { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--esp-24); margin-top: var(--esp-24); }
+.dossiers__outils .champ { width: 420px; flex: none; }
+.dossiers__onglets { display: flex; border-radius: var(--rayon); box-shadow: inset 0 0 0 1.5px var(--encre); overflow: hidden; }
+.dossiers__onglets a { display: flex; align-items: center; gap: var(--esp-8); height: 44px; padding-inline: var(--esp-20); color: var(--encre); text-decoration: none; white-space: nowrap; }
+.dossiers__onglets a[aria-current="page"] { background: var(--encre); color: var(--surface); }
+.dossiers__onglets a:not([aria-current="page"]) .t-donnee { color: var(--encre-2); }
+.dossiers__onglets a:hover:not([aria-current="page"]) { background: var(--surface-creuse); }
+
+/* ---------- A1 : table (167:158) ---------- */
+.dossiers__table { width: 100%; border-collapse: collapse; table-layout: fixed; margin-top: calc(-1 * var(--esp-24) + var(--esp-24)); }
+.dossiers__table thead th { padding: 11px 0; font-weight: 500; text-align: left; border-bottom: 1px solid var(--bord-champ); }
+.dossiers__table th:nth-child(1) { width: 56px; }
+.dossiers__table th:nth-child(2) { width: 200px; }
+.dossiers__table th:nth-child(3) { width: 108px; }
+.dossiers__table th:nth-child(4) { width: 196px; }
+.dossiers__table th:nth-child(5) { width: 132px; }
+.dossiers__table th:nth-child(6) { width: 180px; }
+.dossiers__table th:nth-child(7) { width: 100px; }
+.dossiers__tri { display: inline-flex; align-items: center; gap: var(--esp-4); color: var(--encre); text-decoration: none; }
+.dossiers__tri .icone { fill: none; transform: rotate(90deg); }
+[aria-sort="ascending"] .dossiers__tri .icone { transform: rotate(-90deg); }
+.ligne-dossier--table > * { height: 64px; padding: 0 var(--esp-16) 0 0; border-bottom: 1px solid var(--filet); text-align: left; font-weight: 400; vertical-align: middle; overflow: hidden; }
+.ligne-dossier--table > .ligne-dossier__c1 { padding-right: 0; }
+.ligne-dossier__c2 { display: table-cell; }
+.ligne-dossier__c2 > span { display: block; }
+.ligne-dossier__c2 .t-titre-3 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ligne-dossier__envoye > span { display: block; }
+.ligne-dossier__action { padding-right: 0 !important; text-align: right !important; }
+.ligne-dossier__action .bouton { width: 100%; }
+.ligne-dossier--table.est-active { background: var(--surface-creuse); }
+.dossiers__pied { display: flex; align-items: center; justify-content: space-between; gap: var(--esp-16); }
+.dossiers__clavier { display: flex; align-items: center; gap: 6px; }
+.dossiers__clavier .touche { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; padding-inline: var(--esp-4); border: 1px solid var(--bord-champ); border-radius: var(--rayon); color: var(--encre); }
+.dossiers__clavier .touche .icone { fill: none; transform: rotate(-90deg); }
+.dossiers__clavier .touche:nth-of-type(2) .icone { transform: rotate(90deg); }
+.dossiers__page { margin-left: var(--esp-12); color: var(--encre); }
+.dossiers__pas { display: inline-grid; place-items: center; width: 24px; height: 24px; color: var(--encre); }
+.dossiers__pas .icone { fill: none; }
+.dossiers__pas--prec .icone { transform: rotate(180deg); }

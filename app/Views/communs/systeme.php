@@ -303,6 +303,24 @@ $icones = json_decode((string) file_get_contents(RACINE . '/scripts/icones.json'
   </section>
 
   <section class="rubrique">
+    <span class="t-etiquette">Administration · rail 56:470 · indicateur 164:65 · jauge d’attente 164:99 · pastilles de pièces 167:204 · barres par commune 164:238 · histogramme 164:308</span>
+    <div class="systeme__grille systeme__admin">
+      <div class="indicateurs">
+        <?= composant('indicateur', ['valeur' => 12, 'libelle' => 'Dossiers en attente · le plus ancien : 31 h']) ?>
+        <?= composant('indicateur', ['valeur' => 3, 'titre' => 'Signalements ouverts', 'libelle' => 'Dont 1 critique', 'etat' => 'erreur']) ?>
+        <?= composant('indicateur', ['valeur' => 84, 'libelle' => 'Disponibles maintenant', 'etat' => 'dispo']) ?>
+        <?= composant('indicateur', ['valeur' => 71, 'unite' => '%', 'libelle' => 'Clients qui ont pu joindre leur mécano (7 j)']) ?>
+      </div>
+      <?= composant('jauge-attente', ['jauge' => ['heures' => 31, 'delai' => 48, 'segments' => 5, 'total' => 8, 'alerte' => false], 'largeur' => 172]) ?>
+      <?= composant('jauge-attente', ['jauge' => ['heures' => 40, 'delai' => 48, 'segments' => 6, 'total' => 8, 'alerte' => true], 'largeur' => 172]) ?>
+      <?= composant('pastilles-pieces', ['pieces' => ['cni_recto' => 'envoyee', 'cni_verso' => 'envoyee', 'permis' => 'a_reprendre', 'diplome' => 'envoyee', 'portrait' => 'manquante', 'atelier' => 'facultative']]) ?>
+      <?= composant('pastilles-pieces', ['pieces' => [], 'legende' => true]) ?>
+      <?= composant('barres-communes', ['communes' => [['nom' => 'Cocody', 'etat' => 'disponibles', 'nombre' => 18], ['nom' => 'Yopougon', 'etat' => 'disponibles', 'nombre' => 14], ['nom' => 'Attécoubé', 'etat' => 'aucun', 'nombre' => 0], ['nom' => 'Songon', 'etat' => 'bientot', 'nombre' => 0]]]) ?>
+      <?= composant('histogramme', ['jours' => array_map(static fn (int $i): array => ['jour' => 'J' . $i, 'nombre' => 30 + (int) (20 * sin($i))], range(1, 30)), 'resume' => 'Exemple de 30 jours']) ?>
+    </div>
+  </section>
+
+  <section class="rubrique">
     <span class="t-etiquette">Appel intégré · anneau 269:1827 / 269:1873 · commande 269:1849 / 269:1891 · état 269:1837 / 269:1881 / 270:1853 · repère carte W44 270:1862</span>
     <div class="systeme__grille systeme__appel">
       <div class="appel appel--sombre sur-sombre systeme__appel-sombre">
