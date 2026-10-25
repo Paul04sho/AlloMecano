@@ -28,6 +28,7 @@ final class AccueilServiceTest extends TestCase
         $this->db->pdo()->beginTransaction();
         $this->db->executer('DELETE FROM avis'); // avis de démo : RESTRICT sur les mécanos, annulé à la fin
         $this->db->executer('DELETE FROM contacts');
+        $this->db->executer('DELETE FROM pieces_dossier'); // les dossiers de démo de l'administration tiennent aux mécanos
         $this->db->executer('DELETE FROM mecaniciens');
     }
 

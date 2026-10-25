@@ -39,6 +39,7 @@ final class AppelServiceTest extends TestCase
         $this->db->pdo()->beginTransaction();
         $this->db->executer('DELETE FROM avis');
         $this->db->executer('DELETE FROM contacts');
+        $this->db->executer('DELETE FROM pieces_dossier'); // les dossiers de démo de l'administration tiennent aux mécanos
         $this->db->executer('DELETE FROM mecaniciens');
         $this->db->executer("REPLACE INTO parametres (cle, valeur, type, description) VALUES ('appel.integre_actif', '1', 'int', 'test')");
         Parametres::vider();

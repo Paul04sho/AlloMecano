@@ -33,6 +33,7 @@ final class SignalementServiceTest extends TestCase
         $this->db->executer('DELETE FROM signalements');
         $this->db->executer('DELETE FROM avis');
         $this->db->executer('DELETE FROM contacts');
+        $this->db->executer('DELETE FROM pieces_dossier'); // les dossiers de démo de l'administration tiennent aux mécanos
         $this->db->executer('DELETE FROM mecaniciens');
         $clients = new ClientService($this->db);
         $this->client = $clients->identifier(null)['id'];
