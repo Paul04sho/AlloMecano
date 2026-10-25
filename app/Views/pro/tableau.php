@@ -22,7 +22,7 @@ $nbsp = Format::INSECABLE;
 
   <section class="tableau__dispo" aria-label="Disponibilité">
     <div data-interrupteur-conteneur>
-      <?= composant('interrupteur-dispo', ['etat' => $dispo ? 'disponible' : 'indisponible', 'depuis' => $depuis, 'zone' => $zone]) ?>
+      <?= composant('interrupteur-dispo', ['etat' => $profil['etat'] === 'en_intervention' ? 'intervention' : ($dispo ? 'disponible' : 'indisponible'), 'depuis' => $depuis, 'zone' => $zone]) ?>
     </div>
     <p class="tableau__position"><?= icone('repere', 20) ?><span class="t-petit t-secondaire" data-position aria-live="polite"><?= e($position) ?></span></p>
     <div data-position-action<?= $dispo ? '' : ' hidden' ?>>

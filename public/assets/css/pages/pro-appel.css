@@ -1,0 +1,87 @@
+/* Espace pro · M1f « Activer les appels » (Figma 272:1803) et M5 : appel entrant (271:1480), en appel (271:1644), « Vous y allez ? » (272:1744).
+   Les composants communs à l'espace sont dans pro.css, ceux de l'appel (commande, état) dans appel.css. */
+
+/* ---------- Barre avec flèche de retour (272:1804 · 272:1745) ---------- */
+.activer__barre, .appel-pro__barre { display: flex; align-items: center; gap: var(--esp-4); height: 56px; padding-left: var(--esp-4); }
+.activer__barre > p, .appel-pro__barre > p { margin: 0; }
+.activer__retour { display: grid; flex: none; place-items: center; width: 48px; height: 48px; color: var(--encre); }
+.activer__retour .icone { fill: none; }
+.activer__retour:focus-visible { outline: 3px solid var(--encre); outline-offset: -3px; }
+
+/* ---------- M1f ---------- */
+.activer__contenu { display: flex; flex-direction: column; gap: var(--esp-16); padding: var(--esp-16) var(--marge) calc(var(--hauteur-socle-pro) - var(--esp-24)); }
+.activer__contenu > * { margin: 0; }
+.activer__reglages { margin: 0; padding: 0; list-style: none; }
+.reglage-appel { display: flex; align-items: flex-start; gap: 14px; padding-block: var(--esp-16); border-bottom: 1px solid var(--filet); }
+.reglage-appel__noeud { display: block; flex: none; width: 28px; height: 28px; }
+.reglage-appel__corps { display: flex; flex: 1; flex-direction: column; gap: 6px; min-width: 0; }
+.reglage-appel__corps > p { margin: 0; }
+.reglage-appel--todo .reglage-appel__titre { color: var(--encre-2); }
+.reglage-appel .bouton[hidden] { display: none; }
+.reglage-appel .bouton { gap: var(--esp-8); white-space: nowrap; }
+.reglage-appel .bouton .icone { fill: none; }
+.noeud-reglage { display: block; }
+.noeud-reglage__plein { fill: var(--encre); }
+.noeud-reglage__coche { fill: none; stroke: var(--surface); stroke-width: 2.4; }
+.noeud-reglage__voyant { fill: var(--balise); }
+.noeud-reglage__contour { fill: none; stroke: var(--encre-2); stroke-width: 2; }
+.activer .note .icone { fill: none; }
+.activer__reste[hidden] { display: none; }
+.activer .socle .bouton .icone { fill: none; }
+
+/* ---------- M5 · fond sombre : appel entrant, en appel ---------- */
+body:has(.appel-pro--sombre) { background: var(--bitume); }
+.appel-pro { min-height: 100vh; min-height: 100dvh; }
+.appel-pro--sombre { background: var(--bitume); color: var(--beton); }
+.appel-pro__vue--appel { display: flex; flex-direction: column; gap: var(--esp-24); min-height: 100vh; min-height: 100dvh; padding: 36px var(--marge) var(--esp-24); }
+.appel-pro__vue[hidden], .appel-pro [hidden] { display: none !important; }
+.appel-pro__entete { display: flex; flex-direction: column; gap: 10px; }
+.appel-pro__entete > * { margin: 0; }
+.appel-pro__rubrique { display: flex; align-items: center; gap: 10px; color: var(--beton); }
+.appel-pro__rubrique .voyant { width: 18px; height: 18px; }
+.appel-pro__ligne { display: flex; align-items: center; gap: 10px; }
+.appel-pro__en-ligne { color: var(--gris-voyant); }
+.appel-pro__titre { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 10px; color: var(--beton); }
+.appel-pro__titre .t-titre-1 { white-space: nowrap; }
+.appel-pro__borne { display: flex; align-items: baseline; gap: 3px; }
+.appel-pro .t-lead { color: var(--beton); }
+.appel-pro__panne { display: flex; align-items: center; gap: var(--esp-12); padding-top: 6px; }
+.appel-pro__panne .voyant-bord { flex: none; }
+.appel-pro__panne > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.appel-pro__panne p { margin: 0; color: var(--beton); }
+.appel-pro__panne .appel-pro__precisions { color: var(--gris-voyant); }
+.appel-pro__sans-carte { margin: 0; padding: var(--esp-16); background: var(--panneau); color: var(--gris-voyant); border-radius: var(--rayon); }
+
+/* Mini-carte de la position du client (271:1500 · 271:1662) */
+.carte-client { position: relative; flex: none; height: 230px; overflow: hidden; background: var(--carte-sol); }
+.appel-pro[data-phase="ligne"] .carte-client { height: 200px; }
+.carte-client__carte { position: absolute; inset: 0; width: 100%; height: 100%; }
+.carte-client__legende { position: absolute; z-index: 500; left: calc(50% + 18px); top: calc(50% - 60px); padding: 6px 8px; background: var(--bitume); color: var(--beton); white-space: nowrap; pointer-events: none; }
+.carte-client .repere-icone { background: none; border: 0; }
+
+/* Bas de page : sonnerie, commandes */
+.appel-pro__bas { display: flex; flex-direction: column; margin-top: auto; }
+.appel-pro__bas > .bouton + .bouton { margin-top: var(--esp-12); }
+.appel-pro__bas .bouton .icone { fill: none; }
+.appel-pro__attente { margin: 0 0 2px; color: var(--gris-voyant); }
+.appel-pro__commandes { margin-top: 0; }
+.appel-pro__bas > .appel__commandes + .bouton { margin-top: var(--esp-12); }
+.appel-pro .commande-appel { text-decoration: none; }
+
+/* ---------- M5 · Vous y allez ? (clair) ---------- */
+.appel-pro--clair { background: var(--surface); color: var(--encre); }
+.appel-pro__suite { display: flex; flex-direction: column; gap: var(--esp-16); padding: var(--esp-16) var(--marge) calc(var(--hauteur-socle-pro) + var(--esp-24)); }
+.appel-pro__suite > * { margin: 0; }
+.appel-pro .t-display-l { font-size: 40px; line-height: 40px; }
+.appel-pro__intervention { display: flex; flex-direction: column; margin: 0; }
+.ligne-intervention { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--esp-16); padding-block: var(--esp-12); border-bottom: 1px solid var(--filet); }
+.ligne-intervention dt, .ligne-intervention dd { margin: 0; }
+.ligne-intervention dt { flex: none; }
+.ligne-intervention dd { min-width: 0; text-align: right; }
+.appel-pro__itineraire { display: inline-flex; align-self: flex-start; align-items: center; gap: 10px; min-height: 44px; margin-block: -12px !important; padding-top: var(--esp-4); color: var(--encre); text-decoration: none; }
+.appel-pro__itineraire span { text-decoration: underline; text-underline-position: from-font; }
+.appel-pro__itineraire .icone { fill: none; }
+.appel-pro__suite .note .icone { fill: none; }
+.appel-pro .socle__actions > :first-child { flex: 1; }
+.appel-pro .socle__actions > :nth-child(2) { flex: none; }
+.appel-pro .socle .bouton .icone { fill: none; }

@@ -52,7 +52,7 @@
 .socle__actions > :first-child { flex: 1.6; }
 .socle__actions > :nth-child(2) { flex: 1; }
 .socle .bouton--principal { box-shadow: none; }
-.socle .bouton--secondaire { background: transparent; box-shadow: inset 0 0 0 2px var(--beton); }
+.socle .bouton--secondaire:not([disabled]):not([aria-disabled="true"]) { background: transparent; box-shadow: inset 0 0 0 2px var(--beton); }
 .socle__pourquoi { font-size: 15px; line-height: 22px; color: var(--hachure); }
 .socle.cache { animation: socle-sortie 160ms var(--ease-sortie) both; }
 .avec-socle { padding-bottom: calc(var(--hauteur-socle) + 24px + env(safe-area-inset-bottom)); }

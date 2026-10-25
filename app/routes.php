@@ -15,6 +15,7 @@ use App\Controllers\Admin\SignalementAdminController;
 use App\Controllers\Admin\StatistiquesController;
 use App\Controllers\Admin\TableauController;
 use App\Controllers\Api\ClientController;
+use App\Controllers\Pro\AppelMecanoController;
 use App\Controllers\Pro\DevenirController;
 use App\Controllers\Pro\EspaceController;
 use App\Controllers\Pro\InscriptionController;
@@ -91,6 +92,17 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
         $r->post('/api/disponibilite', [EspaceController::class, 'disponibilite']);              // RG-D1, RG-D7
         $r->post('/api/position', [EspaceController::class, 'position']);                        // RG-D2
         $r->get('/apercu', [EspaceController::class, 'apercu']);                                 // « Voir ma fiche comme un client »
+        $r->get('/appels/activer', [AppelMecanoController::class, 'activer'], 'pro-activer');      // M1f · Activer les appels
+        $r->post('/api/push', [AppelMecanoController::class, 'abonner']);                          // RG-A2 : ce téléphone devient joignable
+        $r->post('/api/push/etat', [AppelMecanoController::class, 'abonne']);
+        $r->post('/api/push/essai', [AppelMecanoController::class, 'essai']);                      // essai de sonnerie
+        $r->post('/api/appels/pret', [AppelMecanoController::class, 'pret']);
+        $r->get('/api/appels/entrants', [AppelMecanoController::class, 'entrants']);               // RG-A2, RG-A5 : ce qui sonne chez moi
+        $r->get('/api/appels/ice', [AppelMecanoController::class, 'ice']);                         // RG-A9
+        $r->get('/api/appels/{id}/signaux', [AppelMecanoController::class, 'signaux']);            // RG-A8
+        $r->post('/api/appels/{id}/signal', [AppelMecanoController::class, 'signal']);
+        $r->post('/api/appels/{id}/issue', [AppelMecanoController::class, 'issue']);               // RG-I2, RG-D4
+        $r->get('/appel/{id}', [AppelMecanoController::class, 'page'], 'pro-appel');               // M5 · appel entrant · en appel · Vous y allez ?
     });
     // $r->get('/pro/demandes', …)        M3                        (à faire)
     // $r->get('/pro/avis', …)            M3 · Avis                 (à faire)

@@ -40,7 +40,7 @@
 .bouton__voyant { display: none; flex: none; width: 16px; height: 16px; border-radius: 50%; background: var(--balise); box-shadow: inset 0 0 0 3px var(--bitume); }
 .bouton[aria-busy="true"] .bouton__voyant { display: block; animation: clignotant 1s steps(2, jump-none) infinite; }
 .bouton[aria-busy="true"] > .icone { display: none; }
-.sur-sombre .bouton--secondaire { background: var(--bitume); color: var(--beton); }
+.sur-sombre .bouton--secondaire:not([disabled]):not([aria-disabled="true"]) { background: var(--bitume); color: var(--beton); }
 
 /* Lien (spec 7.2) */
 .bouton-lien {

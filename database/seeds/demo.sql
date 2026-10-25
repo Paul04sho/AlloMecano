@@ -106,3 +106,6 @@ WHERE c.public_id LIKE '01JDEMOC%';
 
 INSERT INTO avis_etiquettes (avis_id,etiquette_id)
 SELECT a.id, 1+MOD(a.id,4) FROM avis a WHERE a.note=5 AND MOD(a.id,2)=0;
+
+-- Les mécanos de démo ont déjà activé leurs appels (M1f) : on arrive directement sur le tableau de bord.
+UPDATE mecaniciens SET appels_actives_le = NOW() WHERE statut_dossier = 'valide';

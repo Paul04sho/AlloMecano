@@ -23,6 +23,36 @@ self.addEventListener('activate', (evenement) => {
   })());
 });
 
+// Notifications push du mécano : « Appel allomécano » (RG-A5, renvoyée toutes les 5 s tant que ça sonne) et l'essai de sonnerie (M1f).
+// Un appel reste affiché jusqu'à ce qu'on le touche ; toucher la notification ouvre l'écran d'appel (M5) dans l'onglet déjà ouvert, sinon dans un nouveau.
+self.addEventListener('push', (evenement) => {
+  let charge = {};
+  try { charge = evenement.data.json(); } catch { /* notification sans contenu : on affiche le titre par défaut */ }
+  const appel = Boolean(charge.contact);
+  evenement.waitUntil(self.registration.showNotification(charge.titre || 'allomécano', {
+    body: charge.texte || '',
+    tag: charge.contact || 'allomecano',
+    renotify: true,
+    requireInteraction: appel,
+    vibrate: appel ? [400, 200, 400, 200, 400] : [200],
+    data: { url: charge.url || '/pro' },
+  }));
+});
+
+self.addEventListener('notificationclick', (evenement) => {
+  evenement.notification.close();
+  const url = evenement.notification.data?.url || '/pro';
+  evenement.waitUntil((async () => {
+    for (const fenetre of await self.clients.matchAll({ type: 'window', includeUncontrolled: true })) {
+      if (new URL(fenetre.url).origin === self.location.origin) {
+        await fenetre.focus();
+        return fenetre.navigate(url);
+      }
+    }
+    return self.clients.openWindow(url);
+  })());
+});
+
 self.addEventListener('fetch', (evenement) => {
   const requete = evenement.request;
   if (requete.method !== 'GET' || new URL(requete.url).origin !== self.location.origin) return;

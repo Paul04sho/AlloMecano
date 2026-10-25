@@ -12,6 +12,7 @@ use App\Core\Session;
 use App\Core\View;
 use App\Services\DisponibiliteService;
 use App\Services\InscriptionService;
+use App\Services\MecanoService;
 use App\Services\Parametres;
 use App\Services\TableauMecanoService;
 
@@ -59,12 +60,19 @@ final class EspaceController
             case 'refuse':
                 return $this->rendre('pro/dossier-refuse', $commun + ['titre' => 'Dossier refusé', 'sansOnglets' => true, 'numero' => InscriptionService::numeroAffiche($id), 'whatsapp' => $this->lienSupport($profil)]);
         }
-        // Validé : tableau de bord (M2). Une session de plus de 12 h s'arrête avant l'affichage (RG-D3).
+        // Validé : « Dernière étape » (M1f) à la première visite, sauf si on a choisi de la faire plus tard (flèche retour)
+        if ($requete->query('apres') !== null) {
+            Session::set('appels_apres', true);
+        }
+        if (Session::get('appels_apres') !== true && MecanoService::depuisBase()->doitActiverLesAppels($id)) {
+            return Response::redirection('/pro/appels/activer');
+        }
+        // Tableau de bord (M2). Une session de plus de 12 h s'arrête avant l'affichage (RG-D3).
         DisponibiliteService::depuisBase()->expirer(null, $id);
         $profil = $service->profil($id) ?? $profil;
         $jour = $service->jour($id);
         return $this->rendre('pro/tableau', [
-            'titre' => 'Statut', 'css' => self::CSS, 'js' => self::JS, 'onglet' => 'statut', 'demandes' => $service->aConfirmer($id),
+            'titre' => 'Statut', 'css' => self::CSS, 'js' => self::JS, 'onglet' => 'statut', 'demandes' => $service->aConfirmer($id), 'sonnerie' => true,
             'profil' => $profil, 'avatar' => $this->avatar($profil), 'jour' => $jour, 'bornes' => $this->bornes($jour, $profil['etat'] !== 'indisponible'),
             'liste' => $service->demandes($id), 'avis' => $service->dernierAvis($id),
             'zone' => TableauMecanoService::zone($profil), 'position' => TableauMecanoService::lignePosition($profil),
@@ -84,6 +92,8 @@ final class EspaceController
             $r = $service->rendreDisponible($id, $champs);
         } elseif ($etat === 'indisponible') {
             $r = $service->rendreIndisponible($id);
+        } elseif ($etat === 'libre') { // RG-D4 : « Je suis libre »
+            $r = $service->liberer($id);
         } else {
             throw new HttpException(422, 'Choisissez disponible ou indisponible.');
         }
@@ -140,7 +150,7 @@ final class EspaceController
         $bornes = $this->bornes($jour, $profil['etat'] !== 'indisponible');
         return Response::json([
             'ok' => true, 'etat' => $profil['etat'], 'depuis' => $r['depuis'], 'zone' => $zone, 'position' => TableauMecanoService::lignePosition($profil), 'bornes' => $bornes,
-            'html' => View::rendre('composants/interrupteur-dispo', ['etat' => $profil['etat'] === 'indisponible' ? 'indisponible' : 'disponible', 'depuis' => $r['depuis'], 'zone' => $zone]),
+            'html' => View::rendre('composants/interrupteur-dispo', ['etat' => $profil['etat'] === 'en_intervention' ? 'intervention' : $profil['etat'], 'depuis' => $r['depuis'], 'zone' => $zone]),
             'bornes_html' => View::rendre('composants/bornes-jour', ['bornes' => $bornes]),
         ]);
     }

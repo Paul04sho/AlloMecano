@@ -34,6 +34,57 @@ final class PushService
         );
     }
 
+    /** La clé publique que le navigateur utilise pour s'abonner (M1f) ; vide tant que les clés VAPID ne sont pas dans .env. */
+    public static function clePublique(): ?string
+    {
+        $cle = Env::get('VAPID_PUBLIQUE');
+        return $cle !== null && $cle !== '' ? $cle : null;
+    }
+
+    /**
+     * M1f : ce téléphone devient joignable (RG-A2). Un même navigateur qui se réabonne reprend sa ligne, quel que soit le mécano qui s'y était connecté.
+     *
+     * @param array{endpoint?: mixed, keys?: array{p256dh?: mixed, auth?: mixed}} $souscription PushSubscription.toJSON()
+     */
+    public function abonner(int $mecanoId, array $souscription, ?string $appareil = null): bool
+    {
+        $endpoint = $souscription['endpoint'] ?? null;
+        $p256dh = $souscription['keys']['p256dh'] ?? null;
+        $auth = $souscription['keys']['auth'] ?? null;
+        if (!is_string($endpoint) || !is_string($p256dh) || !is_string($auth) || !str_starts_with($endpoint, 'https://') || strlen($endpoint) > 600 || strlen($p256dh) > 120 || strlen($auth) > 40) {
+            return false;
+        }
+        $this->db->executer(
+            'INSERT INTO abonnements_push (mecanicien_id, endpoint, endpoint_hash, cle_p256dh, cle_auth, appareil) VALUES (:m, :e, :h, :p, :a, :d)
+             ON DUPLICATE KEY UPDATE mecanicien_id = VALUES(mecanicien_id), cle_p256dh = VALUES(cle_p256dh), cle_auth = VALUES(cle_auth), appareil = VALUES(appareil), revoque_le = NULL, echecs_suite = 0',
+            ['m' => $mecanoId, 'e' => $endpoint, 'h' => hash('sha256', $endpoint), 'p' => $p256dh, 'a' => $auth, 'd' => $appareil !== null ? mb_substr($appareil, 0, 120) : null]
+        );
+        return true;
+    }
+
+    /** Ce navigateur est-il déjà abonné pour ce mécano ? (la page M1f remet le réglage « fait ») */
+    public function abonne(int $mecanoId, string $endpoint): bool
+    {
+        return (int) $this->db->valeur('SELECT COUNT(*) FROM abonnements_push WHERE mecanicien_id = :m AND endpoint_hash = :h AND revoque_le IS NULL', ['m' => $mecanoId, 'h' => hash('sha256', $endpoint)]) > 0;
+    }
+
+    /** M1f : « Faire sonner mon téléphone ». Une notification d'essai sur tous les appareils du mécano. @return int appareils joints */
+    public function essai(int $mecanoId): int
+    {
+        $charge = ['contact' => null, 'titre' => 'Essai de sonnerie', 'texte' => 'Votre téléphone sonne : les appels des clients arriveront ainsi.', 'url' => '/pro/appels/activer?essai=1', 'essai' => true];
+        $id = $this->db->inserer('notifications', ['mecanicien_id' => $mecanoId, 'type' => 'essai_sonnerie', 'canal' => 'push', 'statut' => 'en_attente', 'charge' => json_encode($charge, JSON_UNESCAPED_UNICODE)]);
+        $abonnements = $this->abonnements($mecanoId);
+        $envoyes = 0;
+        try {
+            $envoyes = $abonnements === [] ? 0 : ($this->transport !== null ? (int) ($this->transport)($abonnements, $charge) : $this->envoyer($abonnements, $charge));
+        } catch (\Throwable $e) {
+            $this->db->modifier('notifications', ['statut' => 'echec', 'tentatives' => 1, 'erreur' => mb_substr($e->getMessage(), 0, 250)], ['id' => $id]);
+            return 0;
+        }
+        $this->db->modifier('notifications', ['statut' => $envoyes > 0 ? 'envoyee' : 'echec', 'envoyee_le' => gmdate('Y-m-d H:i:s'), 'tentatives' => 1, 'erreur' => $envoyes > 0 ? null : 'aucun appareil joint'], ['id' => $id]);
+        return $envoyes;
+    }
+
     /**
      * « Appel entrant » : une ligne dans `notifications`, puis l'envoi push. Renvoyé tel quel à chaque relance (RG-A5).
      *

@@ -190,8 +190,8 @@ final class AppelService
         }
         $this->db->transaction(function (Database $db) use ($c, $reponse): void {
             $db->executer('UPDATE contacts SET issue_mecano = :r, issue_mecano_le = UTC_TIMESTAMP() WHERE id = :i', ['r' => $reponse, 'i' => $c['id']]);
-            if ($reponse === 'j_y_vais') {
-                $db->executer('UPDATE mecaniciens SET etat = \'en_intervention\', etat_depuis = UTC_TIMESTAMP() WHERE id = :m AND etat = \'disponible\'', ['m' => $c['mecanicien_id']]);
+            if ($reponse === 'j_y_vais') { // RG-D4, RG-D7 : une période « en intervention » s'ouvre dans l'historique
+                (new DisponibiliteService($db))->entrerEnIntervention((int) $c['mecanicien_id']);
             }
         });
         return true;
@@ -218,6 +218,41 @@ final class AppelService
               WHERE mecanicien_id = :m AND canal = \'app\' AND statut IN (\'initie\', \'sonne\') ORDER BY cree_le',
             ['m' => $id]
         ));
+    }
+
+    /**
+     * Tout ce que le mécano voit d'un appel intégré (M5) : qui, où, quelle panne, ce que le client a dit, et où en est l'appel.
+     * La position du client n'existe plus au-delà de 24 h (RG-P1) ; le numéro du client n'apparaît jamais (RG-C7).
+     *
+     * @return ?array<string, mixed>
+     */
+    public function detailMecano(string $publicId, int $mecanoId): ?array
+    {
+        $this->balayer();
+        $c = $this->db->un(
+            'SELECT c.id, c.public_id, c.statut, c.fin_par, c.resume, c.quartier_libelle, c.repere, c.position_partagee, c.lat, c.lon, c.cree_le, c.decroche_le, c.termine_le, c.duree_s, c.issue_mecano,
+                    r.precisions, r.precision_m, cl.prenom, m.dispo_lat, m.dispo_lon, m.atelier_lat, m.atelier_lon
+               FROM contacts c JOIN mecaniciens m ON m.id = c.mecanicien_id LEFT JOIN recherches r ON r.id = c.recherche_id LEFT JOIN clients cl ON cl.id = c.client_id
+              WHERE c.public_id = :p AND c.canal = \'app\' AND c.mecanicien_id = :m',
+            ['p' => $publicId, 'm' => $mecanoId]
+        );
+        if ($c === null) {
+            return null;
+        }
+        $morceaux = explode(' · ', (string) $c['resume']);
+        $position = $c['position_partagee'] && $c['lat'] !== null ? ['lat' => (float) $c['lat'], 'lon' => (float) $c['lon']] : null;
+        $base = $c['dispo_lat'] ?? $c['atelier_lat'];
+        $utc = new \DateTimeZone('UTC');
+        return [
+            'contact' => (string) $c['public_id'], 'statut' => (string) $c['statut'], 'fin_par' => $c['fin_par'], 'vehicule' => $morceaux[0] ?? '', 'panne' => $morceaux[1] ?? '', 'resume' => (string) $c['resume'],
+            'code_panne' => isset($morceaux[1]) ? $this->db->valeur('SELECT code FROM pannes WHERE libelle = :l', ['l' => $morceaux[1]]) : null,
+            'lieu' => $c['quartier_libelle'], 'repere' => $c['position_partagee'] ? $c['repere'] : null, 'precisions' => $c['precisions'], 'prenom' => ($c['prenom'] ?? '') !== '' ? (string) $c['prenom'] : null,
+            'position' => $position, 'precision_m' => $c['precision_m'] !== null ? (int) $c['precision_m'] : null,
+            'distance_m' => $position !== null && $base !== null ? GeoService::distanceM($position['lat'], $position['lon'], (float) $base, (float) ($c['dispo_lon'] ?? $c['atelier_lon'])) : null,
+            'depuis_s' => (int) max(0, floor(microtime(true) - $this->temps((string) $c['cree_le']))),
+            'termine_le' => $c['termine_le'] !== null ? new \DateTimeImmutable((string) $c['termine_le'], $utc) : null,
+            'duree_s' => $c['duree_s'] !== null ? (int) $c['duree_s'] : null, 'issue_mecano' => $c['issue_mecano'],
+        ];
     }
 
     /** Messages de signalisation effacés 1 h après la fin de l'appel (RG-A8, RG-P3). */
@@ -301,8 +336,8 @@ final class AppelService
         if (count($derniers) < $seuil || array_unique($derniers) !== ['manque']) {
             return;
         }
-        $n = $this->db->executer('UPDATE mecaniciens SET etat = \'indisponible\', etat_depuis = UTC_TIMESTAMP() WHERE id = :m AND etat = \'disponible\'', ['m' => $mecanoId])->rowCount();
-        if ($n > 0) {
+        if ($this->db->valeur('SELECT etat FROM mecaniciens WHERE id = :m', ['m' => $mecanoId]) === 'disponible') { // RG-D7 : la période de l'historique porte sa raison
+            (new DisponibiliteService($this->db))->changer($mecanoId, 'indisponible', 'auto_injoignable', null, new \DateTimeImmutable('now', new \DateTimeZone('UTC')));
             $this->db->inserer('notifications', ['mecanicien_id' => $mecanoId, 'type' => 'indispo_auto', 'canal' => 'push', 'statut' => 'en_attente',
                 'charge' => json_encode(['titre' => 'Vous êtes passé indisponible', 'texte' => $seuil . ' appels manqués d’affilée.', 'url' => '/pro'], JSON_UNESCAPED_UNICODE)]);
         }

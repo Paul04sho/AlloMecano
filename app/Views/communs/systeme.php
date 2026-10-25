@@ -385,6 +385,26 @@ $icones = json_decode((string) file_get_contents(RACINE . '/scripts/icones.json'
   </section>
 
   <section class="rubrique">
+    <span class="t-etiquette">Appels du mécano · réglage 272:1813 · nœud 272:1814 · 272:1821 · 272:1836 · en intervention (RG-D4) · intervention 272:1754 · mini-carte du client 271:1500 · commande Itinéraire 271:1802</span>
+    <div class="systeme__grille systeme__pro">
+      <ol class="activer__reglages" role="list">
+        <?= composant('reglage-appel', ['cle' => 'demo-1', 'etat' => 'done', 'titre' => 'Installer allomécano sur l’écran d’accueil', 'texte' => 'Pour ouvrir l’app d’un geste.', 'fait' => 'Fait · icône ajoutée', 'libelle' => 'Installer', 'icone' => 'installer']) ?>
+        <?= composant('reglage-appel', ['cle' => 'demo-2', 'etat' => 'now', 'titre' => 'Autoriser les notifications', 'texte' => 'Sans ça, votre téléphone ne sonne pas quand l’app est fermée.', 'fait' => 'Fait', 'libelle' => 'Autoriser', 'icone' => 'cloche']) ?>
+        <?= composant('reglage-appel', ['cle' => 'demo-3', 'etat' => 'todo', 'titre' => 'Faire un essai de sonnerie', 'texte' => 'On fait sonner votre téléphone pour vérifier.', 'fait' => 'Fait', 'libelle' => 'Faire sonner mon téléphone', 'icone' => 'haut-parleur']) ?>
+      </ol>
+      <?= composant('interrupteur-dispo', ['etat' => 'intervention', 'demo' => true]) ?>
+      <dl class="appel-pro__intervention">
+        <?= composant('ligne-intervention', ['libelle' => 'Lieu', 'valeur' => 'Riviera 2, pharmacie des Jardins']) ?>
+        <?= composant('ligne-intervention', ['libelle' => 'Distance', 'valeur' => "1,2\u{00A0}km à vol d’oiseau"]) ?>
+      </dl>
+      <div class="appel-pro appel-pro--sombre sur-sombre systeme__appel-sombre">
+        <?= composant('carte-client', ['lat' => 5.3655, 'lon' => -3.954, 'precision' => 18, 'legende' => "Aminata · 1,2\u{00A0}km", 'libelle' => 'Position approximative du client (exemple)']) ?>
+        <div class="appel__commandes"><?= composant('commande-appel', ['icone' => 'itineraire', 'libelle' => 'Itinéraire', 'href' => '#']) ?></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="rubrique">
     <span class="t-etiquette">Inscription mécano · brouillon 95:169 · étiquette de choix 54:451 · stepper 54:500 · curseur de rayon 97:318 · pochette de pièce 54:603 · guide photo 102:624 · récapitulatif 104:637 · étiquette Vérifié 49:175</span>
     <div class="systeme__grille systeme__admin">
       <?= composant('parcours-brouillon', ['heure' => '10:14', 'pieces' => ['cni_recto' => 'envoyee', 'cni_verso' => 'envoyee', 'permis' => 'manquante', 'diplome' => 'manquante', 'portrait' => 'envoyee', 'atelier' => 'facultative']]) ?>

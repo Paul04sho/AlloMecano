@@ -90,15 +90,72 @@ final class DisponibiliteService
         $maintenant ??= new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
         $limite = $maintenant->modify('-' . Parametres::int('dispo.duree_max_h', 12) . ' hours')->format('Y-m-d H:i:s');
         $n = 0;
+        $filtre = $seulement !== null ? ' AND id = :m' : '';
+        $params = $seulement !== null ? ['m' => $seulement] : [];
         foreach ($this->db->tous(
-            'SELECT id, prenom, email FROM mecaniciens WHERE etat = \'disponible\' AND supprime_le IS NULL AND dispo_debut IS NOT NULL AND dispo_debut <= :l' . ($seulement !== null ? ' AND id = :m' : ''),
-            ['l' => $limite] + ($seulement !== null ? ['m' => $seulement] : [])
+            'SELECT id, prenom, email, etat FROM mecaniciens WHERE etat IN (\'disponible\', \'en_intervention\') AND supprime_le IS NULL AND dispo_debut IS NOT NULL AND dispo_debut <= :l' . $filtre,
+            ['l' => $limite] + $params
         ) as $m) {
+            if ($m['etat'] === 'en_intervention') {
+                $this->finIntervention((int) $m['id'], 'auto', $maintenant);
+            }
             $this->changer((int) $m['id'], 'indisponible', 'auto_12h', null, $maintenant);
             $this->prevenir((int) $m['id'], $m['email'], 'Vous êtes passé indisponible', 'Bonjour ' . $m['prenom'] . ', votre session de disponibilité a duré ' . Parametres::int('dispo.duree_max_h', 12) . ' h : vous êtes passé indisponible. Rendez-vous disponible quand vous voulez.');
             $n++;
         }
+        // RG-D4 : « en intervention » se termine tout seul après 2 h
+        $fin = $maintenant->modify('-' . max(1, Parametres::int('intervention.fin_auto_h', 2)) . ' hours')->format('Y-m-d H:i:s');
+        foreach ($this->db->tous(
+            'SELECT id, prenom, email FROM mecaniciens WHERE etat = \'en_intervention\' AND supprime_le IS NULL AND etat_depuis <= :f' . $filtre,
+            ['f' => $fin] + $params
+        ) as $m) {
+            $this->finIntervention((int) $m['id'], 'auto', $maintenant);
+            $this->changer((int) $m['id'], 'disponible', 'auto_fin_intervention', null, $maintenant);
+            $this->prevenir((int) $m['id'], $m['email'], 'Vous êtes de nouveau disponible', 'Bonjour ' . $m['prenom'] . ', votre intervention a duré ' . Parametres::int('intervention.fin_auto_h', 2) . ' h : vous êtes de nouveau disponible pour les clients.', 'fin_intervention_auto');
+            $n++;
+        }
         return $n;
+    }
+
+    /**
+     * RG-D4 : « J'y vais » le fait passer en intervention : il disparaît des résultats. Sa session de disponibilité continue (RG-D3).
+     *
+     * @return bool vrai s'il était disponible
+     */
+    public function entrerEnIntervention(int $id, ?\DateTimeImmutable $maintenant = null): bool
+    {
+        if ($this->db->valeur('SELECT etat FROM mecaniciens WHERE id = :i AND supprime_le IS NULL', ['i' => $id]) !== 'disponible') {
+            return false;
+        }
+        $this->changer($id, 'en_intervention', 'intervention', null, $maintenant ?? new \DateTimeImmutable('now', new \DateTimeZone('UTC')));
+        return true;
+    }
+
+    /**
+     * RG-D4 : « Je suis libre ». Il redevient disponible, ou indisponible si sa session dépasse déjà 12 h.
+     *
+     * @return array{ok: true, etat: string, depuis: string, quartier: ?string, maj: string}|array{ok: false, erreur: string}
+     */
+    public function liberer(int $id, ?\DateTimeImmutable $maintenant = null): array
+    {
+        $m = $this->db->un('SELECT etat, dispo_debut FROM mecaniciens WHERE id = :i AND supprime_le IS NULL', ['i' => $id]);
+        if ($m === null || $m['etat'] !== 'en_intervention') {
+            return ['ok' => false, 'erreur' => 'Vous n’êtes pas en intervention.'];
+        }
+        $maintenant ??= new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+        $trop = $m['dispo_debut'] !== null && new \DateTimeImmutable((string) $m['dispo_debut'], new \DateTimeZone('UTC')) <= $maintenant->modify('-' . Parametres::int('dispo.duree_max_h', 12) . ' hours');
+        $this->finIntervention($id, 'mecanicien', $maintenant);
+        $this->changer($id, $trop ? 'indisponible' : 'disponible', $trop ? 'auto_12h' : 'manuel', null, $maintenant);
+        return $this->etat($id, $maintenant) + ['ok' => true];
+    }
+
+    /** La fin de l'intervention est notée sur le contact qui l'avait déclenchée : qui y a mis fin (mécanicien, client ou délai). */
+    private function finIntervention(int $id, string $par, \DateTimeImmutable $maintenant): void
+    {
+        $this->db->executer(
+            'UPDATE contacts SET intervention_fin_le = :f, intervention_fin_par = :p WHERE mecanicien_id = :m AND issue_mecano = \'j_y_vais\' AND intervention_fin_le IS NULL',
+            ['f' => $maintenant->format('Y-m-d H:i:s'), 'p' => $par, 'm' => $id]
+        );
     }
 
     /**
@@ -134,8 +191,8 @@ final class DisponibiliteService
                 $quartier = $this->quartierId($q);
                 $maj += ['dispo_lat' => $position['lat'], 'dispo_lon' => $position['lon'], 'dispo_precision_m' => $position['precision_m'], 'dispo_quartier_id' => $quartier, 'position_maj_le' => $quand];
             }
-            if ($etat === 'disponible') {
-                $maj['dispo_debut'] = $quand;
+            if ($etat === 'disponible' && $this->db->valeur('SELECT etat FROM mecaniciens WHERE id = :i', ['i' => $id]) !== 'en_intervention') {
+                $maj['dispo_debut'] = $quand; // une nouvelle session de 12 h ; revenir d'une intervention ne la relance pas (RG-D3, RG-D4)
             }
             $this->db->executer('UPDATE historique_disponibilite SET fin = :f WHERE mecanicien_id = :m AND fin IS NULL', ['f' => $quand, 'm' => $id]);
             $this->db->inserer('historique_disponibilite', ['mecanicien_id' => $id, 'etat' => $etat, 'raison' => $raison, 'quartier_id' => $quartier, 'debut' => $quand]);
@@ -150,10 +207,10 @@ final class DisponibiliteService
     }
 
     /** Une notification, et un e-mail s'il y a une adresse (RG-D3). */
-    private function prevenir(int $mecano, mixed $email, string $titre, string $texte): void
+    private function prevenir(int $mecano, mixed $email, string $titre, string $texte, string $type = 'indispo_auto'): void
     {
         $envoye = is_string($email) && $email !== '' && ($this->mail ?? MailService::depuisEnv())->envoyer($email, $titre, $texte . "\n\nallomécano");
-        $this->db->inserer('notifications', ['mecanicien_id' => $mecano, 'type' => 'indispo_auto', 'canal' => is_string($email) && $email !== '' ? 'email' : 'push', 'statut' => $envoye ? 'envoyee' : 'en_attente',
+        $this->db->inserer('notifications', ['mecanicien_id' => $mecano, 'type' => $type, 'canal' => is_string($email) && $email !== '' ? 'email' : 'push', 'statut' => $envoye ? 'envoyee' : 'en_attente',
             'charge' => json_encode(['titre' => $titre, 'texte' => $texte, 'lien' => '/pro'], JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE), 'cree_le' => gmdate('Y-m-d H:i:s'), 'envoyee_le' => $envoye ? gmdate('Y-m-d H:i:s') : null]);
     }
 }

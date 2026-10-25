@@ -36,13 +36,15 @@ function appliquer(r) {
 
 if (racine) {
   document.addEventListener('click', async (e) => {
-    const bouton = e.target.closest('[data-dispo], [data-maj-position]');
+    const bouton = e.target.closest('[data-dispo], [data-maj-position], [data-libre]');
     if (!bouton || bouton.getAttribute('aria-busy') === 'true') return;
     const interrupteur = bouton.matches('[data-dispo]');
     const dispo = bouton.getAttribute('aria-checked') === 'true';
     chargement(bouton, true);
     try {
-      if (interrupteur && dispo) {
+      if (bouton.matches('[data-libre]')) { // RG-D4 : « Je suis libre »
+        appliquer(await api('/pro/api/disponibilite', { methode: 'POST', donnees: { etat: 'libre' } }));
+      } else if (interrupteur && dispo) {
         appliquer(await api('/pro/api/disponibilite', { methode: 'POST', donnees: { etat: 'indisponible' } }));
       } else {
         const position = await lirePosition();

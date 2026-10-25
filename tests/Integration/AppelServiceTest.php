@@ -282,7 +282,27 @@ final class AppelServiceTest extends TestCase
         self::assertTrue($this->appel->repondreMecano($c['public_id'], $m, 'j_y_vais')); // RG-I2
         self::assertSame('j_y_vais', $this->appel->etat($c['public_id'], $this->client)['issue_mecano']);
         self::assertSame('en_intervention', $this->db->valeur('SELECT etat FROM mecaniciens WHERE id = :m', ['m' => $this->id($m)])); // RG-D4
+        self::assertSame('intervention', $this->db->valeur('SELECT raison FROM historique_disponibilite WHERE mecanicien_id = :m AND fin IS NULL', ['m' => $this->id($m)])); // RG-D7
         self::assertFalse($this->appel->repondreMecano($c['public_id'], $m, 'pas_pour_moi'));
+    }
+
+    public function testLEcranDAppelDuMecanoMontreLaPanneLaDistanceEtCeQueLeClientADit(): void
+    {
+        $m = $this->mecano('koffi', ['dispo_lat' => 5.3600, 'dispo_lon' => -3.9540]);
+        $recherche = $this->db->inserer('recherches', ['public_id' => Ulid::generer(), 'client_id' => $this->client, 'type_vehicule' => 'voiture', 'panne_id' => (int) $this->db->valeur('SELECT id FROM pannes WHERE code = \'batterie\''),
+            'precisions' => 'ça fait clic quand je tourne la clé', 'source_position' => 'gps', 'lat' => 5.3600, 'lon' => -3.9630, 'precision_m' => 18, 'rayon_km' => 5, 'nb_resultats' => 1, 'cree_le' => gmdate('Y-m-d H:i:s')]);
+        $c = $this->appeler($m);
+        $this->db->modifier('contacts', ['recherche_id' => $recherche, 'lat' => 5.3600, 'lon' => -3.9630, 'repere' => 'près de la pharmacie des Jardins'], ['public_id' => $c['public_id']]);
+        $this->db->modifier('clients', ['prenom' => 'Aminata', 'telephone' => '+2250700000009'], ['id' => $this->client]);
+        $d = $this->appel->detailMecano($c['public_id'], $this->id($m));
+        self::assertSame(['Voiture', 'Batterie', 'batterie', 'Riviera 2', 'près de la pharmacie des Jardins'], [$d['vehicule'], $d['panne'], $d['code_panne'], $d['lieu'], $d['repere']]);
+        self::assertSame(['ça fait clic quand je tourne la clé', 'Aminata', 18], [$d['precisions'], $d['prenom'], $d['precision_m']]);
+        self::assertEqualsWithDelta(997, $d['distance_m'], 25);
+        self::assertStringNotContainsString('0700000009', json_encode($d)); // RG-C7 : jamais le numéro du client
+        self::assertNull($this->appel->detailMecano($c['public_id'], $this->id($this->mecano('autre')))); // RG-C1 : seulement ses propres appels
+        $this->db->modifier('contacts', ['position_partagee' => 0], ['public_id' => $c['public_id']]);
+        $d = $this->appel->detailMecano($c['public_id'], $this->id($m));
+        self::assertSame([null, null, null], [$d['position'], $d['distance_m'], $d['repere']]); // le client n'a pas partagé sa position (RG-A11)
     }
 
     public function testLesAppelsEntrantsSontListesEtProuventQueLAppEstOuverte(): void

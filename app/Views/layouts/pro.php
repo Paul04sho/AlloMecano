@@ -6,6 +6,7 @@
  * @var int $demandes      demandes à confirmer, pastille de l'onglet (RG-I7)
  * @var bool $sansOnglets  écrans qui ont leur propre socle (M2b, M5)
  * @var bool $sansBarre
+ * @var bool $sonnerie     mécano validé : l'app interroge les appels qui sonnent (RG-A2)
  */
 use App\Core\Session;
 use App\Core\View;
@@ -21,4 +22,7 @@ View::debut('contenu'); ?>
 </div>
 <?php if ($flash = Session::flash('message')): ?><span hidden data-flash="<?= e($flash) ?>" data-flash-icone="coche"></span><?php endif ?>
 <?php View::fin();
+if (!empty($sonnerie)) { // un appel qui sonne ouvre l'écran M5 (RG-A2, RG-A5)
+    $js = [...($js ?? []), 'js/pages/pro-sonnerie.js'];
+}
 echo View::inclure('layouts/base', get_defined_vars());

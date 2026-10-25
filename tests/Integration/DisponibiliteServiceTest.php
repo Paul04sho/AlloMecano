@@ -150,4 +150,49 @@ final class DisponibiliteServiceTest extends TestCase
         self::assertSame(['disponible', '07:32'], [$e['etat'], $e['depuis']]);
         self::assertNotNull($e['quartier']);
     }
+    public function testJyVaisMasqueLeMecanoSansRelancerSaSessionEtJeSuisLibreLeRemet(): void
+    {
+        $id = $this->mecano();
+        $this->service->rendreDisponible($id, self::RIVIERA, $this->maintenant('2026-10-21 07:00:00'));
+        self::assertTrue($this->service->entrerEnIntervention($id, $this->maintenant('2026-10-21 09:46:00'))); // RG-D4
+        self::assertSame('en_intervention', $this->db->valeur('SELECT etat FROM mecaniciens WHERE id = :i', ['i' => $id]));
+        self::assertFalse($this->service->entrerEnIntervention($id)); // déjà en intervention
+        $r = $this->service->liberer($id, $this->maintenant('2026-10-21 10:30:00'));
+        self::assertSame(['disponible', '07:00'], [$r['etat'], $r['depuis']]); // la session de 12 h continue
+        self::assertSame(['manuel', 'intervention'], array_column($this->db->tous('SELECT raison FROM historique_disponibilite WHERE mecanicien_id = :m AND etat IN (\'en_intervention\', \'disponible\') ORDER BY id DESC LIMIT 2', ['m' => $id]), 'raison'));
+        self::assertFalse($this->service->liberer($id)['ok']); // plus en intervention
+    }
+
+    public function testLibererApresDouzeHeuresDeSessionPasseIndisponible(): void
+    {
+        $id = $this->mecano();
+        $this->service->rendreDisponible($id, self::RIVIERA, $this->maintenant('2026-10-21 05:00:00'));
+        $this->service->entrerEnIntervention($id, $this->maintenant('2026-10-21 16:30:00'));
+        $r = $this->service->liberer($id, $this->maintenant('2026-10-21 17:30:00'));
+        self::assertSame('indisponible', $r['etat']); // RG-D4 : « ou indisponible si sa session dépasse déjà 12 h »
+    }
+
+    public function testEnInterventionSeTermineToutSeulApresDeuxHeures(): void
+    {
+        $id = $this->mecano();
+        $client = $this->db->inserer('clients', ['jeton_hash' => hash('sha256', random_bytes(8))]);
+        $contact = $this->db->inserer('contacts', ['public_id' => Ulid::generer(), 'client_id' => $client, 'mecanicien_id' => $id, 'canal' => 'app', 'statut' => 'termine', 'resume' => 'Voiture · Batterie', 'issue_mecano' => 'j_y_vais', 'cree_le' => '2026-10-21 09:40:00']);
+        $this->service->rendreDisponible($id, self::RIVIERA, $this->maintenant('2026-10-21 07:00:00'));
+        $this->service->entrerEnIntervention($id, $this->maintenant('2026-10-21 09:46:00'));
+        self::assertSame(0, $this->service->expirer($this->maintenant('2026-10-21 11:45:00')));
+        self::assertSame(1, $this->service->expirer($this->maintenant('2026-10-21 11:46:00'))); // RG-D4 : 2 h
+        self::assertSame('disponible', $this->db->valeur('SELECT etat FROM mecaniciens WHERE id = :i', ['i' => $id]));
+        self::assertSame('auto_fin_intervention', $this->db->valeur('SELECT raison FROM historique_disponibilite WHERE mecanicien_id = :m AND fin IS NULL', ['m' => $id]));
+        self::assertSame(['2026-10-21 11:46:00', 'auto'], array_values($this->db->un('SELECT intervention_fin_le, intervention_fin_par FROM contacts WHERE id = :i', ['i' => $contact])));
+        self::assertSame(1, (int) $this->db->valeur('SELECT COUNT(*) FROM notifications WHERE mecanicien_id = :m AND type = \'fin_intervention_auto\'', ['m' => $id]));
+    }
+
+    public function testUneInterventionQuiDepasseDouzeHeuresDeSessionFinitIndisponible(): void
+    {
+        $id = $this->mecano();
+        $this->service->rendreDisponible($id, self::RIVIERA, $this->maintenant('2026-10-21 05:00:00'));
+        $this->service->entrerEnIntervention($id, $this->maintenant('2026-10-21 16:00:00'));
+        self::assertSame(1, $this->service->expirer($this->maintenant('2026-10-21 17:30:00')));
+        self::assertSame('indisponible', $this->db->valeur('SELECT etat FROM mecaniciens WHERE id = :i', ['i' => $id])); // RG-D3 prime
+    }
 }
