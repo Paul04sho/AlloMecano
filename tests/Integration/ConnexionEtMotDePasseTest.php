@@ -30,6 +30,8 @@ final class ConnexionEtMotDePasseTest extends TestCase
         $this->db->executer('DELETE FROM tentatives_connexion');
         $this->db->executer('DELETE FROM jetons_reinitialisation');
         $this->db->executer('DELETE FROM messages_contact');
+        $this->db->executer('DELETE FROM journal_admin'); // l'administration garde la trace des actions : on la vide pour le test
+        $this->db->executer('DELETE FROM suspensions');
         $this->db->executer('DELETE FROM admins');
         $this->db->executer('DELETE FROM mecaniciens WHERE telephone = :t', ['t' => '+2250799990001']);
         $this->db->inserer('admins', ['prenom' => 'Aïcha', 'nom' => 'Bamba', 'email' => 'admin@allomecano.test', 'mot_de_passe_hash' => password_hash('Demo2026!', PASSWORD_DEFAULT)]);

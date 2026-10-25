@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @var App\Core\Router $routeur
  */
 
+use App\Controllers\Admin\DossierController;
 use App\Controllers\Admin\TableauController;
 use App\Controllers\Api\ClientController;
 use App\Controllers\Client\AccueilController;
@@ -76,6 +77,10 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
         $r->get('', [TableauController::class, 'tableau'], 'admin');                              // A0
         $r->get('/dossiers', [TableauController::class, 'dossiers'], 'admin-dossiers');           // A1
         $r->get('/dossiers/{id}/portrait', [TableauController::class, 'portrait']);               // vignette de la file
+        $r->get('/dossiers/{id}', [DossierController::class, 'voir'], 'admin-dossier');           // A2
+        $r->get('/dossiers/{id}/pieces/{type}', [DossierController::class, 'piece']);              // RG-P6 : pièce filigranée, consultation journalisée
+        $r->get('/dossiers/{id}/apercu', [DossierController::class, 'apercu']);                    // aperçu exact du message
+        $r->post('/dossiers/{id}/decision', [DossierController::class, 'decider']);                // RG-DO4 à RG-DO6
     });
 
     // ----- Communs (chantier C) -----

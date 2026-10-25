@@ -117,6 +117,7 @@ table("mecaniciens","meca","Le mécanicien : compte, profil public, statut du do
  ("slug","VARCHAR(90)",True,None,"« koffi-yao-riviera-3 », créé à la validation"),
  ("prenom","VARCHAR(60)",False,None,"Prénom"),
  ("nom","VARCHAR(60)",False,None,"Nom"),
+ ("date_naissance","DATE",True,None,"Déclarée à l'inscription, comparée à la pièce d'identité (A2 · concordances)"),
  ("telephone","VARCHAR(20)",False,None,"Identifiant de connexion, format E.164 (+2250707123456)"),
  ("whatsapp","VARCHAR(20)",True,None,"Numéro WhatsApp s'il est différent"),
  ("email","VARCHAR(190)",True,None,"Facultatif, sert à réinitialiser le mot de passe"),

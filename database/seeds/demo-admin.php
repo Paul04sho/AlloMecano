@@ -63,8 +63,8 @@ $quartier = $pdo->prepare('SELECT q.id FROM quartiers q JOIN communes c ON c.id 
 $specialite = $pdo->prepare('SELECT id FROM specialites WHERE code = ?');
 $mdp = (string) $pdo->query('SELECT @mdp')->fetchColumn();
 $insMeca = $pdo->prepare(
-    'INSERT INTO mecaniciens (public_id,prenom,nom,telephone,email,metier,annees_experience,atelier_quartier_id,rayon_km,statut_dossier,dossier_envoye_le,motif_refus,mot_de_passe_hash,cgu_version,cgu_acceptees_le,etat)
-     VALUES (?,?,?,?,?,?,?,?,10,?,?,?,?,\'1.0\',UTC_TIMESTAMP(),\'indisponible\')'
+    'INSERT INTO mecaniciens (public_id,prenom,nom,date_naissance,telephone,email,metier,annees_experience,atelier_quartier_id,rayon_km,statut_dossier,dossier_envoye_le,motif_refus,mot_de_passe_hash,cgu_version,cgu_acceptees_le,etat)
+     VALUES (?,?,?,?,?,?,?,?,?,10,?,?,?,?,\'1.0\',UTC_TIMESTAMP(),\'indisponible\')'
 );
 $insSpec = $pdo->prepare('INSERT INTO mecanicien_specialites (mecanicien_id,specialite_id) VALUES (?,?)');
 $insPiece = $pdo->prepare(
@@ -77,7 +77,7 @@ foreach ($dossiers as $i => $d) {
     $quartier->execute([$commune]);
     $q = $quartier->fetchColumn() ?: null;
     $envoye = gmdate('Y-m-d H:i:s', time() - (int) ($heures * 3600));
-    $insMeca->execute([Ulid::generer(), $prenom, $famille, sprintf('+22505%08d', 10000 + $i), null, $libelles[$specs[0]], 3 + $i % 9, $q, $statut, $envoye,
+    $insMeca->execute([Ulid::generer(), $prenom, $famille, sprintf('%d-%02d-%02d', 1980 + $i * 2 % 20, 1 + $i % 12, 5 + $i), sprintf('+22505%08d', 10000 + $i), null, $libelles[$specs[0]], 3 + $i % 9, $q, $statut, $envoye,
         $statut === 'refuse' ? 'Les pièces ne correspondent pas à la personne sur la photo.' : null, $mdp]);
     $id = (int) $pdo->lastInsertId();
     foreach ($specs as $code) {

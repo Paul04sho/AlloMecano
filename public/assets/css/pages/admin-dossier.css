@@ -1,0 +1,139 @@
+/* A2 · Examen d'un dossier (Figma 168:166). Complète admin.css. */
+
+/* ---------- En-tête (168:201) ---------- */
+.dossier__entete { display: flex; flex-direction: column; gap: 10px; padding-bottom: var(--esp-20); border-bottom: 1px solid var(--filet); }
+.dossier__entete > * { margin: 0; }
+.dossier__fil { display: flex; justify-content: space-between; gap: var(--esp-16); }
+.dossier__fil p { margin: 0; white-space: nowrap; }
+.dossier__fil a { color: inherit; text-decoration: none; }
+.dossier__fil a:hover { color: var(--encre); text-decoration: underline; text-underline-offset: 3px; }
+.dossier__nom { display: flex; align-items: center; gap: 14px; }
+.dossier__nom .ecrou-dossier { flex: none; }
+
+/* ---------- Corps : comparaison à gauche, décision collante à droite ---------- */
+.dossier__corps { display: grid; grid-template-columns: minmax(0, 722px) minmax(0, 1fr); gap: var(--esp-24); align-items: start; }
+.dossier__comparaison { display: flex; flex-direction: column; gap: var(--esp-40); min-width: 0; }
+.dossier__visionneuses { display: grid; grid-template-columns: 1fr 1fr; gap: var(--esp-24); }
+
+/* ---------- Écrou dossier (50:89) ---------- */
+.ecrou-dossier { display: block; overflow: visible; }
+.ecrou-dossier__facette { stroke: none; }
+.ecrou-dossier__facette--envoyee { fill: var(--encre); }
+.ecrou-dossier__facette--manquante { fill: var(--filet); }
+.ecrou-dossier__facette--facultative { fill: none; stroke: var(--bord-champ); stroke-width: .8; stroke-dasharray: 1.4 1.2; }
+.ecrou-dossier__facette--a-reprendre { fill: var(--erreur); }
+.ecrou-dossier__voyant { fill: var(--gris-voyant); stroke: var(--surface); stroke-width: .6; }
+.ecrou-dossier__voyant--valide { fill: var(--balise); }
+@media (prefers-reduced-motion: no-preference) {
+  .ecrou-dossier__facette { animation: facette-pose var(--t-etat) var(--ease-pose, ease-out) backwards; }
+  @keyframes facette-pose { from { opacity: 0; transform: scale(.85); transform-origin: 12px 13.86px; } }
+}
+
+/* ---------- Visionneuse (168:224) ---------- */
+.visionneuse { display: flex; flex-direction: column; gap: var(--esp-8); min-width: 0; margin: 0; }
+.visionneuse__titre { display: flex; align-items: center; justify-content: space-between; gap: var(--esp-8); height: 36px; margin: 0; }
+.visionneuse__titre > span:first-child { color: var(--encre); white-space: nowrap; }
+.visionneuse__panneau { position: relative; aspect-ratio: 349 / 436; overflow: hidden; background: var(--bitume); cursor: grab; touch-action: none; user-select: none; }
+.visionneuse__panneau.est-saisi { cursor: grabbing; }
+.visionneuse__panneau img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; transform-origin: center; will-change: transform; }
+.visionneuse__outils { display: flex; align-items: center; gap: 3px; }
+.visionneuse__outil { display: inline-flex; align-items: center; justify-content: center; height: 36px; padding: 0 10px; background: none; border: 0; border-radius: var(--rayon); box-shadow: inset 0 0 0 1px var(--bord-champ); color: var(--encre); font: 400 15px/22px var(--police-texte, inherit); cursor: pointer; }
+.visionneuse__outil[data-zoom] { padding: 0 12px; }
+.visionneuse__outil .icone { fill: none; }
+.visionneuse__outil:hover { background: var(--surface-creuse); }
+.visionneuse__zoom { display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 36px; font-size: 15px; }
+.visionneuse__segment { width: 132px; flex: none; }
+
+/* variantes de hauteur du segment (54:499) pour l'administration */
+.segment--36 span { height: 36px; padding-inline: 0; white-space: nowrap; }
+.segment--32 span { height: 32px; padding-inline: 0; white-space: nowrap; }
+
+/* ---------- Pièce par pièce (168:289) ---------- */
+.dossier__pieces { display: flex; flex-direction: column; gap: var(--esp-16); }
+.dossier__lignes { margin: 0; padding: 0; list-style: none; }
+.ligne-piece { position: relative; display: flex; align-items: center; gap: var(--esp-16); height: 64px; padding-inline: 10px 10px; border-bottom: 1px solid var(--filet); }
+.ligne-piece--affichee { background: var(--surface-elevee); padding-left: 14px; }
+.ligne-piece--a-reprendre { padding-left: 14px; }
+.ligne-piece--affichee::before, .ligne-piece--a-reprendre::before { content: ""; position: absolute; left: 0; top: 0; bottom: -1px; width: 4px; background: var(--encre); }
+.ligne-piece--a-reprendre::before { background: var(--erreur); }
+.ligne-piece__ouvrir { display: flex; flex: 1; align-items: center; gap: var(--esp-16); min-width: 0; height: 100%; padding: 0; background: none; border: 0; color: inherit; text-align: left; cursor: pointer; }
+.ligne-piece__texte { display: flex; flex: 1; flex-direction: column; gap: 2px; min-width: 0; }
+.ligne-piece__etat { text-transform: uppercase; }
+.ligne-piece__etat--erreur { color: var(--erreur-texte); }
+.ligne-piece__vignette { display: flex; flex: none; align-items: center; justify-content: center; width: 56px; height: 36px; overflow: hidden; border-radius: var(--rayon); background: var(--surface-creuse); }
+.ligne-piece__vignette .icone { fill: none; }
+.ligne-piece__vignette img { display: block; height: 36px; width: 29px; object-fit: cover; }
+.ligne-piece__vignette i { display: block; height: 3px; margin-bottom: 4px; background: var(--encre-2); }
+.ligne-piece__vignette i:nth-child(1) { width: 40px; }
+.ligne-piece__vignette i:nth-child(2) { width: 30px; }
+.ligne-piece__vignette i:nth-child(3) { width: 36px; margin-bottom: 0; }
+.ligne-piece__vignette:has(i) { flex-direction: column; align-items: flex-start; justify-content: center; padding-left: 6px; }
+.ligne-piece__cni { width: 56px; height: auto; }
+.ligne-piece--absente { padding-left: 0; }
+.ligne-piece__vignette--absente { background: none; border: 1px dashed var(--bord-champ); }
+.ligne-piece__choix { width: 176px; flex: none; }
+.ligne-piece__ouvrir:focus-visible { outline: 3px solid var(--encre); outline-offset: -3px; }
+
+/* ---------- Pièces à reprendre (168:372) ---------- */
+.reprises { position: relative; display: flex; flex-direction: column; gap: var(--esp-16); padding: var(--esp-20) var(--esp-20) var(--esp-20) var(--esp-24); border-radius: var(--rayon); background: var(--surface-elevee); }
+.reprises[hidden] { display: none; }
+.reprises::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--erreur); }
+.reprise { display: flex; flex-direction: column; gap: var(--esp-16); }
+.reprise[hidden] { display: none; }
+.reprise + .reprise { padding-top: var(--esp-16); border-top: 1px solid var(--filet); }
+.reprise__entete { display: flex; align-items: center; gap: var(--esp-8); margin: 0; color: var(--erreur-texte); }
+.reprise__entete .icone { fill: none; }
+.reprise__entete > span:nth-child(2) { flex: 1; }
+.reprise__entete > span:last-child { color: var(--encre-2); white-space: nowrap; }
+.reprise__motifs { display: flex; flex-direction: column; gap: var(--esp-8); min-width: 0; margin: 0; padding: 0; border: 0; }
+.reprise__motifs legend { padding: 0; margin-bottom: var(--esp-8); }
+.reprise__chips { display: flex; flex-wrap: wrap; gap: var(--esp-8); }
+.etiquette-choix--40 span { height: 40px; }
+.etiquette-choix span .icone { display: none; fill: none; }
+.etiquette-choix input:checked + span .icone { display: inline-block; }
+.reprise__apercu { position: relative; display: flex; flex-direction: column; gap: var(--esp-8); }
+.reprise__apercu > p { margin: 0; }
+.reprise__message { padding: 16px 16px 16px 20px; background: var(--surface-creuse); font-size: 18px; line-height: 28px; position: relative; }
+.reprise__message::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--encre); }
+
+/* ---------- Journal d'audit (168:409) ---------- */
+.dossier__journal { display: flex; flex-direction: column; gap: var(--esp-12); }
+.journal { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--filet); }
+.journal li { display: flex; align-items: center; gap: var(--esp-16); padding-block: 11px; border-bottom: 1px solid var(--filet); }
+.journal time { flex: none; width: 140px; }
+.journal .t-label { flex: none; width: 150px; }
+.journal .t-petit { flex: 1; min-width: 0; color: var(--encre); }
+
+/* ---------- Décision, collante (168:221) ---------- */
+.decision { position: sticky; top: var(--esp-32); display: flex; flex-direction: column; gap: var(--esp-20); min-width: 0; padding-top: var(--esp-16); border-top: 2px solid var(--encre); }
+.decision > * { margin: 0; }
+.decision__concordances { width: 100%; border-collapse: collapse; }
+.decision__concordances thead th { padding-bottom: var(--esp-8); font-weight: 500; text-align: left; border-bottom: 1px solid var(--filet); }
+.decision__concordances thead th:first-child { width: 120px; }
+.decision__concordances th[scope="row"] { font-weight: 400; text-align: left; }
+.decision__concordances td { padding-left: var(--esp-8); border-bottom: 1px solid var(--filet); }
+.decision__concordances tr:not(:first-child) td, .decision__concordances tbody th { border-bottom: 1px solid var(--filet); }
+.ligne-choix--48 { min-height: 48px; border-bottom: 0; }
+.decision__actions { display: flex; flex-direction: column; gap: var(--esp-8); }
+.decision__info { display: flex; align-items: flex-start; gap: var(--esp-8); margin: 0; padding-bottom: var(--esp-4); }
+.decision__info[hidden] { display: none; }
+.decision__info .icone { flex: none; fill: none; }
+.decision__actions .bouton .icone { fill: none; }
+.decision__actions [aria-disabled="true"] { background: var(--surface-creuse); box-shadow: inset 0 0 0 2px var(--filet); color: var(--encre-2); cursor: not-allowed; }
+.decision__actions [data-renvoi-bloque="true"], .decision__actions [data-renvoyer][aria-disabled="true"] { background: var(--surface-creuse); }
+.decision__actions [hidden] { display: none; }
+.decision__refus { display: flex; flex-direction: column; gap: var(--esp-4); }
+.decision__refus > p { margin: 0; }
+.decision__refus .lien-icone { align-self: flex-start; min-height: 28px; }
+.decision__raccourcis { display: flex; flex-direction: column; gap: var(--esp-8); padding-top: var(--esp-16); border-top: 1px solid var(--filet); }
+.decision__raccourcis > p { margin: 0; }
+.decision__raccourcis ul { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 0; padding: 0; list-style: none; }
+.decision__raccourcis li { display: flex; align-items: center; gap: 6px; }
+.touche { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; padding-inline: 6px; border: 1px solid var(--bord-champ); border-radius: var(--rayon); color: var(--encre); }
+
+/* ---------- Confirmation du refus ---------- */
+.refus { width: min(520px, calc(100vw - 48px)); padding: var(--esp-24); border: 0; border-radius: var(--rayon); background: var(--surface-elevee); color: var(--encre); box-shadow: inset 0 0 0 2px var(--encre); }
+.refus::backdrop { background: rgb(21 23 28 / .6); }
+.refus[open] { display: flex; flex-direction: column; gap: var(--esp-16); }
+.refus > * { margin: 0; }
+.refus__actions { display: flex; justify-content: flex-end; gap: var(--esp-8); }

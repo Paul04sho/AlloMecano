@@ -145,6 +145,7 @@ CREATE TABLE `mecaniciens` (
   `slug` VARCHAR(90) COMMENT '« koffi-yao-riviera-3 », créé à la validation',
   `prenom` VARCHAR(60) NOT NULL COMMENT 'Prénom',
   `nom` VARCHAR(60) NOT NULL COMMENT 'Nom',
+  `date_naissance` DATE COMMENT 'Déclarée à l''inscription, comparée à la pièce d''identité (A2 · concordances)',
   `telephone` VARCHAR(20) NOT NULL COMMENT 'Identifiant de connexion, format E.164 (+2250707123456)',
   `whatsapp` VARCHAR(20) COMMENT 'Numéro WhatsApp s''il est différent',
   `email` VARCHAR(190) COMMENT 'Facultatif, sert à réinitialiser le mot de passe',

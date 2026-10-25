@@ -321,6 +321,23 @@ $icones = json_decode((string) file_get_contents(RACINE . '/scripts/icones.json'
   </section>
 
   <section class="rubrique">
+    <span class="t-etiquette">Examen d’un dossier · écrou dossier 50:89 · visionneuse 168:224 · ligne de pièce 168:290 · touche 168:508</span>
+    <div class="systeme__grille systeme__admin">
+      <div class="systeme__ligne">
+        <?= composant('ecrou-dossier', ['pieces' => ['cni_recto' => 'envoyee', 'cni_verso' => 'envoyee', 'permis' => 'a_reprendre', 'diplome' => 'envoyee', 'portrait' => 'envoyee', 'atelier' => 'facultative'], 'taille' => 24]) ?>
+        <?= composant('ecrou-dossier', ['pieces' => ['cni_recto' => 'envoyee', 'cni_verso' => 'envoyee', 'permis' => 'envoyee', 'diplome' => 'envoyee', 'portrait' => 'envoyee', 'atelier' => 'envoyee'], 'valide' => true, 'taille' => 96]) ?>
+        <?= composant('ecrou-dossier', ['pieces' => ['cni_recto' => 'envoyee', 'cni_verso' => 'manquante', 'permis' => 'manquante', 'diplome' => 'manquante', 'portrait' => 'envoyee', 'atelier' => 'facultative'], 'taille' => 96]) ?>
+      </div>
+      <ul class="dossier__lignes" role="list">
+        <?= composant('ligne-piece', ['type' => 'cni_recto', 'piece' => ['id' => 1], 'mecano' => '01JDEMO0000000000000000001', 'decision' => 'conforme', 'affichee' => true, 'etat' => 'Affichée']) ?>
+        <?= composant('ligne-piece', ['type' => 'permis', 'piece' => ['id' => 2], 'mecano' => '01JDEMO0000000000000000001', 'decision' => 'a_reprendre', 'etat' => 'Consultée · 17:05']) ?>
+        <?= composant('ligne-piece', ['type' => 'atelier', 'piece' => null, 'mecano' => '01JDEMO0000000000000000001', 'etat' => '']) ?>
+      </ul>
+      <span class="touche t-etiquette">J / K</span>
+    </div>
+  </section>
+
+  <section class="rubrique">
     <span class="t-etiquette">Appel intégré · anneau 269:1827 / 269:1873 · commande 269:1849 / 269:1891 · état 269:1837 / 269:1881 / 270:1853 · repère carte W44 270:1862</span>
     <div class="systeme__grille systeme__appel">
       <div class="appel appel--sombre sur-sombre systeme__appel-sombre">

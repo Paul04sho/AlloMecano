@@ -89,6 +89,15 @@ final class Format
         return ($jour === 1 ? '1er' : (string) $jour) . ' ' . self::MOIS[(int) $d->format('n') - 1] . ' ' . $d->format('Y');
     }
 
+    /** Sans accents ni apostrophes courbes (slugs, filigrane) : le même résultat sur tous les serveurs, contrairement à iconv. */
+    public static function ascii(string $texte): string
+    {
+        return strtr($texte, [
+            'à' => 'a', 'â' => 'a', 'ä' => 'a', 'é' => 'e', 'è' => 'e', 'ê' => 'e', 'ë' => 'e', 'î' => 'i', 'ï' => 'i', 'ô' => 'o', 'ö' => 'o', 'ù' => 'u', 'û' => 'u', 'ü' => 'u', 'ÿ' => 'y', 'ç' => 'c', 'œ' => 'oe', 'æ' => 'ae',
+            'À' => 'A', 'Â' => 'A', 'Ä' => 'A', 'É' => 'E', 'È' => 'E', 'Ê' => 'E', 'Ë' => 'E', 'Î' => 'I', 'Ï' => 'I', 'Ô' => 'O', 'Ö' => 'O', 'Ù' => 'U', 'Û' => 'U', 'Ü' => 'U', 'Ç' => 'C', 'Œ' => 'OE', '’' => "'", 'Æ' => 'AE',
+        ]);
+    }
+
     /** « mercredi 21 octobre 2026 » (l'admin le passe en capitales avec .t-etiquette) */
     public static function dateLongue(\DateTimeInterface|string|null $date): string
     {
