@@ -83,7 +83,7 @@
 .ecrou-dossier__facette--manquante { fill: var(--filet); }
 .ecrou-dossier__facette--facultative { fill: none; stroke: var(--bord-champ); stroke-width: .8; stroke-dasharray: 1.4 1.2; }
 .ecrou-dossier__facette--a-reprendre { fill: var(--erreur); }
-.ecrou-dossier__voyant { fill: var(--gris-voyant); stroke: var(--surface); stroke-width: .6; }
+.ecrou-dossier__voyant { fill: var(--gris-voyant); stroke: none; }
 .ecrou-dossier__voyant--valide { fill: var(--balise); }
 @media (prefers-reduced-motion: no-preference) {
   .ecrou-dossier__facette { animation: facette-pose var(--t-etat) var(--ease-pose, ease-out) backwards; }

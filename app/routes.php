@@ -16,6 +16,7 @@ use App\Controllers\Admin\StatistiquesController;
 use App\Controllers\Admin\TableauController;
 use App\Controllers\Api\ClientController;
 use App\Controllers\Pro\DevenirController;
+use App\Controllers\Pro\InscriptionController;
 use App\Controllers\Client\AccueilController;
 use App\Controllers\Client\AppelController;
 use App\Controllers\Client\AvisController;
@@ -31,6 +32,7 @@ use App\Controllers\Communs\MotDePasseController;
 use App\Controllers\Communs\PagesController;
 use App\Controllers\Communs\SystemeController;
 use App\Middleware\ExigerAdmin;
+use App\Middleware\ExigerMecano;
 use App\Middleware\IdentifierClient;
 use App\Middleware\VerifierCsrf;
 
@@ -70,7 +72,19 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
 
     // ----- Mécano (chantier B) -----
     $r->get('/pro/devenir', [DevenirController::class, 'page'], 'devenir');                    // M0 · Devenir mécano vérifié
-    // $r->get('/pro/inscription/{etape}', …)  M1a → M1d · M1f     (à faire)
+    $r->get('/pro/inscription/compte', [InscriptionController::class, 'compte'], 'inscription');   // M1a · compte (public ; connecté : coordonnées)
+    $r->post('/pro/inscription/compte', [InscriptionController::class, 'creer']);
+    $r->groupe('/pro', [ExigerMecano::class], function ($r) {                                    // RG-C1 : mécanos connectés seulement
+        $r->get('/inscription/metier', [InscriptionController::class, 'metier']);                 // M1b
+        $r->post('/inscription/metier', [InscriptionController::class, 'enregistrerMetier']);
+        $r->post('/api/brouillon', [InscriptionController::class, 'brouillon']);                  // RG-DO1 : chaque champ s'enregistre
+        $r->get('/inscription/pieces', [InscriptionController::class, 'pieces']);                 // M1c
+        $r->post('/inscription/pieces/{type}', [InscriptionController::class, 'deposerPiece']);   // RG-DO2
+        $r->get('/mes-pieces/{type}', [InscriptionController::class, 'maPiece']);                 // sa propre photo, à lui seul
+        $r->get('/inscription/envoi', [InscriptionController::class, 'envoi']);                   // M1d
+        $r->post('/inscription/envoi', [InscriptionController::class, 'envoyer']);                // RG-DO3
+        $r->get('/inscription/envoye', [InscriptionController::class, 'envoye']);                 // M1e
+    });
     // $r->get('/pro', …)                 M2 · M2a · M2b            (à faire)
     // $r->get('/pro/demandes', …)        M3                        (à faire)
     // $r->get('/pro/avis', …)            M3 · Avis                 (à faire)

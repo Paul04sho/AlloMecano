@@ -14,6 +14,7 @@
  * @var list<string> $specialites
  * @var list<string>|string|null $specialitePanne  celle(s) qui correspondent à la panne : en gras (RG-R6)
  * @var ?float $note
+ * @var bool $nouveau        « Nouveau · Marcory » : pas encore d'avis (RG-AV6, aperçu du mécano M1d), ni note ni nombre d'avis
  * @var int $avis
  * @var ?string $quartier
  * @var ?int $rang           affiche la colonne borne
@@ -39,7 +40,7 @@ if ($format === 'squelette'): ?>
 $avis ??= 0;
 $verifie ??= true;
 $enGras = is_array($specialitePanne ?? null) ? $specialitePanne : (isset($specialitePanne) ? [$specialitePanne] : []);
-$meta = [Format::note($note ?? null) . Format::INSECABLE . '★', $avis . Format::INSECABLE . 'avis'];
+$meta = !empty($nouveau) ? ['Nouveau'] : [Format::note($note ?? null) . Format::INSECABLE . '★', $avis . Format::INSECABLE . 'avis'];
 if (!empty($quartier) && ($format ?? 'compacte') !== 'etendue') { $meta[] = $quartier; } // l'étendue (60:409) n'affiche que note et avis
 $photo = is_array($portrait) ? $portrait : ['src' => $portrait];
 $html = '';

@@ -72,6 +72,7 @@ final class ConnexionController
         }
         $etat = bin2hex(random_bytes(16));
         Session::set('google_etat', $etat);
+        Session::set('google_inscription', $requete->query('inscription') !== null); // « Continuer avec Google » de M1a : un compte inconnu s'inscrit
         return Response::redirection(GoogleAuthService::adresseAutorisation($etat));
     }
 
@@ -83,6 +84,12 @@ final class ConnexionController
         $code = (string) $requete->query('code', '');
         $profil = $attendu !== '' && hash_equals($attendu, (string) $requete->query('state', '')) && $code !== '' ? GoogleAuthService::profilDepuisCode($code) : null;
         $compte = $profil !== null ? AuthService::depuisBase()->connecterGoogle($profil['sub'], $profil['email']) : null;
+        $inscription = (bool) Session::get('google_inscription', false);
+        Session::oublier('google_inscription');
+        if ($compte === null && $profil !== null && $inscription) { // M1a : Google a dit qui l'on est, il reste prénom, nom et téléphone à dire
+            Session::set('google_profil', ['sub' => $profil['sub'], 'email' => $profil['email']]);
+            return Response::redirection('/pro/inscription/compte');
+        }
         if ($compte === null) {
             Session::flash('message', 'Ce compte Google n’est lié à aucun compte allomécano.'); // texte à valider : non dessiné dans Figma
             return Response::redirection('/connexion');

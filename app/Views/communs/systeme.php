@@ -357,6 +357,29 @@ $icones = json_decode((string) file_get_contents(RACINE . '/scripts/icones.json'
   </section>
 
   <section class="rubrique">
+    <span class="t-etiquette">Inscription mécano · brouillon 95:169 · étiquette de choix 54:451 · stepper 54:500 · curseur de rayon 97:318 · pochette de pièce 54:603 · guide photo 102:624 · récapitulatif 104:637 · étiquette Vérifié 49:175</span>
+    <div class="systeme__grille systeme__admin">
+      <?= composant('parcours-brouillon', ['heure' => '10:14', 'pieces' => ['cni_recto' => 'envoyee', 'cni_verso' => 'envoyee', 'permis' => 'manquante', 'diplome' => 'manquante', 'portrait' => 'envoyee', 'atelier' => 'facultative']]) ?>
+      <div class="etiquettes-choix">
+        <?= composant('etiquette-choix', ['nom' => 'demo', 'valeur' => '1', 'libelle' => 'Mécanique générale', 'coche' => true]) ?>
+        <?= composant('etiquette-choix', ['nom' => 'demo', 'valeur' => '2', 'libelle' => 'Diesel']) ?>
+      </div>
+      <?= composant('stepper', ['nom' => 'demo-annees', 'valeur' => 12, 'min' => 0, 'max' => 60, 'unite' => 'ans', 'libelle' => 'Années d’expérience']) ?>
+      <?= composant('curseur-rayon', ['nom' => 'demo-rayon', 'valeur' => 5, 'rayons' => [2, 5, 10, 20]]) ?>
+      <ul class="pieces__pochettes" role="list">
+        <?= composant('pochette-piece', ['type' => 'cni_recto', 'libelle' => 'CNI recto', 'etat' => 'conforme', 'action' => '#']) ?>
+        <?= composant('pochette-piece', ['type' => 'cni_verso', 'libelle' => 'CNI verso', 'etat' => 'envoyee', 'taille' => 386 * 1024, 'action' => '#']) ?>
+        <?= composant('pochette-piece', ['type' => 'permis', 'libelle' => 'Permis de conduire', 'etat' => 'envoi', 'action' => '#']) ?>
+        <?= composant('pochette-piece', ['type' => 'diplome', 'libelle' => 'Diplôme ou attestation', 'etat' => 'manquante', 'action' => '#']) ?>
+        <?= composant('pochette-piece', ['type' => 'portrait', 'libelle' => 'Photo de vous', 'etat' => 'a_reprendre', 'motif' => 'La photo est floue : le visage n’est pas net.', 'action' => '#']) ?>
+      </ul>
+      <?= composant('guide-photo', []) ?>
+      <?= composant('bloc-recap', ['rubrique' => 'Zone et tarifs', 'href' => '#', 'lignes' => [['style' => 'titre', 'texte' => 'Marcory, Zone 4 · jusqu’à 5 km']], 'tarifs' => [['libelle' => 'Diagnostic, à partir de', 'valeur' => '5 000'], ['libelle' => 'Déplacement', 'valeur' => 'Inclus', 'unite' => '']]]) ?>
+      <div class="systeme__ligne"><?= composant('etiquette-verifie', ['etat' => 'verifie']) ?><?= composant('etiquette-verifie', ['etat' => 'attente']) ?></div>
+    </div>
+  </section>
+
+  <section class="rubrique">
     <span class="t-etiquette">Signalements · onglets 179:607 · alerte critique en retard 179:614 · ligne de signalement 179:642 · 179:654 · 179:666</span>
     <div class="systeme__grille systeme__admin">
       <?= composant('onglets-admin', ['nom' => 'Exemple d’onglets', 'onglets' => [['libelle' => 'Ouverts · 3', 'href' => '#', 'actif' => true], ['libelle' => 'Classés · 30 jours', 'href' => '#', 'actif' => false]]]) ?>

@@ -40,3 +40,12 @@ textarea.champ__saisie { padding: calc(var(--esp-12) + 2px) var(--esp-16); min-h
 .regles li .icone { width: 18px; height: 18px; opacity: .35; }
 .regles li.ok { color: var(--encre); }
 .regles li.ok .icone { opacity: 1; }
+
+/* ---------- Règle vivante (130:178) : une règle du mot de passe qui se coche pendant la saisie (X2, M1a) ---------- */
+.regle-vivante { display: flex; align-items: center; gap: 10px; }
+.regle-vivante__case { display: grid; place-items: center; width: 20px; height: 20px; flex: none; border-radius: var(--rayon); box-shadow: inset 0 0 0 2px var(--encre); color: transparent; }
+.regle-vivante__case .icone { fill: none; }
+.regle-vivante--faite .regle-vivante__case { background: var(--encre); box-shadow: none; color: var(--surface); }
+@media (prefers-reduced-motion: no-preference) {
+  .regle-vivante__case { transition: background var(--t-micro) linear, color var(--t-micro) linear; }
+}

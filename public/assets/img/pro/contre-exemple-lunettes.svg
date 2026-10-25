@@ -1,0 +1,22 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="76" height="76" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Contre-exemple &#194;&#183; Lunettes de soleil" clip-path="url(#clip0_0_228)">
+<mask id="mask0_0_228" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="76" height="76">
+<path id="Masque coupe M" d="M16 0H76V76H0V9.23L16 0Z" fill="black"/>
+</mask>
+<g mask="url(#mask0_0_228)">
+<rect id="Rectangle" width="76" height="76" fill="#E6E8E3"/>
+</g>
+<g id="Picto lunettes de soleil">
+<path id="Vector" d="M57 40C57 50.4934 48.4934 59 38 59C27.5066 59 19 50.4934 19 40C19 29.5066 27.5066 21 38 21C48.4934 21 57 29.5066 57 40Z" stroke-width="2.5" stroke="#15171C"/>
+<path id="Vector_2" d="M23 35H36V41L33 44H26L23 41V35Z" fill="#15171C"/>
+<path id="Vector_3" d="M40 35H53V41L50 44H43L40 41V35Z" fill="#15171C"/>
+<path id="Vector_4" d="M36 37H40" stroke-width="2.5" stroke="#15171C"/>
+<path id="Vector_5" d="M32 51H44" stroke-width="2.5" stroke="#15171C"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_0_228">
+<rect width="76" height="76" fill="white"/>
+</clipPath>
+</defs>
+</svg>

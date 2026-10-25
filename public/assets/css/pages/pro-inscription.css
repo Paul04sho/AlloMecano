@@ -1,0 +1,163 @@
+/* Inscription mécano · M1a compte (95:154), M1b métier (97:218), M1c pièces (102:434), M1d relire et envoyer (104:607), M1e dossier envoyé (105:656).
+   Le socle de l'espace pro (colonne, socle d'action…) est dans pro.css. */
+
+.inscription { padding-bottom: calc(var(--hauteur-socle-pro) + 24px); }
+.parcours-brouillon { display: flex; align-items: center; gap: var(--esp-12); padding: var(--esp-12) var(--marge) 0; }
+.parcours-brouillon[hidden] { display: none; }
+.parcours-brouillon > p { flex: 1; min-width: 0; margin: 0; }
+.parcours-brouillon .ecrou-dossier { flex: none; }
+
+.inscription__formulaire { display: flex; flex-direction: column; gap: var(--esp-24); padding: var(--esp-20) var(--marge) var(--esp-40); }
+.inscription__formulaire--large { gap: var(--esp-32); }
+.inscription__formulaire > * { margin: 0; }
+.inscription__titre { display: flex; flex-direction: column; gap: var(--esp-8); }
+.inscription__titre > * { margin: 0; }
+
+/* ---------- M1a ---------- */
+.inscription__ou { display: flex; align-items: center; gap: var(--esp-12); }
+.inscription__ou::before, .inscription__ou::after { content: ""; flex: 1; height: 1px; background: var(--filet); }
+.inscription__champs { display: flex; flex-direction: column; gap: var(--esp-20); }
+.inscription__mdp { display: flex; flex-direction: column; gap: var(--esp-12); }
+.inscription__regles { display: flex; flex-direction: column; gap: var(--esp-8); margin: 0; padding: 0; list-style: none; }
+.inscription__connexion { padding-block: var(--esp-12); }
+
+/* ---------- M1b : groupes séparés par un filet ---------- */
+.inscription__groupe { display: flex; flex-direction: column; gap: var(--esp-16); padding-top: var(--esp-24); border-top: 1px solid var(--filet); }
+.inscription__groupe--premier { padding-top: 0; border-top: 0; }
+.inscription__groupe > * { margin: 0; }
+.inscription__entete { display: flex; flex-direction: column; gap: var(--esp-4); }
+.inscription__entete > * { margin: 0; }
+.inscription__apercu-entete { display: flex; align-items: center; gap: var(--esp-12); }
+.inscription__apercu-entete > h2 { flex: 1; margin: 0; }
+
+/* Stepper (54:500) */
+.stepper { display: flex; align-items: center; justify-content: space-between; }
+.stepper__bouton { display: grid; place-items: center; width: 56px; height: 56px; padding: 0; border: 0; border-radius: var(--rayon); background: none; box-shadow: inset 0 0 0 2px var(--encre); color: var(--encre); cursor: pointer; }
+.stepper__bouton[hidden] { display: none; }
+.stepper__bouton .icone { fill: none; }
+.stepper__bouton:active { transform: translateY(1px); }
+.stepper__bouton:focus-visible { outline: 3px solid var(--encre); outline-offset: 3px; }
+.stepper__valeur { display: flex; align-items: baseline; justify-content: center; gap: 3px; flex: 1; }
+.stepper__valeur input { width: 3.2ch; padding: 0; border: 0; background: none; color: var(--encre); text-align: center; -moz-appearance: textfield; appearance: textfield; }
+.stepper__valeur input::-webkit-outer-spin-button, .stepper__valeur input::-webkit-inner-spin-button { margin: 0; -webkit-appearance: none; }
+.stepper__valeur input:focus-visible { outline: 3px solid var(--encre); outline-offset: 3px; }
+
+/* Curseur de rayon (97:318) : quatre crans, segments de 4 px, pouce de 28 */
+.curseur-rayon { display: flex; flex-direction: column; gap: var(--esp-12); min-width: 0; margin: 0; padding: 0; border: 0; }
+.curseur-rayon__titre { display: flex; align-items: baseline; gap: var(--esp-12); width: 100%; padding: 0; float: left; }
+.curseur-rayon__titre + * { clear: both; }
+.curseur-rayon__titre > .t-label { flex: 1; }
+.curseur-rayon__valeur { display: flex; align-items: baseline; gap: 3px; white-space: nowrap; }
+.curseur-rayon__piste { --i: 1; --p: calc(var(--i) / 3 * 100%); position: relative; height: 58px; }
+.curseur-rayon__piste:has(input[data-cran="0"]:checked) { --i: 0; }
+.curseur-rayon__piste:has(input[data-cran="1"]:checked) { --i: 1; }
+.curseur-rayon__piste:has(input[data-cran="2"]:checked) { --i: 2; }
+.curseur-rayon__piste:has(input[data-cran="3"]:checked) { --i: 3; }
+.curseur-rayon__marquage { position: absolute; left: 14px; right: 14px; top: 12px; height: 4px; background: linear-gradient(90deg, var(--encre) 0 var(--p), var(--filet) var(--p) 100%); -webkit-mask: repeating-linear-gradient(90deg, #000 0 13.765px, transparent 13.765px 19.765px); mask: repeating-linear-gradient(90deg, #000 0 13.765px, transparent 13.765px 19.765px); }
+.curseur-rayon__pouce { position: absolute; top: 0; left: calc((100% - 28px) * var(--i) / 3); width: 28px; height: 28px; border-radius: 50%; background: var(--encre); transition: left var(--t-etat) var(--ease-sortie); }
+.curseur-rayon__piste:has(input:focus-visible) .curseur-rayon__pouce { outline: 3px solid var(--encre); outline-offset: 3px; }
+.curseur-rayon__piste { display: flex; justify-content: space-between; align-items: flex-end; }
+.curseur-rayon__cran { color: var(--encre-2); }
+.curseur-rayon__cran:has(input:checked) { color: var(--encre); }
+.curseur-rayon__cran input { position: absolute; top: 0; height: 100%; width: 25%; left: calc(var(--cran) * 25%); margin: 0; opacity: 0; cursor: pointer; }
+.curseur-rayon__cran span { position: relative; display: block; line-height: 18px; }
+@media (prefers-reduced-motion: reduce) { .curseur-rayon__pouce { transition: none; } }
+
+/* Mini-carte (97:341) */
+.zone__mini-carte { display: flex; flex-direction: column; gap: 6px; }
+.zone__carte { width: 100%; height: 160px; border: 1px solid var(--filet); border-radius: var(--rayon); }
+.zone__attribution { margin: 0; text-align: right; }
+
+/* Aperçu de la ligne */
+.inscription [data-apercu-ligne] .ligne-classement { border-bottom: 1px solid var(--filet); }
+
+/* ---------- M1c ---------- */
+.pieces__dossier { display: flex; align-items: center; gap: var(--esp-16); }
+.pieces__dossier .ecrou-dossier { flex: none; }
+.pieces__compteur { display: flex; flex: 1; flex-direction: column; gap: var(--esp-8); min-width: 0; }
+.pieces__compteur > p { margin: 0; }
+.pieces__pochettes { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--filet); }
+.pochette { position: relative; border-bottom: 1px solid var(--filet); }
+.pochette__corps { display: flex; flex-direction: column; gap: var(--esp-12); padding-block: 14px; }
+.pochette__entete { position: relative; display: flex; align-items: center; gap: var(--esp-12); }
+.pochette__vignette { display: grid; place-items: center; flex: none; width: 56px; height: 44px; border-radius: var(--rayon); background: var(--surface-creuse); overflow: hidden; }
+.pochette__vignette .icone { fill: none; }
+.pochette__specimen { width: 100%; height: auto; }
+.pochette__texte { display: flex; flex: 1; flex-direction: column; gap: 2px; min-width: 0; }
+.pochette__texte > p { margin: 0; }
+.pochette__etat { display: flex; align-items: center; gap: var(--esp-6, 6px); color: var(--encre); }
+.pochette--manquante .pochette__etat { color: var(--encre-2); }
+.pochette--a-reprendre .pochette__etat { color: var(--erreur-texte); }
+.pochette__remplacer { flex: none; color: var(--encre); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; cursor: pointer; }
+.pochette__remplacer[hidden] { display: none; }
+.pochette__champ { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
+.pochette__champ:focus-visible + .pochette__remplacer, .pochette__champ:focus-visible + .bouton { outline: 3px solid var(--encre); outline-offset: 3px; }
+.pochette__jauge { display: flex; gap: var(--esp-4); }
+.pochette__jauge[hidden] { display: none; }
+.pochette__jauge i { flex: 1; height: 4px; background: var(--filet); }
+.pochette__jauge i.plein { background: var(--encre); }
+.pochette__actions { display: flex; gap: var(--esp-8); }
+.pochette__actions[hidden] { display: none; }
+.pochette__actions .bouton { cursor: pointer; }
+.pochette__actions .bouton:first-of-type { flex: 1; }
+.pochette__actions label:nth-of-type(2) { flex: none; width: 124px; }
+.pochette__actions .bouton .icone { fill: none; }
+.pochette--a-reprendre { padding-left: var(--esp-16); box-shadow: inset 4px 0 0 var(--erreur); }
+.pochette__motif { margin: 0; color: var(--erreur-texte); }
+.pochette--envoi .pochette__etat { color: var(--encre); }
+
+.pieces__guide { display: flex; flex-direction: column; gap: var(--esp-12); }
+.pieces__guide .rubrique { gap: var(--esp-12); }
+.pieces__guide .rubrique > p { margin: 0; }
+.pieces__guide .rubrique > h2 { margin: 0; }
+.guide-photo { display: flex; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.guide-photo__vignette { display: flex; flex-direction: column; gap: var(--esp-8); width: 82px; }
+.guide-photo__vignette .icone { fill: none; }
+.guide-photo__vignette .t-etiquette { margin: 0; }
+.guide-photo__image { position: relative; display: block; flex: none; width: 76px; height: 76px; overflow: hidden; background: var(--surface-creuse); clip-path: polygon(16px 0, 100% 0, 100% 100%, 0 100%, 0 9px); }
+.guide-photo__image img { display: block; }
+.guide-photo__image--bon { background: none; border-radius: 50%; clip-path: none; }
+.guide-photo__image--bon img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
+.guide-photo__image--loin img { position: absolute; left: 20px; top: 22px; width: 36px; height: 45px; object-fit: cover; }
+.guide-photo__image--floue img { width: 100%; height: 100%; object-fit: cover; filter: blur(3px); transform: scale(1.25); }
+.guide-photo__image:not([class*="--"]) img { width: 100%; height: 100%; }
+.pieces__confidentialite { display: flex; align-items: flex-start; gap: var(--esp-8); padding-top: var(--esp-16); border-top: 1px solid var(--filet); }
+.pieces__confidentialite .icone { flex: none; fill: none; }
+
+/* ---------- M1d ---------- */
+.recap-envoi { border-top: 1px solid var(--filet); }
+.bloc-recap { display: flex; flex-direction: column; gap: var(--esp-8); padding-block: var(--esp-16); border-bottom: 1px solid var(--filet); }
+.bloc-recap > p { margin: 0; }
+.bloc-recap__entete { display: flex; align-items: center; gap: var(--esp-12); }
+.bloc-recap__entete > p { flex: 1; margin: 0; }
+.bloc-recap__tarifs { display: flex; gap: var(--esp-24); }
+.bloc-recap__tarifs > div { display: flex; flex: 1; flex-direction: column; gap: var(--esp-4); min-width: 0; }
+.bloc-recap__tarifs p { margin: 0; }
+.bloc-recap__borne { display: flex; align-items: baseline; gap: 3px; white-space: nowrap; }
+.envoi__apercu { display: flex; flex-direction: column; gap: var(--esp-12); }
+.envoi__apercu > h2 { margin: 0; }
+.envoi__attente { display: flex; align-items: center; gap: var(--esp-12); margin: 0; }
+.envoi__attente > span:last-child { flex: 1; }
+.envoi__apercu .ligne-classement { border-top: 1px solid var(--filet); }
+.envoi__accords { display: flex; flex-direction: column; gap: var(--esp-12); }
+.envoi__accords > h2 { margin: 0; }
+.envoi__cases { border-top: 1px solid var(--filet); }
+.envoi__cases .ligne-choix { padding-block: 15px; }
+.socle .bouton--eteint, .socle .bouton--eteint:hover { background: transparent; color: var(--gris-voyant); box-shadow: inset 0 0 0 2px var(--filet-sombre); }
+
+/* ---------- M1e ---------- */
+.envoye__barre { display: flex; align-items: center; height: 56px; padding-inline: var(--marge); }
+.envoye__contenu { display: flex; flex-direction: column; align-items: flex-start; padding: var(--esp-32) var(--marge) var(--esp-48); }
+.envoye__contenu > * { margin-block: 0; }
+.envoye__contenu > .statut { margin-top: var(--esp-24); }
+.envoye__contenu > h1 { margin-top: var(--esp-16); }
+.envoye__contenu > h1 + p { margin-top: var(--esp-16); }
+.envoye__contenu > .t-donnee { margin-top: var(--esp-12); }
+.envoye__lien { min-height: 0; padding-block: var(--esp-12); gap: 6px; }
+.envoye__contenu > .envoye__lien:first-of-type { margin-top: var(--esp-8); }
+.envoye__photo { width: 100%; margin-top: var(--esp-32); }
+.envoye__photo img { height: auto; aspect-ratio: 4 / 5; }
+.envoye__photo + .envoye__lien { margin-top: var(--esp-32); }
+.envoye .t-display-l { font-size: 40px; line-height: 40px; }
+.pochette__actions .bouton { padding-inline: 20px; }
+.pochette__actions .bouton__libelle { white-space: nowrap; }

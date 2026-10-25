@@ -16,6 +16,8 @@
  * @var bool $compteur
  * @var ?string $autocomplete
  * @var ?string $inputmode
+ * @var ?string $liste        id d'une <datalist> de suggestions (quartier de l'atelier, M1b)
+ * @var bool $labelCache  libellé réservé aux lecteurs d'écran (un titre visible tient lieu d'étiquette)
  */
 $type ??= 'text';
 $id = 'champ-' . $nom;
@@ -23,6 +25,7 @@ $classes = 'champ' . (!empty($erreur) ? ' champ--erreur' : '') . (!empty($desact
 $decrit = trim((!empty($aide) ? $id . '-aide ' : '') . (!empty($erreur) ? $id . '-erreur' : ''));
 $attrs = 'id="' . e($id) . '" name="' . e($nom) . '" class="champ__saisie"'
     . (!empty($exemple) ? ' placeholder="' . e($exemple) . '"' : '')
+    . (!empty($liste) ? ' list="' . e($liste) . '"' : '')
     . (!empty($requis) ? ' required' : '')
     . (!empty($desactive) ? ' disabled' : '')
     . (!empty($max) ? ' maxlength="' . (int) $max . '"' : '')
@@ -36,7 +39,7 @@ if ($type === 'tel') {
 }
 ?>
 <div class="<?= $classes ?>">
-  <label class="champ__label" for="<?= e($id) ?>"><?= e($label) ?></label>
+  <label class="champ__label<?= !empty($labelCache) ? ' sr-only' : '' ?>" for="<?= e($id) ?>"><?= e($label) ?></label>
   <div class="champ__boite">
     <?php if ($type === 'tel'): ?><span class="champ__prefixe" aria-hidden="true">+225</span><?php endif ?>
     <?php if ($type === 'textarea'): ?>

@@ -74,3 +74,10 @@
 .ligne-engagement .poincon { flex: none; margin-top: 4px; }
 .ligne-engagement > div { display: flex; flex: 1; flex-direction: column; gap: 2px; min-width: 0; }
 .ligne-engagement p { margin: 0; }
+
+/* ---------- Socle d'action dans la colonne (53:282) : toujours collé en bas, jamais plus large que la colonne ---------- */
+.pro { --hauteur-socle-pro: 125px; }
+.pro .socle { position: fixed; z-index: 50; left: 0; right: 0; bottom: 0; width: 100%; max-width: 480px; margin-inline: auto; padding: 12px var(--marge) max(28px, calc(12px + env(safe-area-inset-bottom, 0px))); background: var(--socle); color: var(--beton); border-top: 1px solid var(--filet-sombre); animation: socle-entree var(--t-entree) var(--ease-sortie) both; }
+.pro .socle__info { color: var(--gris-voyant); }
+.pro .socle__info:empty { display: none; }
+@media (prefers-reduced-motion: reduce) { .pro .socle { animation: none; } }
