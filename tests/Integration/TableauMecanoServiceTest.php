@@ -127,18 +127,6 @@ final class TableauMecanoServiceTest extends TestCase
         self::assertSame('aucune', $this->service->demandes($this->mecano(), $this->maintenant())['quand']);
     }
 
-    public function testLaPastilleCompteLesAppelsDirectsDes24HeuresSansReponse(): void
-    {
-        $id = $this->mecano();
-        $c = $this->client();
-        $this->contact($id, $c, '2026-10-21 10:00:00', ['canal' => 'tel']);
-        $this->contact($id, $c, '2026-10-21 11:00:00', ['canal' => 'whatsapp']);
-        $this->contact($id, $c, '2026-10-21 12:00:00', ['canal' => 'app']); // l'appel intégré se décroche, il ne se confirme pas
-        $this->contact($id, $c, '2026-10-21 13:00:00', ['canal' => 'tel', 'issue_mecano' => 'j_y_vais']);
-        $this->contact($id, $c, '2026-10-19 13:00:00', ['canal' => 'tel']); // trop ancien
-        self::assertSame(2, $this->service->aConfirmer($id, $this->maintenant())); // RG-I7
-    }
-
     public function testLeDernierAvisEstLePlusRecentDesPublies(): void
     {
         $id = $this->mecano();

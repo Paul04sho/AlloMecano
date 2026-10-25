@@ -15,6 +15,7 @@ use App\Controllers\Admin\SignalementAdminController;
 use App\Controllers\Admin\StatistiquesController;
 use App\Controllers\Admin\TableauController;
 use App\Controllers\Api\ClientController;
+use App\Controllers\Pro\ActiviteController;
 use App\Controllers\Pro\AppelMecanoController;
 use App\Controllers\Pro\DevenirController;
 use App\Controllers\Pro\EspaceController;
@@ -103,6 +104,10 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
         $r->post('/api/appels/{id}/signal', [AppelMecanoController::class, 'signal']);
         $r->post('/api/appels/{id}/issue', [AppelMecanoController::class, 'issue']);               // RG-I2, RG-D4
         $r->get('/appel/{id}', [AppelMecanoController::class, 'page'], 'pro-appel');               // M5 · appel entrant · en appel · Vous y allez ?
+        $r->get('/demandes', [ActiviteController::class, 'demandes'], 'pro-demandes');             // M3 · Demandes
+        $r->get('/avis', [ActiviteController::class, 'avis'], 'pro-avis');                         // M3 · Avis
+        $r->post('/avis/{id}/repondre', [ActiviteController::class, 'repondre']);                  // RG-AV8
+        $r->post('/avis/{id}/signaler', [ActiviteController::class, 'signaler']);                  // RG-AV4
     });
     // $r->get('/pro/demandes', …)        M3                        (à faire)
     // $r->get('/pro/avis', …)            M3 · Avis                 (à faire)

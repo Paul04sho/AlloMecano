@@ -10,6 +10,7 @@ use App\Core\Request;
 use App\Core\Response;
 use App\Core\Session;
 use App\Core\View;
+use App\Services\DemandesMecanoService;
 use App\Services\DisponibiliteService;
 use App\Services\InscriptionService;
 use App\Services\MecanoService;
@@ -72,7 +73,7 @@ final class EspaceController
         $profil = $service->profil($id) ?? $profil;
         $jour = $service->jour($id);
         return $this->rendre('pro/tableau', [
-            'titre' => 'Statut', 'css' => self::CSS, 'js' => self::JS, 'onglet' => 'statut', 'demandes' => $service->aConfirmer($id), 'sonnerie' => true,
+            'titre' => 'Statut', 'css' => self::CSS, 'js' => self::JS, 'onglet' => 'statut', 'demandes' => DemandesMecanoService::depuisBase()->aRappeler($id), 'sonnerie' => true,
             'profil' => $profil, 'avatar' => $this->avatar($profil), 'jour' => $jour, 'bornes' => $this->bornes($jour, $profil['etat'] !== 'indisponible'),
             'liste' => $service->demandes($id), 'avis' => $service->dernierAvis($id),
             'zone' => TableauMecanoService::zone($profil), 'position' => TableauMecanoService::lignePosition($profil),

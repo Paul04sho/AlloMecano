@@ -442,6 +442,7 @@ CREATE TABLE `contacts` (
   `resume` VARCHAR(120) NOT NULL COMMENT '« Voiture · Batterie », gardé',
   `quartier_libelle` VARCHAR(80) COMMENT '« Riviera 2 », gardé',
   `position_partagee` TINYINT(1) NOT NULL DEFAULT 1 COMMENT 'Interrupteur « Lien de ma position »',
+  `distance_m` INT UNSIGNED COMMENT 'Distance à vol d''oiseau entre le client et le mécano au moment du contact : gardée quand la position est effacée (RG-P1)',
   `lat` DECIMAL(9,6) COMMENT 'Envoyée au mécano contacté, effacée après 24 h',
   `lon` DECIMAL(9,6) COMMENT 'Effacée après 24 h',
   `repere` VARCHAR(160) COMMENT 'Effacé après 24 h',

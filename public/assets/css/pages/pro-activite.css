@@ -1,0 +1,60 @@
+/* Espace pro · M3 Demandes (Figma 116:967) et M3 Avis (118:1060). Le socle des pages de l'espace est dans pro.css et pro-tableau.css. */
+
+.tableau--demandes, .tableau--avis { gap: var(--esp-32); }
+.tableau--demandes .tableau__entete, .tableau--avis .tableau__entete { gap: var(--esp-12); }
+.tableau .note .icone { fill: none; }
+
+/* ---------- Demandes ---------- */
+.liste-demandes { margin: 0; padding: 0; list-style: none; }
+.jour-demandes { padding: var(--esp-16) 0 var(--esp-8); border-bottom: 1px solid var(--filet); }
+.jour-demandes h2 { margin: 0; }
+.ligne-contact { display: flex; flex-direction: column; gap: 2px; padding-block: var(--esp-8); border-bottom: 1px solid var(--filet); }
+.ligne-contact__haut { display: flex; align-items: center; gap: 10px; }
+.ligne-contact__heure { flex: none; width: 72px; margin: 0; color: var(--encre); white-space: nowrap; }
+.ligne-contact__client { display: flex; flex: 1; flex-direction: column; gap: 2px; min-width: 0; }
+.ligne-contact__client p { margin: 0; }
+.ligne-contact__panne { display: flex; align-items: center; gap: var(--esp-8); }
+.ligne-contact__panne > span:last-child { flex: 1; min-width: 0; }
+.ligne-contact__voyant { display: block; flex: none; width: 24px; height: 24px; padding: 2px; border-radius: var(--rayon); background: var(--panneau); }
+.ligne-contact__voyant .voyant-bord { transform: scale(.625); transform-origin: 0 0; }
+.ligne-contact__masque { display: flex; align-items: center; gap: 6px; }
+.ligne-contact__masque .icone { flex: none; fill: none; }
+.ligne-contact .bouton { flex: none; padding-inline: var(--esp-16); font-size: 16px; line-height: 18px; }
+.ligne-contact__bas { display: flex; align-items: flex-start; gap: 10px; color: var(--encre-2); white-space: nowrap; }
+.ligne-contact__canal { flex: none; width: 72px; }
+.ligne-contact__lieu { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.ligne-contact__retour--joint { color: var(--encre); }
+
+/* ---------- Avis ---------- */
+.note-globale { display: flex; align-items: center; gap: var(--esp-16); }
+.note-globale__borne { display: flex; flex: none; align-items: baseline; gap: 3px; margin: 0; color: var(--encre); white-space: nowrap; }
+.note-globale__texte { display: flex; flex: 1; flex-direction: column; gap: 2px; min-width: 0; }
+.note-globale__texte p { margin: 0; }
+.repartition-avis { display: flex; flex-direction: column; gap: 10px; }
+.repartition-avis h2 { margin: 0; }
+.barre-etoiles { display: flex; align-items: center; gap: var(--esp-12); }
+.barre-etoiles__etoiles { display: flex; flex: none; align-items: center; gap: var(--esp-4); width: 36px; color: var(--encre); }
+.barre-etoiles__etoiles .icone { fill: none; }
+.barre-etoiles__piste { display: block; flex: 1; height: 8px; overflow: hidden; border-radius: var(--rayon); background: var(--filet); }
+.barre-etoiles__barre { display: block; height: 8px; border-radius: var(--rayon); background: var(--encre); }
+.barre-etoiles__nombre { flex: none; width: 36px; text-align: right; color: var(--encre); }
+.barre-etoiles--vide .barre-etoiles__nombre { color: var(--encre-2); }
+
+.liste-avis { display: flex; flex-direction: column; }
+.liste-avis__entete { display: flex; flex-direction: column; gap: var(--esp-8); padding-bottom: var(--esp-4); }
+.liste-avis__entete > * { margin: 0; }
+.liste-avis__avis .avis { border-bottom: 0; }
+.liste-avis__plus { align-self: flex-start; margin-top: var(--esp-16); }
+
+.actions-avis { display: flex; flex-direction: column; gap: var(--esp-12); padding-bottom: var(--esp-12); border-bottom: 1px solid var(--filet); }
+.actions-avis__ligne { display: flex; flex-wrap: wrap; align-items: center; gap: var(--esp-12); }
+.actions-avis .bouton .icone { fill: none; }
+.actions-avis .bouton--48 { padding-inline: var(--esp-16); }
+.actions-avis__signaler { margin: 0; }
+.actions-avis__lien { display: inline-flex; align-items: center; gap: 6px; min-height: 48px; padding: 0; border: 0; background: none; color: var(--erreur-texte); cursor: pointer; }
+.actions-avis__lien span { text-decoration: underline; text-underline-position: from-font; }
+.actions-avis__lien .icone { flex: none; fill: none; }
+.actions-avis__lien:focus-visible { outline: 3px solid var(--encre); outline-offset: 2px; }
+.actions-avis__reponse { display: flex; flex-direction: column; gap: var(--esp-12); margin: 0; }
+.actions-avis__boutons { display: flex; align-items: center; gap: var(--esp-16); }
+.actions-avis__annuler { display: inline-flex; align-items: center; min-height: 48px; color: var(--encre); }

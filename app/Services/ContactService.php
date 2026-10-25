@@ -43,7 +43,7 @@ final class ContactService
             throw new ContactException('canal', 'Canal inconnu.');
         }
         $m = $this->db->un(
-            'SELECT m.id, m.public_id, m.prenom, m.nom, m.telephone, m.whatsapp, m.etat, m.position_maj_le,
+            'SELECT m.id, m.public_id, m.prenom, m.nom, m.telephone, m.whatsapp, m.etat, m.position_maj_le, m.dispo_lat, m.dispo_lon, m.atelier_lat, m.atelier_lon,
                     ph.dossier, ph.largeurs, ph.ratio, ph.couleur_dominante, ph.focal_x, ph.focal_y
                FROM mecaniciens m LEFT JOIN photos ph ON ph.mecanicien_id = m.id AND ph.type = \'portrait\' AND ph.active = 1
               WHERE m.public_id = :p AND m.statut_dossier = \'valide\' AND m.supprime_le IS NULL',
@@ -86,6 +86,8 @@ final class ContactService
             'quartier_libelle' => $contexte['lieu'] !== null ? mb_substr($contexte['lieu'], 0, 80) : null,
             'position_partagee' => $position ? 1 : 0,
             'lat' => $position ? $contexte['lat'] : null, 'lon' => $position ? $contexte['lon'] : null,
+            'distance_m' => $position && $contexte['lat'] !== null && ($m['dispo_lat'] ?? $m['atelier_lat']) !== null
+                ? GeoService::distanceM((float) $contexte['lat'], (float) $contexte['lon'], (float) ($m['dispo_lat'] ?? $m['atelier_lat']), (float) ($m['dispo_lon'] ?? $m['atelier_lon'])) : null,
             'repere' => $position && $contexte['repere'] !== null ? mb_substr($contexte['repere'], 0, 160) : null,
         ]);
 

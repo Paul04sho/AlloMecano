@@ -238,19 +238,6 @@ final class TableauMecanoService
         return 'Dernière position' . Format::INSECABLE . ': ' . $quartier . ' · ' . $quand . Format::heure($maj) . '. Elle sera mise à jour quand vous vous rendrez disponible.';
     }
 
-    /**
-     * Demandes à confirmer (RG-I7) : les appels directs et WhatsApp des 24 dernières heures dont le mécano n'a pas dit s'il y va ou non.
-     * C'est la pastille de l'onglet « Demandes ».
-     */
-    public function aConfirmer(int $id, ?\DateTimeImmutable $maintenant = null): int
-    {
-        $maintenant ??= new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
-        return (int) $this->db->valeur(
-            'SELECT COUNT(*) FROM contacts WHERE mecanicien_id = :m AND canal IN (\'tel\', \'whatsapp\') AND issue_mecano IS NULL AND cree_le >= :d',
-            ['m' => $id, 'd' => $maintenant->modify('-24 hours')->format('Y-m-d H:i:s')]
-        );
-    }
-
     /** « 7 jours », « 24 h », ou « jusqu'à nouvel ordre » : la durée d'une suspension, en toutes lettres. */
     public static function dureeSuspension(\DateTimeImmutable $debut, ?\DateTimeImmutable $fin): string
     {

@@ -130,6 +130,19 @@ foreach ($prenoms as $i => $p) {
     $insClient->execute([hash('sha256', 'client-demo-admin-' . $i), $p, sprintf('+22507%08d', 30000000 + $i * 913457), gmdate('Y-m-d H:i:s', time() - ($i + 1) * 5400)]);
 }
 echo "Clients de démo avec téléphone : " . count($prenoms) . "\n";
+// Des clients sans prénom ni téléphone (« Un client »), puis les mises en relation réparties entre tous, avec leur panne, leur quartier et leur distance (M3 · Demandes)
+for ($i = 0; $i < 4; $i++) {
+    $insClient->execute([hash('sha256', 'client-demo-anonyme-' . $i), null, null, gmdate('Y-m-d H:i:s', time() - ($i + 2) * 7200)]);
+}
+$tousClients = array_map('intval', $pdo->query("SELECT id FROM clients WHERE jeton_hash <> SHA2('client-de-demonstration',256) ORDER BY id")->fetchAll(PDO::FETCH_COLUMN));
+$pannes = ['Voiture · Batterie', 'Moto · Pneu crevé', 'Voiture · Ne démarre pas', 'Voiture · Surchauffe', 'Voiture · Freins', 'Moto · Batterie'];
+$lieux = ['Riviera 2', 'Riviera 4', 'Riviera 3', 'Angré', 'Bingerville', 'Cocody'];
+$majContact = $pdo->prepare('UPDATE contacts SET client_id = ?, resume = ?, quartier_libelle = ?, distance_m = ? WHERE id = ?');
+$pdo->beginTransaction();
+foreach ($pdo->query("SELECT id FROM contacts WHERE client_id = (SELECT id FROM clients WHERE jeton_hash = SHA2('client-de-demonstration',256))")->fetchAll(PDO::FETCH_COLUMN) as $idContact) {
+    $majContact->execute([$tousClients[$idContact % count($tousClients)], $pannes[$idContact % count($pannes)], $lieux[($idContact * 7) % count($lieux)], 300 + ($idContact * 137) % 5800, $idContact]);
+}
+$pdo->commit();
 // Un historique de dossier pour les mécanos validés (A3 · tiroir) : envoyé, puis validé par la première admin
 $pdo->exec("UPDATE mecaniciens SET dossier_envoye_le = TIMESTAMP(COALESCE(identite_verifiee_le, DATE(cree_le)) - INTERVAL 1 DAY, '08:47:00') WHERE statut_dossier = 'valide' AND dossier_envoye_le IS NULL");
 $pdo->exec("INSERT INTO historique_dossier (mecanicien_id, de_statut, vers_statut, admin_id, motif, cree_le)

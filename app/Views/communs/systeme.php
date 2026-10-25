@@ -385,6 +385,27 @@ $icones = json_decode((string) file_get_contents(RACINE . '/scripts/icones.json'
   </section>
 
   <section class="rubrique">
+    <span class="t-etiquette">Demandes et avis du mécano · titre de jour 116:989 · demande 116:991 · note globale 118:1080 · barre d’étoiles 118:1089 · actions sous un avis 118:1145</span>
+    <div class="systeme__grille systeme__pro">
+      <ul class="liste-demandes" role="list">
+        <?= composant('jour-demandes', ['libelle' => 'Aujourd’hui · 4']) ?>
+        <?= composant('ligne-contact', ['demande' => ['heure' => '10:12', 'client' => 'Aminata', 'resume' => 'Batterie · Voiture', 'code_panne' => 'batterie', 'canal' => 'Appel', 'lieu' => 'Riviera 2', 'distance' => "1,4\u{00A0}km", 'retour' => 'non_joint', 'principal' => true, 'rappel' => '+2250700000001', 'masque' => null]]) ?>
+        <?= composant('ligne-contact', ['demande' => ['heure' => '09:47', 'client' => 'Un client', 'resume' => 'Pneu crevé · Moto', 'code_panne' => 'pneu_creve', 'canal' => 'WhatsApp', 'lieu' => 'Riviera 4', 'distance' => "2,6\u{00A0}km", 'retour' => 'joint', 'principal' => false, 'rappel' => '+2250700000002', 'masque' => null]]) ?>
+        <?= composant('jour-demandes', ['libelle' => 'Lundi 19 octobre · 2 · numéros masqués']) ?>
+        <?= composant('ligne-contact', ['demande' => ['heure' => '09:05', 'client' => 'Un client', 'resume' => 'Batterie · Voiture', 'code_panne' => 'batterie', 'canal' => 'Appel', 'lieu' => 'Riviera 3', 'distance' => "0,6\u{00A0}km", 'retour' => 'joint', 'principal' => false, 'rappel' => null, 'masque' => '07 •• •• 34 56']]) ?>
+      </ul>
+      <?= composant('note-globale', ['note' => '4,8', 'nombre' => '37 avis', 'depuis' => 'Depuis votre validation, le 12 mars 2026.']) ?>
+      <div class="repartition-avis">
+        <?= composant('barre-etoiles', ['etoiles' => 5, 'nombre' => 31, 'total' => 37]) ?>
+        <?= composant('barre-etoiles', ['etoiles' => 4, 'nombre' => 5, 'total' => 37]) ?>
+        <?= composant('barre-etoiles', ['etoiles' => 2, 'nombre' => 0, 'total' => 37]) ?>
+      </div>
+      <?= composant('actions-avis', ['contact' => '01JDEMOC001000000000000002', 'repondu' => false, 'ouvert' => false]) ?>
+      <?= composant('actions-avis', ['contact' => '01JDEMOC001000000000000003', 'repondu' => true, 'ouvert' => false]) ?>
+    </div>
+  </section>
+
+  <section class="rubrique">
     <span class="t-etiquette">Appels du mécano · réglage 272:1813 · nœud 272:1814 · 272:1821 · 272:1836 · en intervention (RG-D4) · intervention 272:1754 · mini-carte du client 271:1500 · commande Itinéraire 271:1802</span>
     <div class="systeme__grille systeme__pro">
       <ol class="activer__reglages" role="list">
