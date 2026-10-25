@@ -9,6 +9,9 @@
 .admin .t-donnee { font-size: 15px; line-height: 22px; }
 .admin .t-bouton-compact { font-size: 15px; }
 
+/* le reset du site enlève le centrage automatique des fenêtres modales */
+dialog:modal { margin: auto; }
+
 .admin { display: grid; grid-template-columns: var(--rail-admin, 248px) minmax(0, 1fr); min-height: 100vh; min-width: 1100px; --rail-admin: 248px; }
 .admin__contenu { display: flex; flex-direction: column; gap: var(--esp-24); width: 100%; max-width: 1192px; padding: var(--esp-32) var(--esp-48) var(--esp-48); }
 .admin__contenu > * { margin: 0; }

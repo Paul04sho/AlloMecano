@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @var App\Core\Router $routeur
  */
 
+use App\Controllers\Admin\CompteController;
 use App\Controllers\Admin\DossierController;
 use App\Controllers\Admin\TableauController;
 use App\Controllers\Api\ClientController;
@@ -81,6 +82,12 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
         $r->get('/dossiers/{id}/pieces/{type}', [DossierController::class, 'piece']);              // RG-P6 : pièce filigranée, consultation journalisée
         $r->get('/dossiers/{id}/apercu', [DossierController::class, 'apercu']);                    // aperçu exact du message
         $r->post('/dossiers/{id}/decision', [DossierController::class, 'decider']);                // RG-DO4 à RG-DO6
+        $r->get('/comptes', [CompteController::class, 'liste'], 'admin-comptes');                  // A3
+        $r->get('/comptes/{id}/apercu', [CompteController::class, 'apercu']);                      // aperçu du message de suspension
+        $r->post('/comptes/{id}/suspendre', [CompteController::class, 'suspendre']);               // RG-D6
+        $r->post('/comptes/{id}/lever', [CompteController::class, 'lever']);
+        $r->post('/comptes/{id}/supprimer', [CompteController::class, 'supprimer']);               // RG-P5
+        $r->post('/clients/{ref}/numero', [CompteController::class, 'numero']);                    // RG-C5 : l'affichage d'un numéro de client est journalisé
     });
 
     // ----- Communs (chantier C) -----

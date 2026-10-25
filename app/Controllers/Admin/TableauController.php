@@ -63,8 +63,9 @@ final class TableauController
         $l = imagesx($img);
         $h = imagesy($img);
         $cote = min($l, $h);
-        $mini = imagecreatetruecolor(80, 80); // carré centré sur le haut du visage
-        imagecopyresampled($mini, $img, 0, 0, intdiv($l - $cote, 2), (int) (($h - $cote) * 0.2), 80, 80, $cote, $cote);
+        $taille = $requete->query('t') === '360' ? 360 : 80;
+        $mini = imagecreatetruecolor($taille, $taille); // carré centré sur le haut du visage
+        imagecopyresampled($mini, $img, 0, 0, intdiv($l - $cote, 2), (int) (($h - $cote) * 0.2), $taille, $taille, $cote, $cote);
         ob_start();
         imagejpeg($mini, null, 80);
         return (new Response((string) ob_get_clean(), 200))->avecEntete('Content-Type', 'image/jpeg')->avecEntete('Cache-Control', 'private, max-age=300');

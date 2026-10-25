@@ -20,7 +20,7 @@ final class PurgeService
         return new self(Database::instance());
     }
 
-    /** @return array{positions: int, recherches: int, zones: int, signalisation: int} lignes touchées */
+    /** @return array{positions: int, recherches: int, zones: int, signalisation: int, suspensions: int, pieces: int} lignes touchées */
     public function purger(): array
     {
         $heures = Parametres::int('purge.position_h', 24);
@@ -48,6 +48,30 @@ final class PurgeService
         )->rowCount();
         // RG-P3 : messages de l'appel intégré effacés 1 h après la fin de l'appel
         $signalisation = (new AppelService($this->db))->purgerSignalisation();
-        return ['positions' => $positions, 'recherches' => $recherches, 'zones' => $zones, 'signalisation' => $signalisation];
+        // Fin des suspensions de 24 h et de 7 jours (A3)
+        $suspensions = CompteService::depuisBase()->leverEchues();
+        // RG-P5 : pièces d'un dossier refusé effacées au bout de 6 mois
+        $pieces = $this->purgerPiecesRefusees();
+        return ['positions' => $positions, 'recherches' => $recherches, 'zones' => $zones, 'signalisation' => $signalisation, 'suspensions' => $suspensions, 'pieces' => $pieces];
+    }
+
+    /** RG-P5 : les pièces d'identité d'un dossier refusé depuis plus de 6 mois sont effacées (fichier et ligne vidée). @return int pièces effacées */
+    public function purgerPiecesRefusees(): int
+    {
+        $racine = realpath(dirname(__DIR__, 2) . '/storage/pieces');
+        $n = 0;
+        foreach ($this->db->tous(
+            'SELECT p.id, p.fichier FROM pieces_dossier p JOIN mecaniciens m ON m.id = p.mecanicien_id
+              WHERE m.statut_dossier = \'refuse\' AND p.fichier IS NOT NULL AND p.fichier_supprime_le IS NULL
+                AND (SELECT MAX(h.cree_le) FROM historique_dossier h WHERE h.mecanicien_id = m.id AND h.vers_statut = \'refuse\') < UTC_TIMESTAMP() - INTERVAL 6 MONTH'
+        ) as $p) {
+            $chemin = $racine === false ? false : realpath($racine . DIRECTORY_SEPARATOR . $p['fichier']);
+            if ($chemin !== false && str_starts_with($chemin, $racine . DIRECTORY_SEPARATOR)) {
+                @unlink($chemin);
+            }
+            $this->db->executer('UPDATE pieces_dossier SET fichier = NULL, fichier_supprime_le = UTC_TIMESTAMP() WHERE id = :i', ['i' => $p['id']]);
+            $n++;
+        }
+        return $n;
     }
 }

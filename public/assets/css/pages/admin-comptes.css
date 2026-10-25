@@ -1,0 +1,95 @@
+/* A3 · Comptes (Figma 175:310) et suspension d'un compte (178:432). Complète admin.css. */
+
+.comptes { display: flex; flex-direction: column; gap: var(--esp-24); width: 100%; }
+.comptes--tiroir { max-width: 648px; }
+.admin__contenu:has(.comptes--tiroir) { padding-right: calc(480px + var(--esp-24)); }
+
+/* ---------- Onglets et recherche (175:360) ---------- */
+.comptes__outils { display: flex; align-items: flex-end; gap: var(--esp-24); }
+.comptes__outils .champ { flex: 1; min-width: 0; }
+.comptes__onglets { display: flex; flex: none; width: 320px; border-radius: var(--rayon); box-shadow: inset 0 0 0 1.5px var(--encre); overflow: hidden; }
+.comptes__onglets a { display: flex; flex: 1; align-items: center; justify-content: center; height: 44px; padding-inline: var(--esp-8); color: var(--encre); font-weight: 700; font-size: 15px; line-height: 20px; text-decoration: none; white-space: nowrap; }
+.comptes__onglets a[aria-current="page"] { background: var(--inverse-fond); color: var(--inverse-texte); }
+.comptes__onglets a:hover:not([aria-current="page"]) { background: var(--surface-creuse); }
+
+/* ---------- Table (175:372) ---------- */
+.comptes__table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.comptes__table thead th { padding: 11px var(--esp-8) 11px 0; font-weight: 500; text-align: left; vertical-align: bottom; border-bottom: 1px solid var(--bord-champ); }
+.comptes__table th:nth-child(1) { width: 48px; }
+.comptes__table th:nth-child(2) { width: 152px; }
+.comptes__table th:nth-child(3) { width: 124px; }
+.comptes__table th:nth-child(4) { width: 44px; }
+.comptes__table th:nth-child(5) { width: 60px; }
+.comptes__table th:nth-child(6) { width: 112px; }
+.comptes__table th:nth-child(7) { width: 108px; }
+.comptes__table .droite { text-align: right; }
+.comptes__table .derniere { padding-left: var(--esp-12); }
+.comptes__table .erreur { color: var(--erreur-texte); }
+.compte > * { height: 64px; padding: 0 var(--esp-8) 0 0; border-bottom: 1px solid var(--filet); vertical-align: middle; overflow: hidden; text-align: left; font-weight: 400; }
+.compte > .droite { text-align: right; }
+.compte > .derniere { padding-left: var(--esp-12); }
+.compte > .compte__portrait { padding-right: var(--esp-8); }
+.compte__nom a { display: flex; flex-direction: column; gap: 2px; color: inherit; text-decoration: none; }
+.compte__nom .t-gras { font-size: 18px; line-height: 28px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.compte--ouvert { position: relative; background: var(--surface-elevee); box-shadow: inset 4px 0 0 var(--encre); }
+.compte--ouvert > .compte__portrait { padding-left: var(--esp-4); }
+.compte:hover:not(.compte--ouvert), .compte.est-active:not(.compte--ouvert) { background: var(--surface-creuse); }
+.compte .ligne-dossier__portrait { overflow: visible; background: none; }
+.compte .ligne-dossier__portrait img { border-radius: 50%; width: 40px; height: 40px; object-fit: cover; }
+.compte .ligne-dossier__portrait--vide { background: var(--surface-creuse); border-radius: 50%; overflow: hidden; }
+.compte .poincon { position: absolute; left: 24px; top: 22px; }
+.comptes__table--clients th:nth-child(n) { width: auto; }
+.comptes__table--clients th:nth-child(3) { width: 90px; }
+.comptes__table--clients th:nth-child(4) { width: 130px; }
+.compte__action { text-align: right !important; padding-right: 0 !important; }
+.compte__action .lien { background: none; border: 0; padding: 0; color: var(--encre); cursor: pointer; min-height: 44px; }
+
+/* ---------- Pied de table (175:575) ---------- */
+.comptes__pied { display: flex; align-items: center; gap: var(--esp-16); }
+.comptes__pied > p { margin: 0; }
+.comptes__pied > p:first-child { flex: 1; }
+
+/* ---------- Tiroir (175:580) ---------- */
+.tiroir { position: fixed; top: 0; right: 0; z-index: 30; display: flex; flex-direction: column; gap: 18px; width: 480px; height: 100vh; padding: var(--esp-16) var(--esp-32) var(--esp-24); overflow-y: auto; background: var(--surface-elevee); border-left: 1px solid var(--filet); }
+.tiroir > * { margin: 0; }
+.tiroir__entete { display: flex; align-items: center; margin: 0; }
+.tiroir__entete > p { flex: 1; margin: 0; }
+.tiroir__identite { display: flex; align-items: flex-start; gap: var(--esp-20); }
+.tiroir__photo { flex: none; display: block; width: 160px; height: 200px; object-fit: cover; }
+.tiroir__photo--vide { display: grid; place-items: center; background: var(--surface-creuse); }
+.tiroir__photo--vide .icone { fill: none; }
+.tiroir__infos { display: flex; flex: 1; flex-direction: column; align-items: flex-start; gap: 6px; min-width: 0; }
+.tiroir__infos > * { margin: 0; }
+.tiroir__chiffres { display: flex; margin: 0; padding-top: var(--esp-12); border-top: 1px solid var(--filet); }
+.tiroir__chiffres > div { display: flex; flex: 1; flex-direction: column-reverse; gap: var(--esp-4); min-width: 0; }
+.tiroir__chiffres > div + div { padding-left: var(--esp-16); border-left: 1px solid var(--filet); }
+.tiroir__chiffres dt, .tiroir__chiffres dd { margin: 0; }
+.tiroir__chiffres .erreur { color: var(--erreur-texte); }
+.tiroir__historique > * { margin: 0; }
+.tiroir__historique > h3 { margin: var(--esp-12) 0 var(--esp-8); }
+.tiroir__historique ol { margin: 0; padding: 0; list-style: none; border-top: 0; }
+.tiroir__historique li { display: flex; align-items: flex-start; gap: var(--esp-12); padding-block: var(--esp-8); border-bottom: 1px solid var(--filet); }
+.tiroir__historique li .icone { flex: none; fill: none; }
+.tiroir__historique li > div { display: flex; flex: 1; flex-direction: column; gap: 2px; min-width: 0; }
+.tiroir__historique li p { margin: 0; }
+.tiroir__actions { display: flex; gap: var(--esp-12); margin-top: auto; padding-top: var(--esp-16); border-top: 1px solid var(--filet); }
+.tiroir__actions > * { flex: 1; min-width: 0; }
+.tiroir__actions form { display: flex; }
+.tiroir__actions .bouton { flex: 1; }
+.est-desactive, .est-desactive:hover { background: var(--surface-creuse); box-shadow: inset 0 0 0 2px var(--filet); color: var(--encre-2); cursor: not-allowed; pointer-events: none; }
+
+/* ---------- Fenêtre de suspension (178:659) ---------- */
+.modale { width: min(480px, calc(100vw - 48px)); max-height: calc(100vh - 96px); padding: 0; border: 0; background: var(--surface-elevee); color: var(--encre); overflow-y: auto; }
+.modale::backdrop { background: rgb(21 23 28 / .6); }
+.modale form { display: flex; flex-direction: column; gap: var(--esp-16); padding: var(--esp-24) var(--esp-32) 28px; }
+.modale form > * { margin: 0; }
+.modale__entete { display: flex; align-items: center; }
+.modale__entete > p { flex: 1; margin: 0; }
+.modale__durees { display: flex; flex-direction: column; gap: var(--esp-4); min-width: 0; margin: 0; padding: 0; border: 0; }
+.modale__durees legend { padding: 0; margin-bottom: var(--esp-4); }
+.modale__apercu { display: flex; flex-direction: column; gap: var(--esp-8); }
+.modale__apercu > p { margin: 0; }
+.modale__message { position: relative; padding: var(--esp-16); background: var(--surface-creuse); border-radius: var(--rayon); color: var(--encre); }
+.modale__message::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--encre); }
+.modale__actions { display: flex; justify-content: flex-end; gap: var(--esp-12); padding-top: var(--esp-8); }
+.modale__actions .bouton .icone { fill: none; }

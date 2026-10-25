@@ -14,4 +14,4 @@ Env::charger(RACINE . '/.env');
 date_default_timezone_set('UTC');
 
 $r = PurgeService::depuisBase()->purger();
-printf("Positions effacées : %d · recherches supprimées : %d · zones supprimées : %d\n", $r['positions'], $r['recherches'], $r['zones']);
+printf("Positions effacées : %d · recherches supprimées : %d · zones supprimées : %d · suspensions levées : %d · pièces effacées : %d\n", $r['positions'], $r['recherches'], $r['zones'], $r['suspensions'], $r['pieces']);

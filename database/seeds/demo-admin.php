@@ -116,3 +116,21 @@ foreach ($lignes as $l) {
 }
 $pdo->commit();
 echo 'Mises en relation de démo : ' . count($lignes) . "\n";
+
+// ---------- Dernière activité des mécanos validés et quelques clients qui ont laissé leur téléphone (A3) ----------
+$validés = $pdo->query("SELECT id FROM mecaniciens WHERE statut_dossier = 'valide' ORDER BY id")->fetchAll(PDO::FETCH_COLUMN);
+$delais = [12 * 60, 60 * 60, 3 * 3600, 20 * 3600, 5 * 3600, 31 * 3600, 3 * 86400, 9 * 86400];
+$majVu = $pdo->prepare('UPDATE mecaniciens SET vu_le = ? WHERE id = ?');
+foreach ($validés as $i => $idMeca) {
+    $majVu->execute([gmdate('Y-m-d H:i:s', time() - $delais[$i % count($delais)]), $idMeca]);
+}
+$prenoms = ['Aminata', 'Kouadio', 'Mariam', 'Yves', 'Fanta', 'Serge', 'Clarisse', 'Boris', 'Nadège', 'Ismaël', 'Rose', 'Eugène'];
+$insClient = $pdo->prepare('INSERT INTO clients (jeton_hash, prenom, telephone, vu_le) VALUES (?, ?, ?, ?)');
+foreach ($prenoms as $i => $p) {
+    $insClient->execute([hash('sha256', 'client-demo-admin-' . $i), $p, sprintf('+22507%08d', 30000000 + $i * 913457), gmdate('Y-m-d H:i:s', time() - ($i + 1) * 5400)]);
+}
+echo "Clients de démo avec téléphone : " . count($prenoms) . "\n";
+// Un historique de dossier pour les mécanos validés (A3 · tiroir) : envoyé, puis validé par la première admin
+$pdo->exec("UPDATE mecaniciens SET dossier_envoye_le = TIMESTAMP(COALESCE(identite_verifiee_le, DATE(cree_le)) - INTERVAL 1 DAY, '08:47:00') WHERE statut_dossier = 'valide' AND dossier_envoye_le IS NULL");
+$pdo->exec("INSERT INTO historique_dossier (mecanicien_id, de_statut, vers_statut, admin_id, motif, cree_le)
+    SELECT id, 'en_attente', 'valide', (SELECT MIN(id) FROM admins), NULL, TIMESTAMP(COALESCE(identite_verifiee_le, DATE(cree_le)), '11:02:00') FROM mecaniciens WHERE statut_dossier = 'valide'");
