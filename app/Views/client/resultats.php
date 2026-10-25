@@ -50,7 +50,7 @@ $contact = function (array $m, string $canal, string $contenu) use ($recherche):
   <template data-vous><?= composant('vous-etes-ici') ?></template>
   <?php foreach ($resultats as $m): ?>
     <template data-repere="<?= $m['rang'] ?>"><?= composant('repere-carte', ['type' => 'numerote', 'rang' => $m['rang']]) ?></template>
-    <template data-repere-choisi="<?= $m['rang'] ?>"><?= composant('repere-carte', ['type' => 'selectionne', 'visage' => $m['portrait']['src'] ?? null, 'etiquette' => $m['rang'] . ' · ' . Format::distance($m['distance_m'])]) ?></template>
+    <template data-repere-choisi="<?= $m['rang'] ?>"><?= composant('repere-carte', ['type' => 'selectionne', 'visage' => $m['portrait']['src'] ?? null, 'cadrage' => $m['portrait']['cadrage'] ?? null, 'etiquette' => $m['rang'] . ' · ' . Format::distance($m['distance_m'])]) ?></template>
   <?php endforeach ?>
 
   <section class="feuille" data-feuille aria-labelledby="resultats-titre">

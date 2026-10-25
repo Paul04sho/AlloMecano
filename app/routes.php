@@ -32,6 +32,7 @@ use App\Controllers\Client\PositionController;
 use App\Controllers\Client\RechercheController;
 use App\Controllers\Communs\ConnexionController;
 use App\Controllers\Communs\DevAppelController;
+use App\Controllers\Communs\MediasDemoController;
 use App\Controllers\Communs\MotDePasseController;
 use App\Controllers\Communs\PagesController;
 use App\Controllers\Communs\SystemeController;
@@ -163,6 +164,7 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
 
     // ----- Design system (dev uniquement) -----
     $r->get('/systeme', [SystemeController::class, 'index'], 'systeme');
+    $r->get('/medias/demo/{fichier}', [MediasDemoController::class, 'servir']);                // portraits de démo si public/medias/demo n'est pas garni (dev)
     $r->get('/systeme/appel', [DevAppelController::class, 'page'], 'systeme-appel');          // mécano de test pour l'appel intégré
 });
 
