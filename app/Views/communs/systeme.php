@@ -385,6 +385,29 @@ $icones = json_decode((string) file_get_contents(RACINE . '/scripts/icones.json'
   </section>
 
   <section class="rubrique">
+    <span class="t-etiquette">Mon profil · en-tête de section 120:1195 · étiquette de spécialité 54:445 · emplacement photo 120:1426 · tarif 120:1393 · numéro 120:1444 · ligne de compte 120:1461 · thème 120:1472 · mini-carte de zone 120:1260</span>
+    <div class="systeme__grille systeme__pro">
+      <?= composant('entete-section', ['libelle' => 'Photos de l’atelier', 'suite' => '· 1 / 3', 'href' => '#']) ?>
+      <div class="profil__etiquettes"><?= composant('etiquette-lecture', ['libelle' => 'Électricité auto']) ?><?= composant('etiquette-lecture', ['libelle' => 'Batterie']) ?></div>
+      <div class="profil__emplacements"><?= composant('emplacement-photo', ['href' => '#']) ?><?= composant('emplacement-photo', ['href' => '#']) ?></div>
+      <div class="profil__section">
+        <?= composant('ligne-tarif', ['libelle' => 'Diagnostic, dès', 'montant' => 5000]) ?>
+        <?= composant('ligne-tarif', ['libelle' => 'Déplacement', 'montant' => null, 'inclus' => true]) ?>
+        <?= composant('ligne-numero', ['icone' => 'telephone', 'libelle' => 'Téléphone', 'numero' => '+225 07 07 12 34 56']) ?>
+        <?= composant('ligne-numero', ['icone' => 'whatsapp', 'libelle' => 'WhatsApp', 'numero' => '+225 05 44 21 08 17']) ?>
+      </div>
+      <ul class="profil__lignes" role="list">
+        <?= composant('ligne-compte', ['icone' => 'cadenas', 'titre' => 'Mot de passe', 'sous' => 'Modifié le 2 octobre 2026', 'href' => '#']) ?>
+        <?= composant('ligne-compte', ['icone' => 'retour', 'titre' => 'Se déconnecter', 'action' => '/deconnexion']) ?>
+      </ul>
+      <?= composant('segment-theme', []) ?>
+      <div class="appel-pro appel-pro--sombre sur-sombre systeme__appel-sombre">
+        <?= composant('carte-zone', ['lat' => 5.3652, 'lon' => -3.9478, 'rayon' => 10, 'visage' => asset('img/accueil/koffi-rond-104.webp')]) ?>
+      </div>
+    </div>
+  </section>
+
+  <section class="rubrique">
     <span class="t-etiquette">Demandes et avis du mécano · titre de jour 116:989 · demande 116:991 · note globale 118:1080 · barre d’étoiles 118:1089 · actions sous un avis 118:1145</span>
     <div class="systeme__grille systeme__pro">
       <ul class="liste-demandes" role="list">

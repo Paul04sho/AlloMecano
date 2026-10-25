@@ -178,6 +178,7 @@ CREATE TABLE `mecaniciens` (
   `dispo_quartier_id` SMALLINT UNSIGNED COMMENT 'Quartier le plus proche (« Riviera 3 »)',
   `position_maj_le` DATETIME COMMENT 'Dernière mise à jour de la position',
   `vu_le` DATETIME COMMENT 'Dernière fois que l''app mécano était ouverte (appel intégré possible si < 24 h)',
+  `mot_de_passe_modifie_le` DATETIME COMMENT 'Dernier changement du mot de passe (M4) ; vide : depuis la création du compte',
   `appels_actives_le` DATETIME COMMENT 'Fin de « Activer les appels » (M1f) : installation, notifications, essai de sonnerie',
   `note_moyenne` DECIMAL(2,1) COMMENT 'Calculée depuis avis publiés',
   `nb_avis` SMALLINT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Calculé',

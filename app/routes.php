@@ -20,6 +20,7 @@ use App\Controllers\Pro\AppelMecanoController;
 use App\Controllers\Pro\DevenirController;
 use App\Controllers\Pro\EspaceController;
 use App\Controllers\Pro\InscriptionController;
+use App\Controllers\Pro\ProfilController;
 use App\Controllers\Client\AccueilController;
 use App\Controllers\Client\AppelController;
 use App\Controllers\Client\AvisController;
@@ -104,14 +105,16 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
         $r->post('/api/appels/{id}/signal', [AppelMecanoController::class, 'signal']);
         $r->post('/api/appels/{id}/issue', [AppelMecanoController::class, 'issue']);               // RG-I2, RG-D4
         $r->get('/appel/{id}', [AppelMecanoController::class, 'page'], 'pro-appel');               // M5 · appel entrant · en appel · Vous y allez ?
+        $r->get('/profil', [ProfilController::class, 'page'], 'pro-profil');                       // M4 · Mon profil
+        $r->get('/profil/supprimer', [ProfilController::class, 'supprimer']);                      // RG-C6 : on tape son nom
+        $r->post('/profil/supprimer', [ProfilController::class, 'supprimer']);
+        $r->get('/profil/{section}', [ProfilController::class, 'modifier']);                       // le crayon d'une section
+        $r->post('/profil/{section}', [ProfilController::class, 'enregistrer']);                   // RG-DO7 : nom ou portrait changé
         $r->get('/demandes', [ActiviteController::class, 'demandes'], 'pro-demandes');             // M3 · Demandes
         $r->get('/avis', [ActiviteController::class, 'avis'], 'pro-avis');                         // M3 · Avis
         $r->post('/avis/{id}/repondre', [ActiviteController::class, 'repondre']);                  // RG-AV8
         $r->post('/avis/{id}/signaler', [ActiviteController::class, 'signaler']);                  // RG-AV4
     });
-    // $r->get('/pro/demandes', …)        M3                        (à faire)
-    // $r->get('/pro/avis', …)            M3 · Avis                 (à faire)
-    // $r->get('/pro/profil', …)          M4                        (à faire)
 
     // ----- Admin (chantier B) -----
     $r->groupe('/admin', [ExigerAdmin::class], function ($r) {                                  // RG-C5 : admins connectés seulement

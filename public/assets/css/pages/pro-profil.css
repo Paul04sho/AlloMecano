@@ -1,0 +1,86 @@
+/* Espace pro · M4 Mon profil (Figma 120:1169) et ses pages de modification. Le socle des pages de l'espace est dans pro.css et pro-tableau.css. */
+
+.profil .tableau__entete { gap: var(--esp-12); }
+.profil__etat { display: flex; align-items: center; gap: 6px; }
+.profil__etat .icone { flex: none; fill: none; }
+
+/* Aperçu de la fiche : un filet entre chaque section */
+.profil__apercu { display: flex; flex-direction: column; border-top: 1px solid var(--filet); }
+.profil__section { gap: var(--esp-12); padding: var(--esp-16) 0 var(--esp-24); border-bottom: 1px solid var(--filet); }
+.profil__section .note .icone { fill: none; }
+.entete-section { display: flex; align-items: center; gap: var(--esp-12); }
+.entete-section h2 { flex: 1; min-width: 0; margin: 0; }
+.entete-section__crayon { display: grid; flex: none; place-items: center; width: 48px; height: 48px; border-radius: var(--rayon); box-shadow: inset 0 0 0 1.5px var(--bord-champ); color: var(--encre); }
+.entete-section__crayon .icone { fill: none; }
+.entete-section__crayon:focus-visible { outline: 3px solid var(--encre); outline-offset: 3px; }
+
+.profil__identite { display: flex; align-items: flex-start; gap: var(--esp-16); }
+.profil__portrait { display: grid; flex: none; place-items: center; width: 112px; height: 140px; overflow: hidden; background: var(--surface-creuse); color: var(--encre-2); }
+.profil__portrait img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.profil__portrait .icone { fill: none; }
+.profil__nom { display: flex; flex: 1; flex-direction: column; align-items: flex-start; gap: var(--esp-8); min-width: 0; }
+.profil__nom > * { margin: 0; }
+.profil__nom h2 { overflow-wrap: anywhere; }
+.profil__etiquettes { display: flex; flex-wrap: wrap; gap: var(--esp-8); }
+.etiquette-lecture { display: inline-flex; align-items: center; height: 48px; padding: 0 14px; border-radius: var(--rayon); box-shadow: inset 0 0 0 1.5px var(--encre); color: var(--encre); font-family: var(--police-marque); font-stretch: 100%; font-weight: 700; font-size: 15px; }
+
+.profil__rayon { display: flex; align-items: baseline; gap: 3px; white-space: nowrap; color: var(--encre); }
+.profil__rayon > span:last-child { margin-left: 5px; color: var(--encre-2); }
+
+/* Mini-carte de la zone (120:1260) */
+.carte-zone { position: relative; flex: none; height: 180px; overflow: hidden; border-radius: var(--rayon); background: var(--carte-sol); }
+.carte-zone__carte { position: absolute; inset: 0; width: 100%; height: 100%; }
+.carte-zone .repere-icone { background: none; border: 0; }
+
+/* Tarifs (120:1393) */
+.ligne-tarif { display: flex; align-items: baseline; justify-content: space-between; gap: var(--esp-12); color: var(--encre); white-space: nowrap; }
+.ligne-tarif > p { margin: 0; }
+.ligne-tarif__borne { display: flex; align-items: baseline; gap: 3px; }
+
+/* Photos de l'atelier (120:1419 · 120:1425) */
+.photo-publique { position: relative; width: 100%; margin: 0; overflow: visible; border-radius: var(--rayon); }
+.photo-publique img { display: block; width: 100%; height: auto; aspect-ratio: 358 / 239; object-fit: cover; border-radius: var(--rayon); }
+.photo-publique--legendee { margin-bottom: 15px; }
+.photo-publique--legendee .legende-repere { position: absolute; left: 16px; bottom: -15px; }
+.photo-publique--petite img { aspect-ratio: 173 / 115; }
+.profil__emplacements { display: grid; grid-template-columns: 1fr 1fr; gap: var(--esp-12); }
+.emplacement-photo { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--esp-8); height: 115px; border-radius: var(--rayon); border: 1.5px dashed var(--bord-champ); color: var(--encre); text-decoration: none; }
+.emplacement-photo .icone { fill: none; }
+.emplacement-photo:focus-visible { outline: 3px solid var(--encre); outline-offset: 3px; }
+
+/* Téléphone et WhatsApp (120:1444) */
+.ligne-numero { display: flex; align-items: center; gap: var(--esp-12); color: var(--encre); }
+.ligne-numero .icone { flex: none; fill: none; }
+.ligne-numero > div { display: flex; flex: 1; flex-direction: column; gap: 2px; min-width: 0; }
+.ligne-numero p { margin: 0; }
+
+/* Mon compte (120:1458) */
+.profil__compte { gap: 0; }
+.profil__compte > h2 { margin: 0; padding-bottom: var(--esp-4); }
+.profil__lignes { margin: 0; padding: 0; list-style: none; }
+.ligne-compte { border-bottom: 1px solid var(--filet); }
+.ligne-compte form { margin: 0; }
+.ligne-compte__action { display: flex; align-items: center; gap: var(--esp-12); width: 100%; min-height: 48px; padding: var(--esp-12) 0; border: 0; background: none; color: var(--encre); font: inherit; text-align: left; text-decoration: none; cursor: pointer; }
+.ligne-compte__action .icone { flex: none; fill: none; }
+.ligne-compte__action:focus-visible { outline: 3px solid var(--encre); outline-offset: -3px; }
+.ligne-compte__texte { display: flex; flex: 1; flex-direction: column; gap: 2px; min-width: 0; }
+.profil__theme { display: flex; flex-direction: column; gap: 10px; padding: var(--esp-12) 0 var(--esp-16); border-bottom: 1px solid var(--filet); }
+.profil__theme > p { margin: 0; }
+.segment-theme { display: flex; height: 44px; overflow: hidden; border-radius: var(--rayon); box-shadow: inset 0 0 0 1.5px var(--encre); }
+.segment-theme button { flex: 1; min-width: 0; padding: 0; border: 0; background: none; color: var(--encre); font-family: var(--police-texte); font-weight: 700; font-size: 15px; line-height: 20px; cursor: pointer; }
+.segment-theme button[aria-pressed="true"] { background: var(--inverse-fond); color: var(--inverse-texte); }
+.segment-theme button:focus-visible { outline: 3px solid var(--encre); outline-offset: -6px; }
+.profil__suppression { display: flex; flex-direction: column; gap: var(--esp-4); padding-top: var(--esp-20); }
+.profil__suppression > p { margin: 0; }
+.profil__danger { display: inline-flex; align-items: center; gap: var(--esp-8); align-self: flex-start; min-height: 48px; color: var(--erreur-texte); text-decoration: none; }
+.profil__danger span { text-decoration: underline; text-underline-position: from-font; }
+.profil__danger .icone { fill: none; }
+
+/* Pages de modification */
+.profil-modifier__formulaire { display: flex; flex-direction: column; gap: var(--esp-20); padding: var(--esp-16) var(--marge) calc(var(--hauteur-socle-pro) + var(--esp-16)); }
+.profil-modifier__formulaire > * { margin: 0; }
+.profil-modifier__formulaire .note .icone { fill: none; }
+.profil-modifier__fichier { width: 100%; padding: var(--esp-12); border-radius: var(--rayon); box-shadow: inset 0 0 0 1.5px var(--bord-champ); font: inherit; color: var(--encre); }
+.profil-modifier__photos { display: grid; grid-template-columns: 1fr 1fr; gap: var(--esp-12); margin: 0; padding: 0; list-style: none; }
+.profil-modifier__photos li { display: flex; flex-direction: column; align-items: flex-start; gap: var(--esp-4); }
+.profil-modifier__photos .actions-avis__lien { min-height: 44px; }

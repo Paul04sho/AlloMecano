@@ -120,7 +120,7 @@ final class ReinitialisationService
                 $this->db->modifier('admins', ['mot_de_passe_hash' => $hash], ['id' => $l['admin_id']]);
                 $this->db->executer('DELETE FROM jetons_reinitialisation WHERE admin_id = :i AND id <> :j', ['i' => $l['admin_id'], 'j' => $l['id']]);
             } else {
-                $this->db->modifier('mecaniciens', ['mot_de_passe_hash' => $hash], ['id' => $l['mecanicien_id']]);
+                $this->db->modifier('mecaniciens', ['mot_de_passe_hash' => $hash, 'mot_de_passe_modifie_le' => gmdate('Y-m-d H:i:s')], ['id' => $l['mecanicien_id']]);
                 $this->db->executer('DELETE FROM jetons_reinitialisation WHERE mecanicien_id = :i AND id <> :j', ['i' => $l['mecanicien_id'], 'j' => $l['id']]);
             }
             $this->db->modifier('jetons_reinitialisation', ['utilise_le' => gmdate('Y-m-d H:i:s')], ['id' => $l['id']]);
