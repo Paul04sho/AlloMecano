@@ -338,6 +338,35 @@ $icones = json_decode((string) file_get_contents(RACINE . '/scripts/icones.json'
   </section>
 
   <section class="rubrique">
+    <span class="t-etiquette">Signalements · onglets 179:607 · alerte critique en retard 179:614 · ligne de signalement 179:642 · 179:654 · 179:666</span>
+    <div class="systeme__grille systeme__admin">
+      <?= composant('onglets-admin', ['nom' => 'Exemple d’onglets', 'onglets' => [['libelle' => 'Ouverts · 3', 'href' => '#', 'actif' => true], ['libelle' => 'Classés · 30 jours', 'href' => '#', 'actif' => false]]]) ?>
+      <?= composant('bande-alerte', ['texte' => '1 critique non traité depuis plus de 2 h']) ?>
+      <ul class="signalements__lignes" role="list">
+        <?= composant('ligne-signalement', ['href' => '#', 'actif' => true, 'signalement' => ['public_id' => 'a', 'numero' => 'SIG-2026-0187', 'gravite' => 'critique', 'titre' => 'Comportement agressif ou menaçant', 'mecano' => 'Koffi Yao', 'quartier' => 'Riviera 3', 'quand' => "il y a 2\u{00A0}h\u{00A0}40"]]) ?>
+        <?= composant('ligne-signalement', ['href' => '#', 'signalement' => ['public_id' => 'b', 'numero' => 'SIG-2026-0186', 'gravite' => 'important', 'titre' => 'Prix très différent de ce qui était annoncé', 'mecano' => 'Bakary Sanogo', 'quartier' => 'Port-Bouët', 'quand' => "il y a 5\u{00A0}h"]]) ?>
+        <?= composant('ligne-signalement', ['href' => '#', 'signalement' => ['public_id' => 'c', 'numero' => 'SIG-2026-0184', 'gravite' => 'normal', 'titre' => 'Autre', 'mecano' => 'Serge Kouassi', 'quartier' => 'Marcory Biétry', 'quand' => 'hier · 19:12']]) ?>
+      </ul>
+    </div>
+  </section>
+
+  <section class="rubrique">
+    <span class="t-etiquette">Statistiques · étape de l’entonnoir 180:706 · indicateur 180:751</span>
+    <div class="systeme__grille systeme__admin">
+      <table class="entonnoir">
+        <tbody>
+          <?= composant('ligne-entonnoir', ['periode' => 30, 'autre' => 7, 'etape' => ['titre' => 'Recherches', 'sous' => 'Position et panne envoyées', 'valeur' => 3420, 'autre' => 812, 'conversion' => 'base', 'largeur' => 100.0]]) ?>
+          <?= composant('ligne-entonnoir', ['periode' => 30, 'autre' => 7, 'etape' => ['titre' => 'Contacts', 'sous' => 'Appel ou WhatsApp lancé', 'valeur' => 1462, 'autre' => 351, 'conversion' => "43\u{202F}% des recherches", 'largeur' => 42.75]]) ?>
+        </tbody>
+      </table>
+      <div class="stats__indicateurs">
+        <?= composant('indicateur-stat', ['titre' => 'Délai moyen de validation', 'valeur' => 19, 'unite' => 'h', 'repere' => "Objectif : moins de 48\u{00A0}h · 26\u{00A0}h le mois dernier", 'explication' => "Du dossier envoyé à la décision de l’équipe. Le plus long ce mois-ci : 41\u{00A0}h."]) ?>
+        <?= composant('indicateur-stat', ['titre' => 'Taux de reproposition', 'valeur' => 29, 'unite' => '%', 'repere' => '123 clients sur 424 sans réponse', 'explication' => 'Clients qui n’ont pas pu joindre leur mécano et ont appelé celui qu’on leur a proposé ensuite.']) ?>
+      </div>
+    </div>
+  </section>
+
+  <section class="rubrique">
     <span class="t-etiquette">Appel intégré · anneau 269:1827 / 269:1873 · commande 269:1849 / 269:1891 · état 269:1837 / 269:1881 / 270:1853 · repère carte W44 270:1862</span>
     <div class="systeme__grille systeme__appel">
       <div class="appel appel--sombre sur-sombre systeme__appel-sombre">

@@ -144,3 +144,46 @@ dialog:modal { margin: auto; }
 .dossiers__pas { display: inline-grid; place-items: center; width: 24px; height: 24px; color: var(--encre); }
 .dossiers__pas .icone { fill: none; }
 .dossiers__pas--prec .icone { transform: rotate(180deg); }
+
+/* ---------- Bouton désactivé du tiroir et des détails (A3, A4) ---------- */
+.est-desactive, .est-desactive:hover { background: var(--surface-creuse); box-shadow: inset 0 0 0 2px var(--filet); color: var(--encre-2); cursor: not-allowed; pointer-events: none; }
+
+/* ---------- Fenêtres modales : suspension (178:659), classement d’un signalement (A4) ---------- */
+.modale { width: min(480px, calc(100vw - 48px)); max-height: calc(100vh - 96px); padding: 0; border: 0; background: var(--surface-elevee); color: var(--encre); overflow-y: auto; }
+.modale::backdrop { background: rgb(21 23 28 / .6); }
+.modale form { display: flex; flex-direction: column; gap: var(--esp-16); padding: var(--esp-24) var(--esp-32) 28px; }
+.modale form > * { margin: 0; }
+.modale__entete { display: flex; align-items: center; }
+.modale__entete > p { flex: 1; margin: 0; }
+.modale__durees { display: flex; flex-direction: column; gap: var(--esp-4); min-width: 0; margin: 0; padding: 0; border: 0; }
+.modale__durees legend { padding: 0; margin-bottom: var(--esp-4); }
+.modale__apercu { display: flex; flex-direction: column; gap: var(--esp-8); }
+.modale__apercu > p { margin: 0; }
+.modale__message { position: relative; padding: var(--esp-16); background: var(--surface-creuse); border-radius: var(--rayon); color: var(--encre); }
+.modale__message::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--encre); }
+.modale__actions { display: flex; justify-content: flex-end; gap: var(--esp-12); padding-top: var(--esp-8); }
+.modale__actions .bouton .icone { fill: none; }
+
+/* ---------- Onglets d'administration (179:607 · 180:683) ---------- */
+.onglets-admin { display: flex; width: 100%; height: 44px; border-radius: var(--rayon); box-shadow: inset 0 0 0 1.5px var(--encre); overflow: hidden; }
+.onglets-admin a { display: flex; flex: 1; align-items: center; justify-content: center; min-width: 0; padding-inline: var(--esp-8); color: var(--encre); font-weight: 700; font-size: 15px; line-height: 20px; text-decoration: none; white-space: nowrap; }
+.onglets-admin a[aria-current="page"] { background: var(--inverse-fond); color: var(--inverse-texte); }
+.onglets-admin a:hover:not([aria-current="page"]) { background: var(--surface-creuse); }
+
+/* ---------- Alerte : bande S10 puis texte (179:614) ---------- */
+.bande-alerte { display: flex; flex-direction: column; }
+.bande-alerte__bande { height: 8px; background: var(--bande); }
+.bande-alerte__texte { display: flex; align-items: center; gap: var(--esp-8); margin: 0; padding-block: 10px; border-bottom: 1px solid var(--filet); color: var(--erreur-texte); }
+.bande-alerte__texte .icone { flex: none; fill: none; }
+
+/* ---------- Ligne de signalement (179:642) ---------- */
+.ligne-signalement { border-bottom: 1px solid var(--filet); }
+.ligne-signalement a { position: relative; display: flex; align-items: center; gap: var(--esp-12); padding: var(--esp-16) var(--esp-8) var(--esp-16) var(--esp-16); color: var(--encre); text-decoration: none; }
+.ligne-signalement a:hover { background: var(--surface-creuse); }
+.ligne-signalement.est-active a { background: var(--surface-elevee); box-shadow: inset 4px 0 0 var(--encre); }
+.ligne-signalement__marque { display: flex; flex: none; justify-content: center; width: 20px; padding-top: 1px; }
+.ligne-signalement__marque .icone { fill: none; }
+.ligne-signalement__texte { display: flex; flex: 1; flex-direction: column; gap: var(--esp-4); min-width: 0; }
+.ligne-signalement--critique .ligne-signalement__gravite { color: var(--erreur-texte); }
+.ligne-signalement--normal .ligne-signalement__gravite { color: var(--encre-2); }
+.ligne-signalement > a > .icone { flex: none; fill: none; }

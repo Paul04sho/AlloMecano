@@ -180,7 +180,7 @@ final class CompteServiceTest extends TestCase
         $this->db->inserer('clients', ['jeton_hash' => hash('sha256', 'anonyme')]); // sans téléphone : absent de la liste
         $l = $this->service->clients('', 1, $this->t0);
         self::assertSame(1, $l['total']);
-        self::assertSame("+225\u{00A0}07\u{00A0}••\u{00A0}••\u{00A0}34\u{00A0}56", $l['lignes'][0]['masque']);
+        self::assertSame("+225\u{00A0}07\u{00A0}••\u{00A0}••\u{00A0}••\u{00A0}56", $l['lignes'][0]['masque']);
         self::assertStringNotContainsString('1234', $l['lignes'][0]['masque']);
         self::assertSame(['Aminata'], array_column($this->service->clients('07 07 12', 1, $this->t0)['lignes'], 'prenom'));
         $ref = $l['lignes'][0]['ref'];

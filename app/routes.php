@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 use App\Controllers\Admin\CompteController;
 use App\Controllers\Admin\DossierController;
+use App\Controllers\Admin\SignalementAdminController;
+use App\Controllers\Admin\StatistiquesController;
 use App\Controllers\Admin\TableauController;
 use App\Controllers\Api\ClientController;
 use App\Controllers\Client\AccueilController;
@@ -88,6 +90,11 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
         $r->post('/comptes/{id}/lever', [CompteController::class, 'lever']);
         $r->post('/comptes/{id}/supprimer', [CompteController::class, 'supprimer']);               // RG-P5
         $r->post('/clients/{ref}/numero', [CompteController::class, 'numero']);                    // RG-C5 : l'affichage d'un numéro de client est journalisé
+        $r->get('/signalements', [SignalementAdminController::class, 'liste'], 'admin-signalements');   // A4
+        $r->get('/signalements/{id}/photo', [SignalementAdminController::class, 'photo']);              // RG-S3 : photo jointe, consultation journalisée
+        $r->post('/signalements/{id}/classer', [SignalementAdminController::class, 'classer']);         // RG-S2 : sans suite, note obligatoire
+        $r->get('/statistiques', [StatistiquesController::class, 'voir'], 'admin-statistiques');       // A5
+        $r->get('/statistiques/export', [StatistiquesController::class, 'exporter']);                  // A5 · CSV, journalisé
     });
 
     // ----- Communs (chantier C) -----

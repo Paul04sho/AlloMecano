@@ -134,3 +134,77 @@ echo "Clients de démo avec téléphone : " . count($prenoms) . "\n";
 $pdo->exec("UPDATE mecaniciens SET dossier_envoye_le = TIMESTAMP(COALESCE(identite_verifiee_le, DATE(cree_le)) - INTERVAL 1 DAY, '08:47:00') WHERE statut_dossier = 'valide' AND dossier_envoye_le IS NULL");
 $pdo->exec("INSERT INTO historique_dossier (mecanicien_id, de_statut, vers_statut, admin_id, motif, cree_le)
     SELECT id, 'en_attente', 'valide', (SELECT MIN(id) FROM admins), NULL, TIMESTAMP(COALESCE(identite_verifiee_le, DATE(cree_le)), '11:02:00') FROM mecaniciens WHERE statut_dossier = 'valide'");
+
+// ---------- A4 · Signalements : trois ouverts (critique, important, normal) et cinq classés ce mois-ci ----------
+$admin1 = (int) $pdo->query('SELECT MIN(id) FROM admins')->fetchColumn();
+$idClient = static fn (int $i): int => (int) $pdo->query("SELECT id FROM clients WHERE jeton_hash = '" . hash('sha256', 'client-demo-admin-' . $i) . "'")->fetchColumn();
+$idMeca = static fn (string $prenom): int => (int) $pdo->query('SELECT id FROM mecaniciens WHERE prenom = ' . $pdo->quote($prenom) . " AND statut_dossier = 'valide' ORDER BY id LIMIT 1")->fetchColumn();
+$insContact = $pdo->prepare('INSERT INTO contacts (public_id,client_id,mecanicien_id,canal,statut,cree_le,decroche_le,termine_le,duree_s,resume,quartier_libelle,position_partagee,lat,lon) VALUES (?,?,?,?,\'termine\',?,?,?,?,?,?,1,?,?)');
+$insSignalement = $pdo->prepare('INSERT INTO signalements (public_id,mecanicien_id,contact_id,client_id,motif,description,statut,traite_par_admin_id,traite_le,decision,cree_le) VALUES (?,?,?,?,?,?,?,?,?,?,?)');
+$signaler = static function (string $mecano, int $client, string $canal, int $duree, string $lieu, ?array $position, string $motif, string $texte, int $contactAvant, int $signaleIl, ?string $decision, ?int $classeApres) use ($pdo, $insContact, $insSignalement, $idMeca, $idClient, $admin1): void {
+    $m = $idMeca($mecano);
+    $c = $idClient($client);
+    $cree = gmdate('Y-m-d H:i:s', time() - $signaleIl);
+    $appel = gmdate('Y-m-d H:i:s', time() - $signaleIl - $contactAvant);
+    $insContact->execute([Ulid::generer(), $c, $m, $canal, $appel, $appel, gmdate('Y-m-d H:i:s', strtotime($appel . ' UTC') + $duree), $canal === 'app' ? $duree : null, 'Voiture · Batterie', $lieu, $position[0] ?? null, $position[1] ?? null]);
+    $contact = (int) $pdo->lastInsertId();
+    $insSignalement->execute([Ulid::generer(), $m, $contact, $c, $motif, $texte, $decision === null ? 'nouveau' : 'sans_suite', $decision === null ? null : $admin1,
+        $classeApres === null ? null : gmdate('Y-m-d H:i:s', time() - $signaleIl + $classeApres), $decision, $cree]);
+};
+$signaler('Koffi', 0, 'app', 240, 'Riviera 2', [5.3763, -3.949], 'comportement', 'On s’était mis d’accord sur 25 000 FCFA pour changer la batterie. Sur place, il a demandé 45 000. J’ai refusé et je suis partie. Il m’a rappelée trois fois et m’a dit qu’il savait où je travaille.', 8760, 9600, null, null);
+$signaler('Ibrahim', 1, 'tel', 0, 'Port-Bouët', null, 'prix_abusif', 'Annoncé 15 000 FCFA au téléphone, 38 000 demandés sur place pour une simple batterie.', 10800, 18000, null, null);
+$ier = time() - strtotime(gmdate('Y-m-d 19:12:00', time() - 86400) . ' UTC');
+$signaler('Moussa', 5, 'whatsapp', 0, 'Marcory Biétry', null, 'autre', 'La fiche l’affichait à côté de chez moi, il était en réalité à l’autre bout de la ville.', 3600, $ier, null, null);
+$classes = [
+    ['Awa', 2, 'prix_abusif', 'Le prix annoncé était 12 000 FCFA, elle a demandé 20 000 FCFA.', 'Écart expliqué par une pièce changée en plus : facture montrée au client. Sans suite.', 86400 * 1 + 7200],
+    ['Seydou', 3, 'pas_venu', 'Il devait venir à 15 h, personne n’est arrivé.', 'Mécanicien injoignable ce jour-là (panne de réseau), reprogrammé. Sans suite.', 86400 * 3 + 5400],
+    ['Jean-Marc', 4, 'autre', 'Sa position affichée n’était pas la bonne.', 'Position vérifiée : elle était à jour au moment de l’appel. Sans suite.', 86400 * 5 + 3600],
+    ['Ange', 8, 'comportement', 'Impoli et pressé au téléphone.', 'Rappel des règles fait par téléphone au mécanicien. Sans suite.', 86400 * 8 + 9000],
+    ['Esther', 7, 'securite', 'Il a demandé 5 000 FCFA avant de venir.', 'Entretien avec le mécanicien : malentendu sur les frais de déplacement. Sans suite.', 86400 * 11 + 4000],
+];
+foreach ($classes as $k => [$prenom, $client, $motif, $texte, $decision, $il]) {
+    $signaler($prenom, $client, 'tel', 0, 'Cocody', null, $motif, $texte, 5400, $il, $decision, 3600 * (2 + $k));
+}
+echo 'Signalements de démo : ' . (3 + count($classes)) . "\n";
+
+// ---------- A5 · Entonnoir : des recherches avant chaque contact, des repropositions, des passages automatiques à indisponible, des délais de décision ----------
+$panne = (int) $pdo->query("SELECT id FROM pannes WHERE code = 'batterie'")->fetchColumn();
+$contacts30 = $pdo->query("SELECT id, client_id, mecanicien_id, cree_le, issue_client FROM contacts WHERE cree_le >= UTC_TIMESTAMP() - INTERVAL 30 DAY AND canal <> 'app' ORDER BY id")->fetchAll(PDO::FETCH_ASSOC);
+$insRecherche = $pdo->prepare('INSERT INTO recherches (public_id,client_id,type_vehicule,panne_id,source_position,rayon_km,nb_resultats,cree_le) VALUES (?,?,\'voiture\',?,\'gps\',5,?,?)');
+$insReprise = $pdo->prepare('INSERT INTO contacts (public_id,client_id,mecanicien_id,canal,contact_precedent_id,statut,cree_le,resume) VALUES (?,?,?,?,?,\'termine\',?,\'Voiture · Batterie\')');
+$pdo->beginTransaction();
+$recherches = 0;
+$reprises = 0;
+foreach ($contacts30 as $c) {
+    $t = strtotime($c['cree_le'] . ' UTC');
+    $n = 1 + (mt_rand(0, 99) < 85 ? 1 : 0) + (mt_rand(0, 99) < 45 ? 1 : 0);
+    for ($k = 0; $k < $n; $k++) {
+        $insRecherche->execute([Ulid::generer(), $c['client_id'], $panne, mt_rand(2, 8), gmdate('Y-m-d H:i:s', $t - 120 - $k * mt_rand(300, 21600))]);
+        $recherches++;
+    }
+    if ($c['issue_client'] === 'pas_reponse' && mt_rand(0, 99) < 29) { // le client a appelé le mécano proposé ensuite
+        $autre = $meca[array_rand($meca)];
+        $insReprise->execute([Ulid::generer(), $c['client_id'], (int) $autre === (int) $c["mecanicien_id"] ? $meca[0] : $autre, 'tel', $c['id'], gmdate('Y-m-d H:i:s', $t + 180)]);
+        $reprises++;
+    }
+}
+$pdo->commit();
+echo "Recherches de démo : $recherches · repropositions : $reprises\n";
+
+// Mécanos passés indisponibles après 3 appels sans réponse (RG-D5), la plupart de retour dans la journée
+$insDispo = $pdo->prepare('INSERT INTO historique_disponibilite (mecanicien_id,etat,raison,debut,fin) VALUES (?,?,?,?,?)');
+foreach ([[2, 2], [4, 2], [6, 3], [9, 1], [13, 20], [20, 30]] as $i => [$depuis, $retour]) {
+    $mecano = $validés[$i % count($validés)];
+    $debut = time() - $depuis * 86400 - 3600 * (5 + $i);
+    $insDispo->execute([$mecano, 'indisponible', 'auto_injoignable', gmdate('Y-m-d H:i:s', $debut), gmdate('Y-m-d H:i:s', $debut + $retour * 3600)]);
+    if ($retour <= 3) {
+        $insDispo->execute([$mecano, 'disponible', 'manuel', gmdate('Y-m-d H:i:s', $debut + $retour * 3600), gmdate('Y-m-d H:i:s', $debut + ($retour + 6) * 3600)]);
+    }
+}
+// Décisions de l'équipe sur les dossiers à reprendre ou refusés : le délai se lit entre l'envoi et la décision (A5)
+$decisions = ['Hervé' => ['a_reprendre', 17], 'Ange' => ['a_reprendre', 24], 'Salimata' => ['a_reprendre', 12], 'Gérard' => ['refuse', 41]];
+$insHist = $pdo->prepare('INSERT INTO historique_dossier (mecanicien_id, de_statut, vers_statut, admin_id, motif, cree_le) SELECT id, \'en_attente\', ?, ?, motif_refus, DATE_ADD(dossier_envoye_le, INTERVAL ? HOUR) FROM mecaniciens WHERE prenom = ? AND statut_dossier = ?');
+foreach ($decisions as $prenom => [$statut, $heures]) {
+    $insHist->execute([$statut, $admin1, $heures, $prenom, $statut]);
+}
+echo "Passages automatiques et décisions de démo ajoutés\n";

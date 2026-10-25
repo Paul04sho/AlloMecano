@@ -1,0 +1,51 @@
+/* A4 · Signalements (Figma 179:555). Les composants (onglets, alerte, ligne) sont dans admin.css. */
+
+.signalements { display: flex; flex-direction: column; gap: var(--esp-24); width: 100%; }
+.signalements__colonnes { display: flex; align-items: flex-start; gap: var(--esp-32); }
+
+/* ---------- Colonne de gauche (179:606) ---------- */
+.signalements__liste { display: flex; flex: none; flex-direction: column; width: 420px; }
+.signalements__tri { margin: 0; padding: var(--esp-16) 0 var(--esp-12); }
+.signalements__lignes { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--filet); }
+.bande-alerte + .signalements__lignes { border-top: 0; }
+.signalements__classes { align-self: flex-start; margin-top: var(--esp-12); }
+.signalements .lien-icone { min-height: 44px; gap: 6px; }
+.signalements .lien-icone .icone { fill: none; }
+
+/* ---------- Détail (179:680) ---------- */
+.signalement { display: flex; flex: 1; flex-direction: column; gap: var(--esp-20); min-width: 0; padding: var(--esp-4) 0 0 var(--esp-32); border-left: 1px solid var(--filet); }
+.signalement > * { margin: 0; }
+.signalement__gravite { display: flex; align-items: center; gap: var(--esp-8); }
+.signalement__gravite--critique { color: var(--erreur-texte); }
+.signalement__gravite .icone { fill: none; }
+.signalement__mecano { display: flex; align-items: center; gap: var(--esp-16); padding-block: var(--esp-16); border-block: 1px solid var(--filet); }
+.signalement__portrait { position: relative; display: grid; flex: none; place-items: center; width: 56px; height: 56px; }
+.signalement__portrait img { display: block; width: 56px; height: 56px; border-radius: 50%; object-fit: cover; }
+.signalement__portrait--vide { border-radius: 50%; background: var(--surface-creuse); }
+.signalement__portrait--vide .icone { fill: none; }
+.signalement__portrait .poincon { position: absolute; left: 40px; top: 38px; }
+.signalement__identite { display: flex; flex: 1; flex-direction: column; gap: var(--esp-4); min-width: 0; }
+.signalement__identite > p { margin: 0; }
+.signalement__lien { display: flex; flex: none; flex-direction: column; align-items: flex-end; gap: var(--esp-4); }
+.signalement__bloc { display: flex; flex: 1; flex-direction: column; gap: var(--esp-8); min-width: 0; }
+.signalement__bloc > p, .signalement__bloc > dl { margin: 0; }
+.signalement__colonnes { display: flex; gap: var(--esp-32); }
+.signalement__colonnes .signalement__bloc { gap: 6px; }
+.signalement__numero { display: flex; align-items: center; gap: var(--esp-16); }
+.signalement__numero > p { margin: 0; white-space: nowrap; }
+.signalement__numero form { display: contents; }
+.signalement__numero .lien-icone { background: none; border: 0; color: var(--encre); cursor: pointer; }
+.signalement__contexte { display: flex; flex-direction: column; gap: 6px; margin: 0; }
+.signalement__contexte > div { display: flex; align-items: baseline; gap: var(--esp-12); }
+.signalement__contexte dt { flex: none; width: 116px; }
+.signalement__contexte dd { flex: 1; min-width: 0; margin: 0; }
+
+/* ---------- Actions (179:735) ---------- */
+.signalement__actions { display: flex; flex-direction: column; gap: var(--esp-12); padding-top: var(--esp-16); border-top: 1px solid var(--filet); }
+.signalement__actions > p { margin: 0; }
+.signalement__principales { display: flex; flex-wrap: wrap; gap: var(--esp-12); }
+.signalement__actions .bouton .icone { fill: none; }
+.signalement__classer { display: flex; align-items: center; gap: var(--esp-16); }
+.signalement__classer > p { flex: 1; margin: 0; }
+.signalement__decision { display: flex; flex-direction: column; gap: var(--esp-8); padding-top: var(--esp-16); border-top: 1px solid var(--filet); }
+.signalement__decision > p { margin: 0; }

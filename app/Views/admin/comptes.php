@@ -10,6 +10,7 @@
  * @var ?string $dialogue  suspendre | supprimer
  * @var ?string $numero    numéro de client qui vient d'être affiché
  * @var ?string $numeroRef
+ * @var ?string $signalement  signalement que la suspension va traiter (venu d'A4)
  */
 use App\Core\Format;
 use App\Services\CompteService;
@@ -152,6 +153,7 @@ $fin = ($liste['page'] - 1) * CompteService::PAR_PAGE + count($liste['lignes']);
     <dialog class="modale coupe-l" data-modale="suspendre" aria-labelledby="suspendre-titre"<?= $dialogue === 'suspendre' ? ' open' : '' ?>>
       <form method="post" action="/admin/comptes/<?= e(rawurlencode($f['public_id'])) ?>/suspendre" data-apercu="/admin/comptes/<?= e(rawurlencode($f['public_id'])) ?>/apercu">
         <?= csrf_champ() ?>
+        <?php if (!empty($signalement)): ?><input type="hidden" name="signalement" value="<?= e($signalement) ?>"><?php endif ?>
         <header class="modale__entete"><p class="t-etiquette t-secondaire"><?= e('Suspendre · ' . $f['numero'] . ' · ' . mb_strtoupper($f['nom_complet'], 'UTF-8')) ?></p>
           <a class="bouton-icone" href="<?= e($adresse(['compte' => $f['public_id']])) ?>" data-fermer aria-label="Fermer"><?= icone('fermer') ?></a></header>
         <h2 class="t-titre-2" id="suspendre-titre">Suspendre ce compte ?</h2>

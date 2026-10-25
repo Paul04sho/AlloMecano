@@ -1,0 +1,36 @@
+/* A5 · Statistiques (Figma 180:631). Les onglets de période sont dans admin.css. */
+
+.stats { display: flex; flex-direction: column; gap: var(--esp-24); width: 100%; }
+.stats__entete { display: flex; align-items: flex-end; gap: var(--esp-24); }
+.stats__entete .admin__entete { flex: 1; min-width: 0; }
+.stats__outils { display: flex; flex: none; align-items: center; gap: var(--esp-24); }
+.stats .lien-icone { min-height: 44px; gap: 6px; }
+.stats .lien-icone .icone { fill: none; }
+
+/* ---------- Entonnoir (180:693) ---------- */
+.stats__titre { display: flex; flex-direction: column; gap: var(--esp-12); padding-bottom: var(--esp-16); }
+.stats__titre > p, .stats__titre > h2 { margin: 0; }
+.entonnoir { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.entonnoir th:nth-child(1) { width: 240px; }
+.entonnoir th:nth-child(2) { width: 472px; }
+.entonnoir th:nth-child(3) { width: 140px; }
+.entonnoir thead th { padding-block: var(--esp-8); font-weight: 500; text-align: left; border-bottom: 1px solid var(--bord-champ); }
+.entonnoir thead th.droite { text-align: right; }
+.ligne-entonnoir > * { padding-block: 11px; border-bottom: 1px solid var(--filet); vertical-align: middle; text-align: left; font-weight: 400; }
+.ligne-entonnoir__etape { display: table-cell; }
+.ligne-entonnoir__etape > span { display: block; }
+.ligne-entonnoir__barre { padding-right: var(--esp-32); }
+.ligne-entonnoir__barre i { display: block; height: 28px; background: var(--encre); }
+.ligne-entonnoir__volume { text-align: right; white-space: nowrap; }
+.ligne-entonnoir__volume > span { display: block; }
+.ligne-entonnoir__conversion { padding-left: var(--esp-32); }
+
+/* ---------- Indicateurs (180:750) ---------- */
+.stats__indicateurs { display: flex; border-top: 1px solid var(--filet); }
+.indicateur-stat { display: flex; flex: 1; flex-direction: column; gap: 10px; min-width: 0; padding: 20px var(--esp-24) 0; border-left: 1px solid var(--filet); }
+.indicateur-stat:first-child { padding-left: 0; border-left: 0; }
+.indicateur-stat > p { margin: 0; }
+.indicateur-stat__valeur { display: flex; align-items: baseline; gap: 3px; letter-spacing: -.01em; }
+
+.stats__confidentialite { display: flex; align-items: center; gap: var(--esp-8); margin: 0; padding-top: var(--esp-12); border-top: 1px solid var(--filet); }
+.stats__confidentialite .icone { flex: none; fill: none; }

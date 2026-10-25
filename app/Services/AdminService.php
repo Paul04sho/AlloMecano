@@ -42,20 +42,14 @@ final class AdminService
     }
 
     /**
-     * Un signalement ouvert est « critique » quand il parle de sécurité ou d'identité (RG-S2), ou qu'il attend depuis plus que le délai de lecture.
+     * Un signalement ouvert est « critique » quand son motif met quelqu'un en danger : sécurité, identité, comportement (RG-S2, gravités de A4).
      *
      * @return array{ouverts: int, critiques: int}
      */
     public function signalementsOuverts(?\DateTimeImmutable $maintenant = null): array
     {
-        $maintenant ??= new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
-        $limite = $maintenant->modify('-' . Parametres::int('signalement.lecture_h', 24) . ' hours')->format('Y-m-d H:i:s');
-        $l = $this->db->un(
-            'SELECT COUNT(*) AS ouverts, COALESCE(SUM(motif IN (\'securite\', \'identite\') OR cree_le < :limite), 0) AS critiques
-               FROM signalements WHERE statut IN (\'nouveau\', \'en_cours\')',
-            ['limite' => $limite]
-        );
-        return ['ouverts' => (int) ($l['ouverts'] ?? 0), 'critiques' => (int) ($l['critiques'] ?? 0)];
+        $d = SignalementAdminService::depuisBase()->decompte($maintenant);
+        return ['ouverts' => $d['ouverts'], 'critiques' => $d['critiques']];
     }
 
     /**

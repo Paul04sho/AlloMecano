@@ -32,6 +32,7 @@ final class RechercheServiceTest extends TestCase
             self::markTestSkipped('Base indisponible : ' . $e->getMessage());
         }
         $this->db->pdo()->beginTransaction();
+        $this->db->executer('DELETE FROM signalements'); // signalements de démo de l'administration : RESTRICT sur les mécanos
         $this->db->executer('DELETE FROM avis'); // les avis de démo bloquent la suppression des mécanos (RESTRICT) ; annulé à la fin
         $this->db->executer('DELETE FROM contacts');
         $this->db->executer('DELETE FROM pieces_dossier'); // les dossiers de démo de l'administration tiennent aux mécanos

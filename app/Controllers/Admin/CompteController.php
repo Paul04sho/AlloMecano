@@ -11,6 +11,7 @@ use App\Core\Session;
 use App\Core\View;
 use App\Services\AdminService;
 use App\Services\CompteService;
+use App\Services\SignalementAdminService;
 
 /** A3 · Comptes (Figma 175:310) et suspension d'un compte (178:432). Réservé aux admins (ExigerAdmin). */
 final class CompteController
@@ -28,6 +29,7 @@ final class CompteController
             'onglet' => $onglet, 'recherche' => $recherche, 'liste' => $liste, 'decompte' => $service->decompte(), 'fiche' => $fiche,
             'dialogue' => $fiche !== null ? ($requete->query('suspendre') !== null ? 'suspendre' : ($requete->query('supprimer') !== null ? 'supprimer' : null)) : null,
             'numero' => Session::flash('numero_client'), 'numeroRef' => Session::flash('numero_client_ref'),
+            'signalement' => preg_match('/^[0-9A-Z]{26}$/', (string) $requete->query('signalement', '')) === 1 ? (string) $requete->query('signalement') : null, // la suspension traite ce signalement (A4)
         ], ['js/pages/admin-comptes.js']);
     }
 
@@ -45,9 +47,16 @@ final class CompteController
     public function suspendre(Request $requete): Response
     {
         $id = (string) $requete->param('id');
-        $r = CompteService::depuisBase()->suspendre((int) Session::get('admin_id'), $id, (string) $requete->input('motif', ''), (string) $requete->input('duree', ''), $requete->ip());
+        $admin = (int) Session::get('admin_id');
+        $motif = (string) $requete->input('motif', '');
+        $signalement = (string) $requete->input('signalement', '');
+        $r = CompteService::depuisBase()->suspendre($admin, $id, $motif, (string) $requete->input('duree', ''), $requete->ip());
+        if ($r['ok'] && $signalement !== '' && SignalementAdminService::depuisBase()->sanctionner($admin, $signalement, trim($motif), $requete->ip())) { // RG-S2 : la sanction clôt le signalement
+            Session::flash('message', 'Compte suspendu : le signalement est classé en sanction.');
+            return Response::redirection('/admin/signalements');
+        }
         Session::flash('message', $r['ok'] ? 'Compte suspendu : sa fiche a quitté les résultats.' : $r['erreur']);
-        return Response::redirection('/admin/comptes?compte=' . rawurlencode($id) . ($r['ok'] ? '' : '&suspendre=1'));
+        return Response::redirection('/admin/comptes?compte=' . rawurlencode($id) . ($r['ok'] ? '' : '&suspendre=1' . ($signalement !== '' ? '&signalement=' . rawurlencode($signalement) : '')));
     }
 
     /** POST /admin/comptes/{id}/lever */
@@ -77,6 +86,10 @@ final class CompteController
         } else {
             Session::flash('numero_client', $numero);
             Session::flash('numero_client_ref', $ref);
+        }
+        $retour = (string) $requete->input('retour', '');
+        if (str_starts_with($retour, '/admin/signalements')) { // l'affichage depuis un signalement (A4) y revient
+            return Response::redirection($retour);
         }
         return Response::redirection('/admin/comptes?onglet=clients' . ($requete->input('q') ? '&q=' . rawurlencode((string) $requete->input('q')) : '') . ($requete->input('page') ? '&page=' . (int) $requete->input('page') : ''));
     }

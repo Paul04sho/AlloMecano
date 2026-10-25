@@ -169,7 +169,7 @@ final class AdminDossiersTest extends TestCase
             'cree_le' => $this->t0->modify("-$heures hours")->format('Y-m-d H:i:s')]);
         $mk('pas_venu', 'nouveau', 2);      // ouvert
         $mk('securite', 'nouveau', 1);      // critique : sécurité
-        $mk('prix_abusif', 'en_cours', 30); // critique : en retard (plus de 24 h)
+        $mk('comportement', 'en_cours', 30); // critique : comportement agressif ou menaçant
         $mk('autre', 'sans_suite', 50);     // fermé : ne compte pas
         $s = AdminService::depuisBase()->signalementsOuverts($this->t0);
         self::assertSame(['ouverts' => 3, 'critiques' => 2], $s);

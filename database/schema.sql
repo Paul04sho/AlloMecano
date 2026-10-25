@@ -833,6 +833,7 @@ INSERT INTO parametres (cle,valeur,type,description) VALUES
 ('avis.duree_min_s','30','int','RG-AV1 · appel intégré assez long pour ouvrir l''avis'),
 ('avis.modifiable_h','24','int','RG-AV2'),
 ('signalement.lecture_h','24','int','RG-S2 · délai de lecture par un admin'),
+('signalement.critique_h','2','int','A4 · délai cible pour traiter un signalement critique (sécurité, identité, comportement)'),
 ('dossier.delai_h','48','int','RG-DO3 · réponse annoncée au mécano après l''envoi du dossier'),
 ('dossier.alerte_h','36','int','A1 · un dossier qui attend plus longtemps passe en alerte'),
 ('contact.whatsapp','+2250707000000','texte','X4 · numéro WhatsApp affiché (à confirmer avant la mise en ligne)'),

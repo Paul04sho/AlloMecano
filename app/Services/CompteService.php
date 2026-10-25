@@ -354,11 +354,11 @@ final class CompteService
         ], $lignes)];
     }
 
-    /** « +225 07 •• •• 56 78 » : seuls les deux premiers et les quatre derniers chiffres se lisent sans geste de l'admin. */
+    /** « +225 07 •• •• •• 56 » (Figma 179:714) : seuls les deux premiers et les deux derniers chiffres se lisent sans geste de l'admin. */
     public static function masquer(string $telephone): string
     {
         $c = substr(preg_replace('/\D/', '', $telephone) ?? '', -10);
-        return strlen($c) === 10 ? '+225' . Format::INSECABLE . substr($c, 0, 2) . Format::INSECABLE . '••' . Format::INSECABLE . '••' . Format::INSECABLE . substr($c, 6, 2) . Format::INSECABLE . substr($c, 8, 2) : '••••';
+        return strlen($c) === 10 ? '+225' . Format::INSECABLE . substr($c, 0, 2) . Format::INSECABLE . '••' . Format::INSECABLE . '••' . Format::INSECABLE . '••' . Format::INSECABLE . substr($c, 8, 2) : '••••';
     }
 
     /** Le numéro d'un client, pour l'admin qui le demande : l'affichage est inscrit au journal (RG-C5). @return ?string */
