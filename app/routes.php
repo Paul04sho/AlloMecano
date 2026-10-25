@@ -10,6 +10,7 @@ declare(strict_types=1);
  */
 
 use App\Controllers\Admin\CompteController;
+use App\Controllers\Admin\AdminComptesController;
 use App\Controllers\Admin\DossierController;
 use App\Controllers\Admin\SignalementAdminController;
 use App\Controllers\Admin\StatistiquesController;
@@ -136,6 +137,15 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
         $r->post('/signalements/{id}/classer', [SignalementAdminController::class, 'classer']);         // RG-S2 : sans suite, note obligatoire
         $r->get('/statistiques', [StatistiquesController::class, 'voir'], 'admin-statistiques');       // A5
         $r->get('/statistiques/export', [StatistiquesController::class, 'exporter']);                  // A5 · CSV, journalisé
+        $r->get('/administrateurs', [AdminComptesController::class, 'liste'], 'admin-administrateurs');
+        $r->post('/administrateurs/creer', [AdminComptesController::class, 'creer']);
+        $r->post('/administrateurs/modifier', [AdminComptesController::class, 'modifier']);
+        $r->post('/administrateurs/actif', [AdminComptesController::class, 'changerActif']);
+        $r->post('/administrateurs/mot-de-passe', [AdminComptesController::class, 'reinitialiserMotDePasse']);
+        $r->get('/mon-compte', [AdminComptesController::class, 'monCompte'], 'admin-mon-compte');
+        $r->post('/mon-compte', [AdminComptesController::class, 'enregistrerMonCompte']);
+        $r->get('/mon-compte/mot-de-passe', [AdminComptesController::class, 'motDePasse'], 'admin-mot-de-passe');
+        $r->post('/mon-compte/mot-de-passe', [AdminComptesController::class, 'enregistrerMotDePasse']);
     });
 
     // ----- Communs (chantier C) -----

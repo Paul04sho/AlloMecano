@@ -80,6 +80,8 @@ final class ConnexionEtMotDePasseTest extends TestCase
         $a = $auth->connecter('admin@allomecano.test', 'Demo2026!', '127.0.0.1', $this->t0);
         self::assertTrue($a['ok']);
         self::assertSame('admin', $a['profil']);
+        self::assertArrayHasKey('mot_de_passe_a_changer', $a);
+        self::assertFalse($a['mot_de_passe_a_changer']);
         $m = $auth->connecter('07 99 99 00 01', 'Demo2026!', '127.0.0.1', $this->t0);
         self::assertTrue($m['ok']);
         self::assertSame('mecano', $m['profil']);

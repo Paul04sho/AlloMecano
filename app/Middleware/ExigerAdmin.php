@@ -18,10 +18,15 @@ final class ExigerAdmin implements Middleware
     public function traiter(Request $requete, callable $suite): Response
     {
         $id = Session::get('admin_id');
-        if (!is_int($id) || AdminService::depuisBase()->admin($id) === null) {
+        $admin = is_int($id) ? AdminService::depuisBase()->admin($id) : null;
+        if ($admin === null) {
             Session::oublier('admin_id');
             $suivant = $requete->methode === 'GET' ? '?suivant=' . rawurlencode($requete->chemin) : '';
             return Response::redirection('/connexion' . $suivant);
+        }
+        if ($admin['mot_de_passe_a_changer']
+            && !($requete->chemin === '/admin/mon-compte/mot-de-passe' && in_array($requete->methode, ['GET', 'POST'], true))) {
+            return Response::redirection('/admin/mon-compte/mot-de-passe');
         }
         return $suite($requete);
     }

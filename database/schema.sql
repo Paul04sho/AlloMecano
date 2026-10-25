@@ -129,13 +129,16 @@ CREATE TABLE `admins` (
   `mot_de_passe_hash` VARCHAR(255) COMMENT 'password_hash() ; vide si connexion Google seulement',
   `google_sub` VARCHAR(64) COMMENT 'Identifiant Google (connexion Google)',
   `actif` TINYINT(1) NOT NULL DEFAULT 1 COMMENT 'Compte utilisable',
+  `est_principal` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Peut gérer les autres comptes admin ; un seul compte principal',
+  `mot_de_passe_a_changer` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Force le remplacement du mot de passe temporaire à la prochaine connexion',
   `derniere_connexion_le` DATETIME COMMENT 'Dernière connexion réussie',
   `cree_le` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Création',
   `modifie_le` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Dernière modification',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_admins_email` (`email`),
-  UNIQUE KEY `uq_admins_google` (`google_sub`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Comptes de l''équipe allomécano. Un seul rôle en V1 ; chaque action est journalisée.';
+  UNIQUE KEY `uq_admins_google` (`google_sub`),
+  KEY `idx_admins_principal` (`est_principal`, `actif`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Comptes de l''équipe allomécano. Le principal gère les comptes ; chaque action est journalisée.';
 
 -- Mécaniciens et dossier · Le mécanicien : compte, profil public, statut du dossier et disponibilité actuelle (colonnes dispo_*), plus quelques valeurs calculées pour aller vite à la recherche.
 DROP TABLE IF EXISTS `mecaniciens`;

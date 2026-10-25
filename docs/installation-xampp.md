@@ -69,6 +69,17 @@ Base « allomecano » prête : 34 tables.
 
 `composer db:demo` **efface et recrée** la base locale `allomecano`. Pour la base sans les mécanos de démo : `php scripts/installer-base.php`.
 
+Après l’installation de la base, crée le compte principal d’administration sans réinitialiser les données :
+
+```bat
+composer db:migrer-admins
+composer admin:initialiser
+```
+
+La commande affiche une fois un mot de passe temporaire pour `esmel@rilay.fr` (Esmel Rilay). Garde-le confidentiel : il sera demandé de le remplacer à la première connexion. Si un compte principal est déjà initialisé, la commande ne modifie ni son mot de passe ni son compte.
+
+La migration conserve les comptes déjà présents. Si la base de démo contient `admin@allomecano.test`, le compte principal peut le désactiver dans **Administrateurs** après sa première connexion.
+
 **B. Avec phpMyAdmin** (http://localhost/phpmyadmin)
 
 1. Nouvelle base : nom `allomecano`, interclassement `utf8mb4_unicode_ci`.

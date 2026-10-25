@@ -35,7 +35,9 @@
         ],
         "sprite": "php scripts/generer-sprite.php",
         "assets": "php scripts/construire-assets.php",
+        "db:migrer-admins": "php scripts/migrer-admins.php",
         "db:installer": "php scripts/installer-base.php",
+        "admin:initialiser": "php scripts/creer-admin-principal.php",
         "vapid": "php scripts/generer-cles-vapid.php",
         "db:demo": "php scripts/installer-base.php --demo --reinitialiser"
     },

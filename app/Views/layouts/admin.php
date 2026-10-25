@@ -7,11 +7,15 @@
  */
 use App\Core\Session;
 use App\Core\View;
+use App\Services\AdminService;
 
 $noindex = true;
+$idAdmin = Session::get('admin_id');
+$profilAdmin = is_int($idAdmin) ? AdminService::depuisBase()->admin($idAdmin) : null;
+$estPrincipal = (bool) ($profilAdmin['est_principal'] ?? false);
 View::debut('contenu'); ?>
 <div class="admin">
-  <?= composant('rail-admin', ['actif' => $actif, 'compteurs' => $compteurs, 'admin' => $admin]) ?>
+  <?= composant('rail-admin', ['actif' => $actif, 'compteurs' => $compteurs, 'admin' => $admin, 'estPrincipal' => $estPrincipal]) ?>
   <main id="contenu" class="admin__contenu">
     <?= View::bloc('contenu') ?>
   </main>

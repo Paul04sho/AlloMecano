@@ -37,6 +37,8 @@ dialog:modal { margin: auto; }
 .rail-admin__admin > p { margin: 0; }
 .rail-admin__admin button { align-self: flex-start; padding: 0; background: none; border: 0; color: var(--gris-voyant); text-align: left; cursor: pointer; }
 .rail-admin__admin button:hover { color: var(--beton); text-decoration: underline; text-underline-offset: 3px; }
+.rail-admin__compte { align-self: flex-start; display: inline-flex; align-items: center; min-height: 44px; color: var(--beton); text-decoration: none; }
+.rail-admin__compte:hover { text-decoration: underline; text-underline-offset: 3px; }
 .sur-sombre :focus-visible { outline-color: var(--beton); }
 
 /* ---------- A0 : indicateurs (164:64) ---------- */

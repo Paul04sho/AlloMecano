@@ -21,15 +21,15 @@ final class AdminService
         return new self(Database::instance());
     }
 
-    /** @return ?array{id: int, prenom: string, nom: string, nom_complet: string, filigrane: string} filigrane : « A. Bamba » (RG-P6) */
+    /** @return ?array{id: int, prenom: string, nom: string, nom_complet: string, filigrane: string, est_principal: bool, mot_de_passe_a_changer: bool} filigrane : « A. Bamba » (RG-P6) */
     public function admin(int $id): ?array
     {
-        $a = $this->db->un('SELECT id, prenom, nom FROM admins WHERE id = :i AND actif = 1', ['i' => $id]);
+        $a = $this->db->un('SELECT id, prenom, nom, est_principal, mot_de_passe_a_changer FROM admins WHERE id = :i AND actif = 1', ['i' => $id]);
         if ($a === null) {
             return null;
         }
         return ['id' => (int) $a['id'], 'prenom' => (string) $a['prenom'], 'nom' => (string) $a['nom'], 'nom_complet' => $a['prenom'] . ' ' . $a['nom'],
-            'filigrane' => mb_substr((string) $a['prenom'], 0, 1) . '. ' . $a['nom']];
+            'filigrane' => mb_substr((string) $a['prenom'], 0, 1) . '. ' . $a['nom'], 'est_principal' => (bool) $a['est_principal'], 'mot_de_passe_a_changer' => (bool) $a['mot_de_passe_a_changer']];
     }
 
     /** @return array{dossiers: int, signalements: int} les deux pastilles du rail */

@@ -72,7 +72,7 @@ final class AuthService
     }
 
     /**
-     * @return array{ok: true, profil: string, id: int}|array{ok: false, erreur: string, restant?: int, jusqua?: \DateTimeImmutable}
+     * @return array{ok: true, profil: string, id: int, mot_de_passe_a_changer: bool}|array{ok: false, erreur: string, restant?: int, jusqua?: \DateTimeImmutable}
      *         erreur : identifiant | mot_de_passe | bloque (jamais « identifiant inconnu » : on ne révèle pas qui a un compte)
      */
     public function connecter(string $identifiant, string $motDePasse, string $ip, ?\DateTimeImmutable $maintenant = null): array
@@ -101,7 +101,7 @@ final class AuthService
         if ($compte['profil'] === 'admin') {
             $this->db->modifier('admins', ['derniere_connexion_le' => gmdate('Y-m-d H:i:s')], ['id' => $compte['id']]);
         }
-        return ['ok' => true, 'profil' => $compte['profil'], 'id' => $compte['id']];
+        return ['ok' => true, 'profil' => $compte['profil'], 'id' => $compte['id'], 'mot_de_passe_a_changer' => $compte['mot_de_passe_a_changer']];
     }
 
     /**
@@ -127,19 +127,19 @@ final class AuthService
         return null;
     }
 
-    /** @param array{type: string, valeur: string} $id @return ?array{profil: string, id: int, hash: ?string} */
+    /** @param array{type: string, valeur: string} $id @return ?array{profil: string, id: int, hash: ?string, mot_de_passe_a_changer: bool} */
     private function compte(array $id): ?array
     {
         if ($id['type'] === 'email') {
-            $a = $this->db->un('SELECT id, mot_de_passe_hash FROM admins WHERE email = :e AND actif = 1', ['e' => $id['valeur']]);
+            $a = $this->db->un('SELECT id, mot_de_passe_hash, mot_de_passe_a_changer FROM admins WHERE email = :e AND actif = 1', ['e' => $id['valeur']]);
             if ($a !== null) {
-                return ['profil' => 'admin', 'id' => (int) $a['id'], 'hash' => $a['mot_de_passe_hash']];
+                return ['profil' => 'admin', 'id' => (int) $a['id'], 'hash' => $a['mot_de_passe_hash'], 'mot_de_passe_a_changer' => (bool) $a['mot_de_passe_a_changer']];
             }
             $m = $this->db->un('SELECT id, mot_de_passe_hash FROM mecaniciens WHERE email = :e', ['e' => $id['valeur']]);
         } else {
             $m = $this->db->un('SELECT id, mot_de_passe_hash FROM mecaniciens WHERE telephone = :t', ['t' => $id['valeur']]);
         }
-        return $m !== null ? ['profil' => 'mecano', 'id' => (int) $m['id'], 'hash' => $m['mot_de_passe_hash']] : null;
+        return $m !== null ? ['profil' => 'mecano', 'id' => (int) $m['id'], 'hash' => $m['mot_de_passe_hash'], 'mot_de_passe_a_changer' => false] : null;
     }
 
     private function noter(string $identifiant, string $ip, bool $reussie, ?\DateTimeImmutable $maintenant): void
