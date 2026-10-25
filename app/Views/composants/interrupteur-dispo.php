@@ -3,7 +3,8 @@
  * Interrupteur de disponibilité (Figma 54:641) : bloc pleine largeur sans coupe, on le touche. role=switch, aria-checked.
  * Indisponible : bitume, bouton principal « Me rendre disponible » (met aussi la position à jour). Disponible : vert, voyant à halo,
  * « Disponible depuis 07:32 », bouton contour « Passer indisponible ». Fondu croisé 200 ms, vibration 30 ms à chaque changement (JS).
- * @var string $etat       disponible | indisponible
+ * Verrouillé (M2a, dossier en vérification) : creux et cadenas, « Disponible après validation », pas de bouton (RG-D1, RG-D6).
+ * @var string $etat       disponible | indisponible | verrouille
  * @var ?string $depuis    « 07:32 » : heure de début de la session (RG-D1)
  * @var ?string $zone      « 10 km autour de Riviera 3 » : ce que voient les clients
  * @var bool $demo         exemple dessiné dans une page d'information : non interactif
@@ -17,8 +18,13 @@ $bouton ??= 'principal';
 $attrs ??= [];
 $dispo = $etat === 'disponible';
 $attrs += ['role' => 'switch', 'aria-checked' => $dispo ? 'true' : 'false', 'data-dispo' => ''];
-?>
-<div class="interrupteur-dispo sur-sombre interrupteur-dispo--<?= $dispo ? 'disponible' : 'indisponible' ?>"<?= $demo ? ' inert' : '' ?>>
+if ($etat === 'verrouille'): ?>
+<div class="interrupteur-dispo interrupteur-dispo--verrouille">
+  <p class="interrupteur-dispo__etat t-etiquette"><?= icone('cadenas', 18) ?><span>Disponible après validation</span></p>
+  <p class="t-titre-2">Les clients ne vous voient pas encore.</p>
+</div>
+<?php return; endif ?>
+<div class="interrupteur-dispo sur-sombre interrupteur-dispo--<?= $dispo ? 'disponible' : 'indisponible' ?>"<?= $demo ? ' inert' : '' ?> data-interrupteur>
   <p class="interrupteur-dispo__etat t-etiquette">
     <?php if ($dispo): ?><?= composant('voyant', ['etat' => 'disponible']) ?><span>Visible à <?= e($zone ?? '') ?></span><?php else: ?>Vous êtes indisponible<?php endif ?>
   </p>
@@ -26,6 +32,7 @@ $attrs += ['role' => 'switch', 'aria-checked' => $dispo ? 'true' : 'false', 'dat
   <?= composant('bouton', [
       'libelle' => $dispo ? 'Passer indisponible' : 'Me rendre disponible',
       'type' => $dispo || $bouton === 'contour' ? 'contour-beton' : 'principal', 'hauteur' => 56, 'plein' => true,
-      'icone' => $dispo || $bouton === 'principal' ? 'viseur' : null, 'attrs' => $attrs,
+      'icone' => !$dispo && $bouton === 'principal' ? 'viseur' : null, 'attrs' => $attrs,
+      'chargement' => $dispo ? 'Passage en cours…' : 'Position en cours…',
   ]) ?>
 </div>

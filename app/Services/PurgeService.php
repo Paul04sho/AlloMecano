@@ -50,6 +50,10 @@ final class PurgeService
         $signalisation = (new AppelService($this->db))->purgerSignalisation();
         // Fin des suspensions de 24 h et de 7 jours (A3)
         $suspensions = CompteService::depuisBase()->leverEchues();
+        // Les consultations de fiche (compteur de M2) ne servent qu'à compter : 90 jours, comme les recherches
+        $this->db->executer('DELETE FROM vues_fiche WHERE jour < UTC_DATE() - INTERVAL :j DAY', ['j' => $jours]);
+        // RG-D3 : une session de disponibilité de plus de 12 h s'arrête toute seule
+        DisponibiliteService::depuisBase()->expirer();
         // RG-P5 : pièces d'un dossier refusé effacées au bout de 6 mois
         $pieces = $this->purgerPiecesRefusees();
         return ['positions' => $positions, 'recherches' => $recherches, 'zones' => $zones, 'signalisation' => $signalisation, 'suspensions' => $suspensions, 'pieces' => $pieces];

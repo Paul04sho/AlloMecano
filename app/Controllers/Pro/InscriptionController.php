@@ -132,25 +132,23 @@ final class InscriptionController
     /** POST /pro/inscription/pieces/{type} : une pièce. JSON pour le JavaScript, redirection sans lui. */
     public function deposerPiece(Request $requete): Response
     {
-        [$id, $b] = $this->brouillonOuSortie();
-        if ($b === null) {
-            throw new HttpException(409, 'Ce dossier n’est plus un brouillon.');
-        }
+        $id = (int) Session::get('mecano_id');
+        $service = InscriptionService::depuisBase();
         $fichier = null;
         foreach (['fichier', 'fichier_photo', 'fichier_fichier', 'fichier_remplacer'] as $cle) {
             $fichier ??= $requete->fichier($cle);
         }
-        $r = $fichier === null ? ['ok' => false, 'erreur' => 'Choisissez une photo ou un fichier.'] : PieceDossierService::depuisBase()->deposer($id, (string) $requete->param('type'), $fichier);
-        $etat = InscriptionService::depuisBase()->etatPieces($id);
+        $r = $fichier === null ? ['ok' => false, 'erreur' => 'Choisissez une photo ou un fichier.'] : $service->deposerPiece($id, (string) $requete->param('type'), $fichier);
+        $etat = $service->etatPieces($id);
         if ($requete->veutJson()) {
             return Response::json([
-                'ok' => $r['ok'], 'erreur' => $r['erreur'] ?? null, 'piece' => $r['piece'] ?? null, 'etats' => $etat['etats'], 'envoyees' => $etat['obligatoires_envoyees'],
+                'ok' => $r['ok'], 'erreur' => $r['erreur'] ?? null, 'piece' => $r['piece'] ?? null, 'renvoye' => $r['renvoye'] ?? false, 'etats' => $etat['etats'], 'envoyees' => $etat['obligatoires_envoyees'],
                 'manque' => $etat['manquantes'] === [] ? null : 'Il manque ' . InscriptionService::phraseManque($etat['manquantes']),
                 'enregistre_a' => Format::heure(new \DateTimeImmutable('now', new \DateTimeZone('UTC'))),
             ], $r['ok'] ? 200 : 422);
         }
-        Session::flash('message', $r['ok'] ? 'Pièce envoyée.' : $r['erreur']);
-        return Response::redirection('/pro/inscription/pieces');
+        Session::flash('message', $r['ok'] ? ($r['renvoye'] ? 'Votre dossier repart chez l’équipe.' : 'Photo envoyée.') : $r['erreur']);
+        return Response::redirection($service->brouillon($id)['statut'] === 'brouillon' ? '/pro/inscription/pieces' : '/pro');
     }
 
     /** GET /pro/mes-pieces/portrait : la photo du mécano, à lui seul (l'aperçu de sa ligne) ; jamais publique, jamais celle d'un autre. */

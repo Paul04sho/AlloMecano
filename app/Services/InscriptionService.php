@@ -318,6 +318,55 @@ final class InscriptionService
         return ['etats' => $etats, 'courantes' => $courantes, 'obligatoires_envoyees' => $envoyees, 'obligatoires' => 5, 'manquantes' => $manquantes];
     }
 
+    /**
+     * Dépose une pièce selon l'état du dossier (RG-DO2, RG-DO4) : au brouillon, n'importe laquelle ; « à reprendre », seulement une pièce demandée par l'équipe
+     * (ou la photo de l'atelier) et, quand il n'en reste plus, le dossier repart chez l'équipe ; en attente ou validé, seulement la photo de l'atelier ;
+     * refusé ou suspendu, rien.
+     *
+     * @param array{tmp_name?: string, size?: int, error?: int} $fichier
+     * @return array{ok: true, piece: array<string, mixed>, renvoye: bool}|array{ok: false, erreur: string}
+     */
+    public function deposerPiece(int $id, string $type, array $fichier, ?\DateTimeImmutable $maintenant = null): array
+    {
+        $b = $this->brouillon($id);
+        if ($b === null) {
+            return ['ok' => false, 'erreur' => 'Compte introuvable.'];
+        }
+        $statut = (string) $b['statut'];
+        $courantes = $this->pieces()->courantes($id);
+        $permis = match ($statut) {
+            'brouillon' => true,
+            'a_reprendre' => $type === 'atelier' || ($courantes[$type]['statut'] ?? '') === 'a_reprendre',
+            'en_attente', 'valide' => $type === 'atelier',
+            default => false,
+        };
+        if (!$permis) {
+            return ['ok' => false, 'erreur' => $statut === 'a_reprendre' ? 'Cette pièce est déjà gardée : vous n’avez rien à renvoyer pour elle.' : 'Ce dossier n’accepte plus de nouvelle pièce.'];
+        }
+        $maintenant ??= new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+        $r = $this->pieces()->deposer($id, $type, $fichier, $maintenant);
+        if (!$r['ok']) {
+            return $r;
+        }
+        $renvoye = false;
+        if ($statut === 'a_reprendre' && $type !== 'atelier') {
+            $reste = array_filter($this->pieces()->courantes($id), static fn (array $p): bool => $p['statut'] === 'a_reprendre');
+            if ($reste === []) { // RG-DO4 : tout est repris, le dossier repart chez l'équipe
+                $quand = $maintenant->format('Y-m-d H:i:s');
+                $this->db->transaction(function () use ($id, $b, $quand): void {
+                    $this->db->modifier('mecaniciens', ['statut_dossier' => 'en_attente', 'dossier_envoye_le' => $quand], ['id' => $id]);
+                    $this->db->inserer('historique_dossier', ['mecanicien_id' => $id, 'de_statut' => 'a_reprendre', 'vers_statut' => 'en_attente', 'admin_id' => null, 'cree_le' => $quand]);
+                    $numero = DossierService::numero($id, $quand);
+                    foreach ($this->db->tous('SELECT id, email FROM admins WHERE actif = 1') as $a) {
+                        $this->notifier((int) $a['id'], null, $a['email'], 'nouveau_dossier', 'Dossier renvoyé à examiner', $b['prenom'] . ' ' . $b['nom'] . ' a repris sa pièce : le dossier ' . $numero . ' repasse en priorité.');
+                    }
+                });
+                $renvoye = true;
+            }
+        }
+        return $r + ['renvoye' => $renvoye];
+    }
+
     /** « Il manque le diplôme et la photo de vous. » Les pièces nommées avec leur article, jointes par « et ». */
     public static function phraseManque(array $manquantes): string
     {

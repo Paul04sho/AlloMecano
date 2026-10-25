@@ -1,0 +1,64 @@
+/* Espace pro · M2 tableau de bord (107:678, 109:781, 187:3276), M2a dossier en vérification (110:867), M2b pièce à reprendre (112:903) et compte suspendu (113:945).
+   Les composants de l'espace sont dans pro.css. */
+
+.tableau { display: flex; flex-direction: column; gap: var(--esp-32); padding: var(--esp-8) var(--marge) var(--esp-40); }
+.tableau--dossier { padding-bottom: var(--esp-48); }
+.tableau--reprendre { gap: var(--esp-20); padding-bottom: var(--esp-16); }
+.tableau--suspendu { gap: var(--esp-24); padding-bottom: var(--esp-24); }
+.tableau > * { margin: 0; }
+.tableau section { display: flex; flex-direction: column; }
+.tableau section > * { margin: 0; }
+
+.tableau__entete { display: flex; flex-direction: column; gap: var(--esp-12); }
+.tableau__entete > * { margin: 0; }
+.tableau__lien { align-self: flex-start; min-height: 44px; margin-block: -9px; }
+
+/* Disponibilité */
+.tableau__dispo { gap: var(--esp-12); }
+.tableau__position { display: flex; align-items: center; gap: var(--esp-8); padding-top: var(--esp-4); }
+.tableau__position .icone { flex: none; fill: none; }
+.tableau__position span { flex: 1; min-width: 0; }
+.tableau [hidden] { display: none !important; }
+
+/* Aujourd'hui */
+.tableau__jour { gap: var(--esp-12); }
+
+/* Dernières demandes */
+.tableau__lignes { margin: var(--esp-8) 0 0 !important; padding: 0; list-style: none; }
+.tableau__demandes .tableau__lien { margin-top: var(--esp-16); }
+
+/* Dernier avis */
+.tableau__avis { gap: var(--esp-16); }
+
+/* Conseil de la semaine */
+.tableau__conseil { gap: var(--esp-12); }
+.tableau__photo { margin: 0; }
+.tableau__photo img, .tableau__photo .photo__a-produire { display: block; width: 100%; height: auto; aspect-ratio: 358 / 239; object-fit: cover; object-position: 50% 28%; }
+.tableau__souligne { text-decoration: underline; text-decoration-color: var(--balise); text-decoration-thickness: 3px; text-underline-offset: 4px; }
+
+/* M2a */
+.dossier-statut { gap: var(--esp-20); }
+.dossier-statut__rubrique { display: flex; align-items: center; gap: 10px; color: var(--encre); }
+.dossier-statut__bande { flex: none; width: 8px; height: 24px; background: repeating-linear-gradient(180deg, var(--bitume) 0 6px, var(--hachure) 6px 12px); }
+.dossier-statut__texte { display: flex; flex-direction: column; gap: var(--esp-12); }
+.dossier-statut__texte > * { margin: 0; }
+.tableau__suivi { gap: var(--esp-16); }
+.tableau__etapes { margin: 0; padding: 0; list-style: none; }
+.tableau__verifions { gap: var(--esp-12); }
+.tableau__action { display: flex; flex-direction: column; gap: var(--esp-8); }
+.tableau__action > * { margin: 0; }
+.tableau__actions { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--filet); }
+
+/* M2b */
+.reprendre { display: flex; flex-direction: column; gap: var(--esp-12); padding-left: var(--esp-16); border-left: 4px solid var(--erreur); }
+.reprendre > * { margin: 0; }
+.reprendre__rubrique { display: flex; align-items: center; gap: var(--esp-8); color: var(--erreur-texte); }
+.reprendre__rubrique .voyant { width: 18px; height: 18px; }
+.reprendre__pieces { gap: 0; padding: 0; border: 0; }
+.reprendre__verdicts { margin: var(--esp-8) 0 0 !important; padding: 0; list-style: none; }
+.reprendre__pieces > p:last-child:not(:first-child) { margin-top: var(--esp-12); }
+.refus__motif { display: flex; flex-direction: column; gap: var(--esp-4); }
+.refus__motif > * { margin: 0; }
+.tableau__ensuite { gap: var(--esp-12); }
+.apercu { gap: var(--esp-12); }
+.apercu .etiquette-verifie { align-self: flex-start; }

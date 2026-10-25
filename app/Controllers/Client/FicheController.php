@@ -26,6 +26,7 @@ final class FicheController
     public function page(Request $requete): Response
     {
         $d = self::donnees((string) $requete->param('slug'), $this->recherche($requete), self::tous($requete));
+        $this->compterVue($d['fiche']['public_id']);
         return Response::html(View::rendre('client/fiche', $d + [
             'titre' => $d['fiche']['nom_complet'] . ' · ' . $d['fiche']['metier'],
             'sansBarre' => true, 'sansPied' => true, 'classeCorps' => 'page-fiche',
@@ -36,7 +37,19 @@ final class FicheController
     /** GET /api/mecano/{slug}/fiche?r=<recherche> : le panneau de 420 px de D1, sans recharger la page. */
     public function panneau(Request $requete): Response
     {
-        return Response::html(View::rendre('client/fiche-panneau', self::donnees((string) $requete->param('slug'), $this->recherche($requete), false)));
+        $d = self::donnees((string) $requete->param('slug'), $this->recherche($requete), false);
+        $this->compterVue($d['fiche']['public_id']);
+        return Response::html(View::rendre('client/fiche-panneau', $d));
+    }
+
+    /** M2 « vues » : une fiche vue par un client, une fois par jour. Un mécano qui regarde sa propre fiche (« comme un client ») ne compte pas. */
+    private function compterVue(string $mecanoPublicId): void
+    {
+        if (Session::get('mecano_id') !== null || Session::get('admin_id') !== null) {
+            return;
+        }
+        $client = Session::get('client_id');
+        FicheService::depuisBase()->compterVue($mecanoPublicId, is_int($client) ? $client : null);
     }
 
     /** GET /api/mecano/{slug}/avis?decalage=N : le paquet d'avis suivant, déjà mis en page. */

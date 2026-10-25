@@ -357,6 +357,34 @@ $icones = json_decode((string) file_get_contents(RACINE . '/scripts/icones.json'
   </section>
 
   <section class="rubrique">
+    <span class="t-etiquette">Tableau de bord mécano · en-tête 107:695 · interrupteur verrouillé 110:947 · bornes du jour 107:738 · demande 107:759 · étape du suivi 110:907 · écrou 16 110:909 · verdict 112:930 · compte suspendu 113:967 · ligne d’action 110:966 · envoi d’une photo 215:1477</span>
+    <div class="systeme__grille systeme__pro">
+      <?= composant('en-tete-pro', ['prenom' => 'Koffi', 'ligne' => 'Électricité auto · Riviera 3', 'avatar' => null, 'verifie' => true]) ?>
+      <?= composant('interrupteur-dispo', ['etat' => 'verrouille']) ?>
+      <?= composant('bornes-jour', ['bornes' => [['valeur' => '4', 'unite' => 'Appels', 'libelle' => 'vous ont appelé'], ['valeur' => '18', 'unite' => 'Vues', 'libelle' => 'ont vu votre fiche'], ['valeur' => '4,8', 'unite' => 'sur 5', 'libelle' => '37 avis']]]) ?>
+      <ul class="tableau__lignes" role="list">
+        <?= composant('ligne-demande', ['demande' => ['heure' => '10:12', 'client' => 'Aminata', 'resume' => 'Batterie · Voiture', 'code_panne' => 'batterie', 'distance' => "1,4\u{00A0}km", 'telephone' => '+2250700000001']]) ?>
+        <?= composant('ligne-demande', ['demande' => ['heure' => '09:47', 'client' => 'Un client', 'resume' => 'Pneu crevé · Moto', 'code_panne' => 'pneu_creve', 'distance' => "2,6\u{00A0}km", 'telephone' => null]]) ?>
+      </ul>
+      <ol class="tableau__etapes" role="list">
+        <?= composant('etape-suivi', ['etat' => 'fait', 'date' => '20 octobre, 10:14', 'titre' => 'Dossier envoyé', 'texte' => '5 pièces reçues. La photo de l’atelier est facultative.']) ?>
+        <?= composant('etape-suivi', ['etat' => 'en_cours', 'date' => '21 octobre, 08:30 · en cours', 'titre' => 'En vérification', 'texte' => 'Une personne compare votre photo à votre pièce d’identité.', 'echeance' => 'Réponse avant le 22 octobre, 10:14']) ?>
+        <?= composant('etape-suivi', ['etat' => 'a_venir', 'date' => 'À venir', 'titre' => 'Validé', 'texte' => 'Vous pourrez vous rendre disponible et apparaître aux clients.', 'derniere' => true]) ?>
+      </ol>
+      <ul class="reprendre__verdicts" role="list">
+        <?= composant('ligne-verdict', ['type' => 'cni_recto', 'libelle' => 'CNI recto', 'etat' => 'conforme']) ?>
+        <?= composant('ligne-verdict', ['type' => 'portrait', 'libelle' => 'Photo de vous', 'etat' => 'a_reprendre', 'motif' => 'Visage flou. Reprenez la photo en plein jour, de face, sans lunettes de soleil.']) ?>
+      </ul>
+      <?= composant('bloc-suspension', ['depuis' => '2 octobre', 'duree' => 'En pause pour 7 jours.', 'motif' => 'Trois clients ont signalé que vous n’êtes pas venu après avoir confirmé l’intervention.', 'suite' => 'Jusqu’au 9 octobre, vous n’apparaissez plus dans les recherches. Votre compte se réactive tout seul ensuite.']) ?>
+      <ul class="tableau__actions" role="list">
+        <?= composant('ligne-action', ['libelle' => 'Voir ma fiche comme un client', 'icone' => 'oeil', 'href' => '#']) ?>
+        <?= composant('ligne-action', ['libelle' => 'Lire les règles de la communauté', 'icone' => 'fichier', 'href' => '#']) ?>
+      </ul>
+      <?= composant('reprise-piece', ['type' => 'demo', 'libelle' => 'Ajouter la photo de mon atelier', 'icone' => 'camera', 'action' => '#']) ?>
+    </div>
+  </section>
+
+  <section class="rubrique">
     <span class="t-etiquette">Inscription mécano · brouillon 95:169 · étiquette de choix 54:451 · stepper 54:500 · curseur de rayon 97:318 · pochette de pièce 54:603 · guide photo 102:624 · récapitulatif 104:637 · étiquette Vérifié 49:175</span>
     <div class="systeme__grille systeme__admin">
       <?= composant('parcours-brouillon', ['heure' => '10:14', 'pieces' => ['cni_recto' => 'envoyee', 'cni_verso' => 'envoyee', 'permis' => 'manquante', 'diplome' => 'manquante', 'portrait' => 'envoyee', 'atelier' => 'facultative']]) ?>

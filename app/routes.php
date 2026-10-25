@@ -16,6 +16,7 @@ use App\Controllers\Admin\StatistiquesController;
 use App\Controllers\Admin\TableauController;
 use App\Controllers\Api\ClientController;
 use App\Controllers\Pro\DevenirController;
+use App\Controllers\Pro\EspaceController;
 use App\Controllers\Pro\InscriptionController;
 use App\Controllers\Client\AccueilController;
 use App\Controllers\Client\AppelController;
@@ -85,7 +86,12 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
         $r->post('/inscription/envoi', [InscriptionController::class, 'envoyer']);                // RG-DO3
         $r->get('/inscription/envoye', [InscriptionController::class, 'envoye']);                 // M1e
     });
-    // $r->get('/pro', …)                 M2 · M2a · M2b            (à faire)
+    $r->groupe('/pro', [ExigerMecano::class], function ($r) {
+        $r->get('', [EspaceController::class, 'page'], 'pro');                                  // M2 · M2a · M2b
+        $r->post('/api/disponibilite', [EspaceController::class, 'disponibilite']);              // RG-D1, RG-D7
+        $r->post('/api/position', [EspaceController::class, 'position']);                        // RG-D2
+        $r->get('/apercu', [EspaceController::class, 'apercu']);                                 // « Voir ma fiche comme un client »
+    });
     // $r->get('/pro/demandes', …)        M3                        (à faire)
     // $r->get('/pro/avis', …)            M3 · Avis                 (à faire)
     // $r->get('/pro/profil', …)          M4                        (à faire)

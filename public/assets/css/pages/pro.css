@@ -81,3 +81,96 @@
 .pro .socle__info { color: var(--gris-voyant); }
 .pro .socle__info:empty { display: none; }
 @media (prefers-reduced-motion: reduce) { .pro .socle { animation: none; } }
+
+/* ---------- Interrupteur : verrouillé (M2a), halo, fondu (54:641) ---------- */
+.interrupteur-dispo .voyant { width: 18px; height: 18px; }
+.interrupteur-dispo--verrouille { background: var(--surface-creuse); color: var(--encre-2); }
+.interrupteur-dispo--verrouille .interrupteur-dispo__etat { color: var(--encre-2); }
+.interrupteur-dispo--verrouille .t-titre-2 { color: var(--encre-2); }
+.interrupteur-dispo--verrouille .icone { flex: none; fill: none; }
+/* Sur le vert, le voyant d'état est blanc : un point de 10 dans un anneau de 18 à 35 % (Figma 107:709), qui pulse trois fois puis s'arrête */
+.interrupteur-dispo--disponible .voyant--disponible { background: radial-gradient(circle closest-side, var(--blanc) 0 55.5%, color-mix(in srgb, var(--blanc) 35%, transparent) 56%); box-shadow: none; animation: halo-dispo 1.6s ease-out 3; }
+.interrupteur-dispo--fondu { animation: interrupteur-fondu 200ms linear; }
+@keyframes halo-dispo { from { box-shadow: 0 0 0 0 color-mix(in srgb, var(--blanc) 55%, transparent); } 70%, to { box-shadow: 0 0 0 9px transparent; } }
+@keyframes interrupteur-fondu { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .interrupteur-dispo--disponible .voyant--disponible, .interrupteur-dispo--fondu { animation: none; } }
+
+/* ---------- En-tête de l'espace (107:695) ---------- */
+.en-tete-pro { display: flex; align-items: center; gap: var(--esp-12); }
+.en-tete-pro__avatar { display: grid; flex: none; place-items: center; width: 40px; height: 40px; overflow: hidden; border-radius: var(--rayon); background: var(--surface-creuse); color: var(--encre-2); }
+.en-tete-pro__avatar img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.en-tete-pro__avatar .icone { fill: none; }
+.en-tete-pro__texte { display: flex; flex: 1; flex-direction: column; gap: 2px; min-width: 0; }
+.en-tete-pro__texte > p { margin: 0; overflow-wrap: anywhere; }
+
+/* ---------- Bornes du jour (107:738) ---------- */
+.bornes-jour { display: flex; border-block: 1px solid var(--filet); }
+.bornes-jour__borne { display: flex; flex: 1; flex-direction: column; gap: var(--esp-4); min-width: 0; padding-block: var(--esp-16); }
+.bornes-jour__borne + .bornes-jour__borne { padding-left: 14px; border-left: 1px solid var(--filet); }
+.bornes-jour__borne p { margin: 0; }
+.bornes-jour__valeur { display: flex; align-items: baseline; gap: 3px; white-space: nowrap; color: var(--encre); }
+
+/* ---------- Ligne de demande (107:759) ---------- */
+.ligne-demande { display: flex; align-items: center; gap: var(--esp-12); padding-block: 14px; border-bottom: 1px solid var(--filet); }
+.ligne-demande__heure { flex: none; margin: 0; color: var(--encre); }
+.ligne-demande__texte { display: flex; flex: 1; flex-direction: column; gap: var(--esp-4); min-width: 0; }
+.ligne-demande__texte p { margin: 0; }
+.ligne-demande__panne { display: flex; align-items: center; gap: var(--esp-8); }
+.ligne-demande__panne > span:last-child { flex: 1; min-width: 0; }
+.ligne-demande__voyant { display: block; flex: none; width: 28px; height: 28px; padding: 2px; border-radius: var(--rayon); background: var(--panneau); }
+.ligne-demande__voyant .voyant-bord { transform: scale(.75); transform-origin: 0 0; }
+.ligne-demande .bouton { flex: none; width: 124px; }
+
+/* ---------- Écrou de 16 et étape du fil de suivi (110:907) ---------- */
+.ecrou-etape { display: block; flex: none; }
+.ecrou-etape__ecrou { fill: var(--encre); stroke: none; }
+.ecrou-etape--a-venir .ecrou-etape__ecrou { fill: none; stroke: var(--bord-champ); stroke-width: 1.2; }
+.ecrou-etape__voyant { fill: var(--gris-voyant); }
+.etape-suivi { display: flex; align-items: flex-start; gap: 14px; }
+.etape-suivi__repere { display: flex; flex: none; flex-direction: column; align-items: center; align-self: stretch; gap: 6px; padding-top: 1px; }
+.etape-suivi__filet { flex: 1; width: 0; min-height: 1px; border-left: 2px dashed var(--encre); }
+.etape-suivi--en-cours .etape-suivi__filet { border-left-color: var(--bord-champ); }
+.etape-suivi__texte { display: flex; flex: 1; flex-direction: column; gap: var(--esp-4); min-width: 0; padding-bottom: calc(var(--esp-24) + var(--esp-4)); }
+.etape-suivi:last-child .etape-suivi__texte { padding-bottom: 0; }
+.etape-suivi__texte p { margin: 0; }
+.etape-suivi--a-venir .t-titre-3 { color: var(--encre-2); }
+.etape-suivi__echeance { margin-top: var(--esp-8) !important; color: var(--encre); }
+
+/* ---------- Verdict d'une pièce (112:930) ---------- */
+.ligne-verdict { border-bottom: 1px solid var(--filet); }
+.ligne-verdict__ligne { display: flex; align-items: center; gap: var(--esp-12); padding-block: 6px; }
+.ligne-verdict__ligne > .t-titre-3 { flex: 1; min-width: 0; margin: 0; }
+.ligne-verdict__pictogramme { display: grid; flex: none; place-items: center; width: 40px; height: 40px; overflow: hidden; border-radius: var(--rayon); background: var(--surface-creuse); color: var(--encre); }
+.ligne-verdict__pictogramme .icone { fill: none; }
+.ligne-verdict__pictogramme--photo { height: 50px; }
+.ligne-verdict__pictogramme--photo img { display: block; width: 100%; height: 100%; object-fit: cover; filter: blur(1.5px); }
+.ligne-verdict__etat { display: flex; flex: none; align-items: center; gap: 6px; margin: 0; color: var(--encre); }
+.ligne-verdict--a-reprendre { padding-block: 12px 14px; }
+.ligne-verdict--a-reprendre .ligne-verdict__ligne { padding-block: 0; }
+.ligne-verdict__motif { display: flex; flex-direction: column; gap: var(--esp-4); padding: 10px 0 0 52px; }
+.ligne-verdict__motif p { margin: 0; }
+
+/* ---------- Compte suspendu (113:967) ---------- */
+.bloc-suspension { display: flex; flex-direction: column; align-items: flex-start; gap: var(--esp-12); padding: 18px var(--esp-16) var(--esp-20); border-left: 4px solid var(--erreur); border-radius: var(--rayon); background: var(--bitume); color: var(--beton); }
+.bloc-suspension > * { margin: 0; }
+.bloc-suspension__rubrique { display: flex; align-items: flex-start; gap: var(--esp-8); width: 100%; color: var(--beton); }
+.bloc-suspension__rubrique .icone { flex: none; fill: none; color: var(--erreur); }
+.bloc-suspension .t-titre-2 { color: var(--beton); }
+.bloc-suspension__etiquette { margin-top: var(--esp-4) !important; color: var(--gris-voyant); }
+
+/* ---------- Ligne d'action (110:966) ---------- */
+.ligne-action { border-bottom: 1px solid var(--filet); }
+.ligne-action a { display: flex; align-items: center; gap: var(--esp-12); min-height: 44px; padding-block: var(--esp-16); color: var(--encre); text-decoration: none; }
+.ligne-action a > span { flex: 1; min-width: 0; }
+.ligne-action .icone { flex: none; fill: none; }
+
+/* ---------- Envoi d'une pièce depuis l'espace ---------- */
+.reprise-piece { margin: 0; }
+.reprise-piece__champ { position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; }
+.reprise-piece__champ:focus-visible + .bouton { outline: 3px solid var(--encre); outline-offset: 3px; }
+.socle .reprise-piece__champ:focus-visible + .bouton { outline-color: var(--beton); }
+.reprise-piece .bouton { cursor: pointer; }
+.reprise-piece--envoi .bouton { pointer-events: none; }
+
+/* Un socle d'action fixe laisse sa place au bas de la page */
+.pro__contenu:has(.socle) { padding-bottom: var(--hauteur-socle-pro); }

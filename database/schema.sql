@@ -405,6 +405,20 @@ CREATE TABLE `zones_sans_resultat` (
   PRIMARY KEY (`zone_id`, `jour`, `type_vehicule`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Comptage anonyme des recherches sans résultat, par zone d''environ 1 km (savoir où recruter). Aucun lien vers le client. 90 jours.';
 
+-- Mécaniciens et dossier · Consultations de la fiche, pour le tableau de bord du mécano (M2). Anonyme : un client compte une fois par jour.
+DROP TABLE IF EXISTS `vues_fiche`;
+CREATE TABLE `vues_fiche` (
+  `id` BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
+  `mecanicien_id` INT UNSIGNED NOT NULL,
+  `client_id` BIGINT UNSIGNED COMMENT 'Vide si le client est purgé',
+  `jour` DATE NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_vue_jour` (`mecanicien_id`, `client_id`, `jour`),
+  KEY `idx_vue_meca_jour` (`mecanicien_id`, `jour`),
+  CONSTRAINT `fk_vues_fiche_mecanicien_id` FOREIGN KEY (`mecanicien_id`) REFERENCES `mecaniciens` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_vues_fiche_client_id` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Une ligne par client et par jour : le compteur « ont vu votre fiche » de M2. Effacé au bout de 90 jours.';
+
 -- Mises en relation et appels · Une tentative de contact client → mécano, par l'un des 3 canaux. C'est la table centrale : appel, issue, reproposition, droit à l'avis.
 DROP TABLE IF EXISTS `contacts`;
 CREATE TABLE `contacts` (

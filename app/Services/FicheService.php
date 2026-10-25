@@ -26,6 +26,12 @@ final class FicheService
         return new self(Database::instance());
     }
 
+    /** Une consultation de la fiche (M2 · « ont vu votre fiche ») : un client compte une fois par jour, sans rien garder de plus. */
+    public function compterVue(string $mecanoPublicId, ?int $clientId): void
+    {
+        $this->db->executer('INSERT IGNORE INTO vues_fiche (mecanicien_id, client_id, jour) SELECT id, :c, UTC_DATE() FROM mecaniciens WHERE public_id = :p', ['c' => $clientId, 'p' => $mecanoPublicId]);
+    }
+
     /**
      * La fiche, ou null si le dossier n'est pas validé ou si le compte est suspendu (RG-DO8).
      *
