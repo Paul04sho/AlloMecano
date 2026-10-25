@@ -1,0 +1,54 @@
+/* M0 · Devenir mécano vérifié (Figma 92:14). Le socle (colonne, interrupteur, accordéon…) est dans pro.css. */
+
+.devenir { overflow-x: clip; }
+
+/* ---------- Héros (92:42 · 92:47) ---------- */
+.devenir__photo img { height: auto; aspect-ratio: 1 / 1; object-position: 72% 50%; }
+.devenir__accroche { display: flex; flex-direction: column; gap: var(--esp-16); padding: var(--esp-16) var(--marge) var(--esp-40); }
+.devenir__accroche > * { margin: 0; }
+.devenir__compte { align-self: flex-start; padding-block: var(--esp-12); }
+
+/* ---------- Sections (92:63 · 92:150 · 92:183 · 92:220 · 92:246) ---------- */
+.devenir__section { display: flex; flex-direction: column; gap: var(--esp-24); padding: var(--esp-56) var(--marge); border-top: 1px solid var(--filet); }
+.devenir__section > * { margin: 0; }
+.devenir__section--sans-filet { border-top: 0; gap: var(--esp-20); }
+.devenir__faq { padding-top: var(--esp-24); }
+
+/* Récit minuté : une heure, un filet vertical de tirets, le contenu (S9) */
+.devenir__temps { display: flex; flex-direction: column; gap: 28px; margin: 0; padding: 0; list-style: none; }
+.temps { display: flex; align-items: flex-start; gap: var(--esp-12); }
+.temps__heure { display: flex; flex: none; flex-direction: column; gap: var(--esp-8); width: 80px; margin: 0; }
+.temps__marquage { width: 2px; height: 120px; background: repeating-linear-gradient(180deg, var(--encre) 0 var(--esp-12), transparent 0 var(--esp-24)); }
+.temps__contenu { display: flex; flex: 1; flex-direction: column; gap: 14px; min-width: 0; }
+.temps__contenu > p { margin: 0; }
+.temps__photo { width: min(264px, 100%); }
+.temps__photo img, .temps__photo .photo__a-produire { aspect-ratio: 3 / 2; height: auto; }
+.fragment-demande { display: flex; flex-direction: column; gap: var(--esp-4); padding-block: var(--esp-12); border-block: 1px solid var(--filet); }
+.fragment-demande > p { margin: 0; }
+.fragment-demande__bouton { align-self: flex-start; margin-top: var(--esp-8); }
+.fragment-demande__bouton .bouton .icone { fill: none; }
+
+/* Six pièces */
+.devenir__delai { display: flex; align-items: baseline; gap: var(--esp-8); }
+.devenir__delai > span:first-child { color: var(--encre); }
+.devenir__borne { display: flex; align-items: baseline; gap: 3px; }
+.devenir__photo-pieces .photo__a-produire { aspect-ratio: 3 / 2; height: auto; }
+
+/* Interrupteur */
+.devenir__explication { display: flex; flex-direction: column; gap: var(--esp-12); }
+.devenir__explication p { margin: 0; }
+
+/* Témoignage de démonstration (92:210) : section sombre */
+.devenir__temoignage { display: flex; flex-direction: column; gap: var(--esp-20); padding: var(--esp-56) var(--marge); background: var(--section-sombre); color: var(--beton); }
+.devenir__temoignage > p { margin: 0; color: var(--gris-voyant); }
+.devenir__portrait { width: min(264px, 100%); }
+.devenir__portrait img { aspect-ratio: 4 / 5; height: auto; }
+.devenir__citation { display: flex; flex-direction: column; gap: var(--esp-12); margin: 0; padding: var(--esp-4) 0 var(--esp-4) var(--esp-16); border-left: 2px solid var(--gris-voyant); }
+.devenir__citation p { margin: 0; }
+.devenir__citation > p { color: var(--beton); font-size: 24px; line-height: 34px; } /* Citation 24/34, aussi sur mobile (92:215) */
+.devenir__citation footer { display: flex; flex-direction: column; gap: var(--esp-4); }
+.devenir__citation footer .t-titre-3 { color: var(--beton); }
+.devenir__citation footer .t-etiquette { color: var(--gris-voyant); }
+
+/* Engagements et FAQ */
+.devenir__engagements, .devenir__accordeons { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--filet); }

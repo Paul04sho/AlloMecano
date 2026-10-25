@@ -15,20 +15,6 @@
 .dossier__comparaison { display: flex; flex-direction: column; gap: var(--esp-40); min-width: 0; }
 .dossier__visionneuses { display: grid; grid-template-columns: 1fr 1fr; gap: var(--esp-24); }
 
-/* ---------- Écrou dossier (50:89) ---------- */
-.ecrou-dossier { display: block; overflow: visible; }
-.ecrou-dossier__facette { stroke: none; }
-.ecrou-dossier__facette--envoyee { fill: var(--encre); }
-.ecrou-dossier__facette--manquante { fill: var(--filet); }
-.ecrou-dossier__facette--facultative { fill: none; stroke: var(--bord-champ); stroke-width: .8; stroke-dasharray: 1.4 1.2; }
-.ecrou-dossier__facette--a-reprendre { fill: var(--erreur); }
-.ecrou-dossier__voyant { fill: var(--gris-voyant); stroke: var(--surface); stroke-width: .6; }
-.ecrou-dossier__voyant--valide { fill: var(--balise); }
-@media (prefers-reduced-motion: no-preference) {
-  .ecrou-dossier__facette { animation: facette-pose var(--t-etat) var(--ease-pose, ease-out) backwards; }
-  @keyframes facette-pose { from { opacity: 0; transform: scale(.85); transform-origin: 12px 13.86px; } }
-}
-
 /* ---------- Visionneuse (168:224) ---------- */
 .visionneuse { display: flex; flex-direction: column; gap: var(--esp-8); min-width: 0; margin: 0; }
 .visionneuse__titre { display: flex; align-items: center; justify-content: space-between; gap: var(--esp-8); height: 36px; margin: 0; }

@@ -1,0 +1,76 @@
+/* Espace pro (mécano) : socle commun à M0 → M5 (Figma 107:679 barre mécano, 56:469 onglets mécano, 54:641 interrupteur de disponibilité).
+   Aucun écran desktop n'est dessiné pour le mécano : mobile d'abord, puis une colonne centrée de 480 px sur grand écran. */
+
+.pro { width: 100%; max-width: 480px; margin-inline: auto; background: var(--surface); min-height: 100vh; min-height: 100dvh; }
+.pro--onglets .pro__contenu { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
+.pro__contenu > * { margin-block: 0; }
+
+/* L'échelle typographique desktop ne s'applique pas ici : la colonne reste celle de 390 px */
+@media (min-width: 1024px) {
+  .pro .t-display-xl { font-size: 52px; line-height: 48px; }
+  .pro .t-titre-1 { font-size: 30px; line-height: 32px; }
+  .pro .t-titre-2 { font-size: 24px; line-height: 28px; }
+  .pro .t-titre-3 { font-size: 19px; line-height: 24px; }
+  .pro .t-borne-xl { font-size: 44px; line-height: 44px; }
+  .pro .t-borne-l { font-size: 28px; line-height: 28px; }
+  .pro .t-borne-heure { font-size: 32px; line-height: 32px; }
+  .pro .t-lead { font-size: 19px; line-height: 28px; }
+  .pro .t-base, .pro .t-gras { font-size: 17px; line-height: 26px; }
+  .pro .t-citation { font-size: 24px; line-height: 34px; }
+  .pro .t-donnee { font-size: 14px; line-height: 20px; }
+}
+
+/* ---------- Barre mécano (107:679) ---------- */
+.barre-mecano { display: flex; align-items: center; justify-content: space-between; height: 56px; padding-inline: var(--marge); background: var(--surface); }
+.barre-mecano > p { margin: 0; white-space: nowrap; }
+.barre-mecano__logo { display: block; width: 112px; height: 22.454px; color: var(--encre); }
+.barre-mecano__logo svg { display: block; width: 100%; height: 100%; }
+
+/* ---------- Onglets mécano (56:469 · 107:842) ---------- */
+.onglets-mecano { position: fixed; z-index: 20; inset: auto 0 0 0; display: flex; width: 100%; max-width: 480px; height: calc(64px + env(safe-area-inset-bottom, 0px)); margin-inline: auto; padding-bottom: env(safe-area-inset-bottom, 0px); background: var(--bitume); border-top: 1px solid var(--filet-sombre); }
+.onglets-mecano__onglet { position: relative; display: flex; flex: 1; flex-direction: column; align-items: center; justify-content: center; gap: var(--esp-4); min-width: 0; color: var(--gris-voyant); font-weight: 700; font-size: 13px; line-height: normal; text-decoration: none; }
+.onglets-mecano__onglet:hover { color: var(--beton); }
+.onglets-mecano__onglet--actif { color: var(--beton); }
+.onglets-mecano__onglet--actif::before { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 3px; background: var(--balise); }
+.onglets-mecano__icone { position: relative; display: block; width: 24px; height: 24px; }
+.onglets-mecano__icone .icone { display: block; fill: none; }
+.onglets-mecano__compteur { position: absolute; left: 16px; top: -6px; padding: 1px 5px; border-radius: 9px; background: var(--beton); color: var(--bitume); }
+
+/* ---------- Interrupteur de disponibilité (54:641) ---------- */
+.interrupteur-dispo { display: flex; flex-direction: column; gap: var(--esp-8); padding: var(--esp-16); border-radius: var(--rayon); background: var(--bitume); color: var(--beton); transition: background-color 200ms linear; }
+.interrupteur-dispo > p { margin: 0; }
+.interrupteur-dispo--disponible { background: var(--dispo-fond); color: var(--blanc); }
+.interrupteur-dispo__etat { display: flex; align-items: center; gap: var(--esp-8); color: var(--gris-voyant); }
+.interrupteur-dispo--disponible .interrupteur-dispo__etat { color: var(--blanc); }
+.interrupteur-dispo--indisponible .t-titre-2 { color: var(--beton); }
+.interrupteur-dispo .bouton .icone { fill: none; }
+@media (prefers-reduced-motion: reduce) { .interrupteur-dispo { transition: none; } }
+
+/* ---------- Écrou dossier légendé (92:154) : 358 × 340, l'écrou au centre, six légendes reliées par des filets ---------- */
+.ecrou-legende { position: relative; width: 358px; max-width: 100%; height: 340px; margin-inline: auto; }
+.ecrou-legende__ecrou { position: absolute; left: 50%; top: 77.62px; transform: translateX(-50%); }
+.ecrou-legende__filets { position: absolute; inset: 12.35% 23.74%; background: var(--encre-2); -webkit-mask: url("../../img/pro/filets-legende.svg") center / 100% 100% no-repeat; mask: url("../../img/pro/filets-legende.svg") center / 100% 100% no-repeat; }
+.ecrou-legende__legende { margin: 0; padding: 0; list-style: none; }
+.ecrou-legende__legende li { position: absolute; white-space: nowrap; }
+.ecrou-legende__1 { left: 64.53%; top: 22px; }
+.ecrou-legende__2 { left: 77.37%; top: 152px; }
+.ecrou-legende__3 { left: 64.53%; top: 300px; }
+.ecrou-legende__4 { right: 64.53%; top: 300px; text-align: right; }
+.ecrou-legende__5 { right: 77.37%; top: 152px; text-align: right; }
+.ecrou-legende__6 { right: 64.53%; top: 4px; text-align: right; }
+
+/* ---------- Accordéon (92:251) ---------- */
+.accordeon { border-bottom: 1px solid var(--filet); }
+.accordeon__ligne { display: flex; align-items: center; gap: var(--esp-12); min-height: 56px; padding-block: 15px; color: var(--encre); cursor: pointer; list-style: none; }
+.accordeon__ligne::-webkit-details-marker { display: none; }
+.accordeon__ligne > span { flex: 1; min-width: 0; }
+.accordeon__ligne .icone { flex: none; fill: none; transition: transform var(--t-etat) linear; }
+.accordeon[open] .accordeon__ligne .icone { transform: rotate(90deg); }
+.accordeon__reponse { margin: 0; padding: 0 36px 18px 0; }
+@media (prefers-reduced-motion: reduce) { .accordeon__ligne .icone { transition: none; } }
+
+/* ---------- Ligne d'engagement (92:225) ---------- */
+.ligne-engagement { display: flex; align-items: flex-start; gap: var(--esp-12); padding-block: 14px; border-bottom: 1px solid var(--filet); }
+.ligne-engagement .poincon { flex: none; margin-top: 4px; }
+.ligne-engagement > div { display: flex; flex: 1; flex-direction: column; gap: 2px; min-width: 0; }
+.ligne-engagement p { margin: 0; }

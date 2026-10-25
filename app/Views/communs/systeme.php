@@ -338,6 +338,25 @@ $icones = json_decode((string) file_get_contents(RACINE . '/scripts/icones.json'
   </section>
 
   <section class="rubrique">
+    <span class="t-etiquette">Espace pro · barre mécano 107:679 · onglets mécano 56:469 · interrupteur de disponibilité 54:641 · écrou légendé 92:154 · accordéon 92:251 · engagement 92:225</span>
+    <div class="systeme__grille systeme__pro">
+      <?= composant('barre-mecano', []) ?>
+      <div class="systeme__onglets"><?= composant('onglets-mecano', ['actif' => 'statut', 'demandes' => 2]) ?></div>
+      <div class="systeme__onglets"><?= composant('onglets-mecano', ['actif' => 'avis']) ?></div>
+      <?= composant('interrupteur-dispo', ['etat' => 'indisponible', 'demo' => true]) ?>
+      <?= composant('interrupteur-dispo', ['etat' => 'disponible', 'demo' => true, 'zone' => "10\u{00A0}km autour de Riviera 3", 'depuis' => '07:32']) ?>
+      <?= composant('ecrou-legende', []) ?>
+      <div>
+        <?= composant('accordeon', ['question' => 'Combien ça coûte ?', 'reponse' => 'Rien. L’inscription est gratuite, et les appels des clients aussi.']) ?>
+        <?= composant('accordeon', ['question' => 'Je n’ai pas de diplôme, je peux m’inscrire ?', 'reponse' => 'Oui. Une attestation signée par un patron d’atelier suffit.', 'ouvert' => true]) ?>
+      </div>
+      <ul class="devenir__engagements" role="list">
+        <?= composant('ligne-engagement', ['titre' => 'La ponctualité', 'texte' => 'Vous dites quand vous arrivez. En retard, vous prévenez.']) ?>
+      </ul>
+    </div>
+  </section>
+
+  <section class="rubrique">
     <span class="t-etiquette">Signalements · onglets 179:607 · alerte critique en retard 179:614 · ligne de signalement 179:642 · 179:654 · 179:666</span>
     <div class="systeme__grille systeme__admin">
       <?= composant('onglets-admin', ['nom' => 'Exemple d’onglets', 'onglets' => [['libelle' => 'Ouverts · 3', 'href' => '#', 'actif' => true], ['libelle' => 'Classés · 30 jours', 'href' => '#', 'actif' => false]]]) ?>

@@ -17,3 +17,6 @@
 .systeme__a-produire .photo__a-produire { aspect-ratio: 3 / 2; }
 .systeme__carte-fond { display: inline-block; padding: 24px; background: var(--carte-sol); }
 .systeme__panneau { display: block; padding: 48px 0 0; max-width: 420px; }
+/* Espace pro : les onglets mécano sont fixés au bas de l'écran ; ici ils restent dans leur cadre */
+.systeme__onglets { position: relative; height: 64px; transform: translateZ(0); }
+.systeme__onglets .onglets-mecano { position: absolute; }

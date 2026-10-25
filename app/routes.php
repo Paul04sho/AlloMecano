@@ -15,6 +15,7 @@ use App\Controllers\Admin\SignalementAdminController;
 use App\Controllers\Admin\StatistiquesController;
 use App\Controllers\Admin\TableauController;
 use App\Controllers\Api\ClientController;
+use App\Controllers\Pro\DevenirController;
 use App\Controllers\Client\AccueilController;
 use App\Controllers\Client\AppelController;
 use App\Controllers\Client\AvisController;
@@ -68,7 +69,7 @@ $routeur->groupe('', [VerifierCsrf::class], function ($r) {
     });
 
     // ----- Mécano (chantier B) -----
-    // $r->get('/pro/devenir', …)         M0                        (à faire)
+    $r->get('/pro/devenir', [DevenirController::class, 'page'], 'devenir');                    // M0 · Devenir mécano vérifié
     // $r->get('/pro/inscription/{etape}', …)  M1a → M1d · M1f     (à faire)
     // $r->get('/pro', …)                 M2 · M2a · M2b            (à faire)
     // $r->get('/pro/demandes', …)        M3                        (à faire)
