@@ -1,6 +1,6 @@
 // Contact direct et WhatsApp (RG-A1, RG-A12), retour d'appel « Avez-vous pu le joindre ? » (RG-I4, C6) et numéro révélé (D1).
 // Sans JS, le formulaire crée le contact puis part vers « tel: » ou WhatsApp : tout ceci n'est que de l'amélioration.
-import { api, toast } from '../core/app.js';
+import { api, toast, vibrer } from '../core/app.js';
 import { initialiserMessage } from './fiche.js';
 
 const reduit = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -70,6 +70,7 @@ function reveler(formulaire, html) {
   zone.querySelector('[data-copier-numero]')?.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(zone.querySelector('[data-numero]').textContent.trim());
+      vibrer(10);
       toast('Copié', { icone: 'coche' });
     } catch {
       toast('Copiez le numéro à la main', { icone: 'info' });

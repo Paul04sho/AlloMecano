@@ -1,6 +1,6 @@
 // Fiche mécanicien (C5, panneau de D1) : « moment 5 » du prototype, copie du message, interrupteur de position, avis en plus.
 // Une même fonction sert la page et le panneau : elle reçoit la racine qui contient la fiche.
-import { api, toast } from '../core/app.js';
+import { api, toast, vibrer } from '../core/app.js';
 
 const reduit = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -57,6 +57,7 @@ export function initialiserMessage(racine) {
   bloc.querySelector('[data-copier]')?.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(texte());
+      vibrer(10);
       toast('Copié', { icone: 'coche' });
     } catch {
       // Presse-papiers refusé (HTTP, vieux navigateur) : on sélectionne le texte pour que le client le copie à la main

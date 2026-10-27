@@ -1,6 +1,6 @@
 // C5c · Appel intégré, côté client : WebRTC audio, signalisation par interrogation (RG-A8 : 1 s pendant la connexion, 3 s pendant l'appel).
 // Le serveur tient l'état de l'appel (30 s de sonnerie, RG-A5) ; ici on ne fait que négocier l'audio et montrer où on en est.
-import { api, csrf, toast } from '../core/app.js';
+import { api, csrf, toast, vibrer } from '../core/app.js';
 
 const racine = document.querySelector('[data-appel]');
 const id = racine.dataset.contact;
@@ -44,6 +44,7 @@ function passerEnLigne(depuisS) {
   racine.querySelector('[data-phase-sonne]').hidden = true;
   racine.querySelector('[data-phase-ligne]').hidden = false;
   racine.dataset.statut = 'decroche';
+  vibrer([20, 60, 20]); // le mécano a décroché : deux tics, comme un téléphone qui se connecte
   if (!reduit) racine.querySelector('[data-etat]').animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, easing: 'cubic-bezier(.2, .8, .2, 1)' });
 }
 

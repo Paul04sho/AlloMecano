@@ -120,6 +120,33 @@ export function demarrerRevelations() {
   });
 }
 
+/**
+ * Barre client (mobile) : se replie quand on descend, revient dès qu'on remonte, près du haut de la page
+ * ou quand le clavier y entre. Seuil de 8 px pour ignorer les petits tremblements du doigt.
+ */
+export function demarrerBarre() {
+  const barre = document.querySelector('header.barre:not(.barre--resultats)');
+  if (!barre || mouvementReduit()) return;
+  const mobile = window.matchMedia('(max-width: 1023.98px)');
+  let dernierY = window.scrollY;
+  let attente = false;
+  const regler = () => {
+    attente = false;
+    const y = window.scrollY;
+    const delta = y - dernierY;
+    if (!mobile.matches || y < barre.offsetHeight || barre.contains(document.activeElement)) barre.classList.remove('barre--repliee');
+    else if (delta > 8) barre.classList.add('barre--repliee');
+    else if (delta < -8) barre.classList.remove('barre--repliee');
+    if (Math.abs(delta) > 8) dernierY = y;
+  };
+  window.addEventListener('scroll', () => {
+    if (attente) return;
+    attente = true;
+    requestAnimationFrame(regler);
+  }, { passive: true });
+  barre.addEventListener('focusin', () => barre.classList.remove('barre--repliee'));
+}
+
 /** Active T1 sans intercepter ni retarder les navigations natives. */
 export function demarrerMarquage() {
   if (mouvementReduit()) {

@@ -1,6 +1,6 @@
 // C2a · Où êtes-vous ? (66:437, 198:1963) : demande la position, affiche la précision qui s'affine,
 // puis envoie le point en POST (jamais dans l'URL, RG-P1).
-import { chargement } from '../core/app.js';
+import { chargement, vibrer } from '../core/app.js';
 
 const racine = document.querySelector('[data-position-gps]');
 const formulaire = racine.querySelector('[data-formulaire-gps]');
@@ -51,6 +51,7 @@ function trouve(p) {
   voyant.removeAttribute('hidden');
   voyant.animate([{ opacity: 0, transform: 'scale(0)' }, { opacity: 1, transform: 'scale(1)' }], { duration: duree(240), easing: POSE, fill: 'both' });
   halo.animate([{ opacity: .5, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(2.6)' }], { delay: duree(120), duration: duree(600), easing: RADAR });
+  vibrer(15); // on vous a trouvé : un tic, au moment où le voyant s'allume
   formulaire.lat.value = p.coords.latitude.toFixed(6);
   formulaire.lon.value = p.coords.longitude.toFixed(6);
   formulaire.precision.value = Math.round(p.coords.accuracy);

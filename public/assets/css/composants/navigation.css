@@ -27,6 +27,12 @@
   }
 }
 
+/* Barre client (mobile) : se replie quand on descend la page, revient dès qu'on remonte (mouvement.js) */
+@media (max-width: 1023.98px) and (prefers-reduced-motion: no-preference) {
+  .barre { transition: transform var(--t-entree) var(--ease-sortie); }
+  .barre--repliee { transform: translateY(-100%); }
+}
+
 /* ---------- Barre de parcours : retour · ÉTAPE 2 / 3 · Annuler + marquage ---------- */
 .parcours { position: sticky; top: 0; z-index: 40; background: var(--surface); }
 .parcours__barre { display: grid; grid-template-columns: 48px 1fr auto; align-items: center; height: 56px; padding: 0 var(--marge) 0 4px; }

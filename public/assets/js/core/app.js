@@ -1,9 +1,10 @@
 // allomécano · comportements communs à toutes les pages (amélioration progressive : tout marche sans JS).
 
-import { demarrerMarquage, demarrerRevelations } from './mouvement.js';
+import { demarrerBarre, demarrerMarquage, demarrerRevelations } from './mouvement.js';
 
 demarrerMarquage();
 demarrerRevelations();
+demarrerBarre();
 
 /** Jeton CSRF pour fetch() : en-tête X-CSRF. */
 export const csrf = () => document.querySelector('meta[name="csrf"]')?.content ?? '';
@@ -89,6 +90,16 @@ if (!/^\/(pro|admin)(\/|$)/.test(location.pathname)) {
   addEventListener('offline', () => etatReseau(false));
   addEventListener('online', () => etatReseau(true));
   if (navigator.onLine === false) etatReseau(false);
+}
+
+/**
+ * Retour tactile court aux moments clés (Android ; iOS l'ignore). Chrome le refuse tant que la personne n'a pas touché
+ * la page en cours : on ne l'appelle qu'après un geste. Jamais en mouvement réduit.
+ */
+export function vibrer(motif) {
+  if (!navigator.vibrate || navigator.userActivation?.hasBeenActive === false) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  try { navigator.vibrate(motif); } catch { /* refusé par le navigateur : sans importance */ }
 }
 
 /** Bouton en chargement : libellé au présent + voyant clignotant, largeur figée (spec 7.2). */
