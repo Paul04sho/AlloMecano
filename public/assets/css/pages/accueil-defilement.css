@@ -9,12 +9,32 @@
     .revelations-actives .verification[data-apparition-defilement],
     .revelations-actives .trombi[data-apparition-defilement] { opacity: 1; transform: none; transition: none; }
 
-    /* Reconstitution : l'heure se pose, le fil se trace jusqu'au temps suivant, le récit monte */
+    /* Reconstitution : l'heure se pose, le récit monte, et la route se trace jusqu'au temps suivant
+       pendant qu'un voyant jaune la parcourt : le mécano qui vient vers Aminata, de 09:41 à 09:58 */
     .temps__heure time { animation: defile-pose linear both; animation-timeline: view(); animation-range: entry 20% cover 35%; }
-    .temps__marquage { transform-origin: top; animation: defile-trace-y linear both; animation-timeline: view(); animation-range: cover 25% cover 55%; }
     .temps__contenu { animation: defile-monte linear both; animation-timeline: view(); animation-range: entry 10% cover 30%; }
+    .temps__marquage { position: relative; view-timeline: --route block; background: none; }
+    .temps__marquage::before {
+      content: ""; position: absolute; inset: 0;
+      background: repeating-linear-gradient(180deg, var(--encre) 0 var(--esp-12), transparent 0 var(--esp-24));
+      transform-origin: top; animation: defile-trace-y linear both; animation-timeline: --route; animation-range: cover 25% cover 55%;
+    }
+    /* Le voyant : une bande aussi longue que la route, le point dessiné à son départ ; elle glisse d'une longueur de route
+       (translate en % de sa propre taille, que le rendu accéléré sait suivre) */
+    .temps__marquage::after {
+      content: ""; position: absolute; left: 50%; top: -9px; bottom: 9px; width: 28px; margin-left: -14px; pointer-events: none;
+      background: radial-gradient(circle at 50% 14px, var(--balise) 0 5px, var(--surface) 5px 8px, color-mix(in srgb, var(--balise) 45%, transparent) 8px, transparent 14px) no-repeat;
+      animation: defile-voyant-y linear both; animation-timeline: --route; animation-range: cover 25% cover 55%;
+    }
 
-    /* Vérification : le portrait et la pièce se rapprochent, puis chaque contrôle reçoit son poinçon */
+    /* Vérification : on entre sur le bitume. Le fond sombre arrive un peu resserré et s'élargit jusqu'aux bords de l'écran */
+    .verification { position: relative; isolation: isolate; background: none; view-timeline: --asphalte block; }
+    .verification::before {
+      content: ""; position: absolute; inset: 0; z-index: -1; background: var(--section-sombre);
+      animation: defile-asphalte linear both; animation-timeline: --asphalte; animation-range: entry 0% cover 25%;
+    }
+
+    /* Puis le portrait et la pièce se rapprochent, et chaque contrôle reçoit son poinçon */
     .verification__portrait { animation: defile-gauche linear both; animation-timeline: view(); animation-range: entry 15% cover 40%; }
     .verification__piece { animation: defile-droite linear both; animation-timeline: view(); animation-range: entry 15% cover 40%; }
     .verification__liste .poincon { animation: defile-tampon both; animation-timing-function: var(--ease-tampon); animation-timeline: view(); animation-range: entry 40% cover 30%; }
@@ -25,7 +45,12 @@
     }
 
     @media (min-width: 1024px) {
-      .temps__marquage { transform-origin: left; animation-name: defile-trace-x; }
+      .temps__marquage::before { background: repeating-linear-gradient(90deg, var(--encre) 0 var(--esp-12), transparent 0 var(--esp-20)); transform-origin: left; animation-name: defile-trace-x; }
+      .temps__marquage::after {
+        left: -9px; right: 9px; top: 50%; bottom: auto; width: auto; height: 28px; margin: -14px 0 0;
+        background-position: 0 0; background-image: radial-gradient(circle at 14px 50%, var(--balise) 0 5px, var(--surface) 5px 8px, color-mix(in srgb, var(--balise) 45%, transparent) 8px, transparent 14px);
+        animation-name: defile-voyant-x;
+      }
       /* Trombinoscope (desktop) : les quatre visages montent en décalé, une colonne sur deux un peu plus tard */
       .trombi__mecano { animation: defile-monte linear both; animation-timeline: view(); animation-range: entry 0% cover 30%; }
       .trombi__mecano:nth-child(2n) { animation-range: entry 10% cover 40%; }
@@ -37,7 +62,11 @@
 @keyframes defile-monte { from { opacity: 0; transform: translateY(var(--esp-24)); } }
 @keyframes defile-trace-y { from { transform: scaleY(0); } }
 @keyframes defile-trace-x { from { transform: scaleX(0); } }
+/* Le voyant suit la tête du tracé : il apparaît au départ et finit au bout de la route (100 % = la longueur de la bande = celle de la route) */
+@keyframes defile-voyant-y { 0% { opacity: 0; transform: translateY(0); } 10% { opacity: 1; } 100% { opacity: 1; transform: translateY(calc(100% - 10px)); } }
+@keyframes defile-voyant-x { 0% { opacity: 0; transform: translateX(0); } 10% { opacity: 1; } 100% { opacity: 1; transform: translateX(calc(100% - 10px)); } }
 @keyframes defile-gauche { from { opacity: 0; transform: translateX(calc(var(--esp-32) * -1)); } }
 @keyframes defile-droite { from { opacity: 0; transform: translateX(var(--esp-32)); } }
 @keyframes defile-tampon { from { opacity: 0; transform: scale(1.8); } }
+@keyframes defile-asphalte { from { transform: scaleX(.92); } }
 @keyframes defile-carte { from { opacity: .4; transform: scale(.88); } }

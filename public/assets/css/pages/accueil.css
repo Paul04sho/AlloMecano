@@ -12,6 +12,19 @@ html.demarrage-attente [data-entree] { animation-play-state: paused; }
 .heros__accroche > [data-entree]:nth-child(4), .heros__accroche > [data-entree]:nth-child(5) { --i: 3; }
 @keyframes accueil-entree { from { opacity: 0; transform: translateY(12px); } }
 
+/* Feux de détresse : une fois l'accroche posée, le bouton principal clignote deux fois, au rythme des feux (1 Hz),
+   comme la voiture d'Aminata garée au bord du boulevard. Une seule fois, puis il reste calme. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js .heros .bouton--principal { position: relative; }
+  html.js .heros .bouton--principal::after {
+    content: ""; position: absolute; inset: calc(var(--esp-4) * -1); border-radius: var(--rayon); pointer-events: none;
+    box-shadow: 0 0 0 2px var(--balise), 0 0 var(--esp-24) var(--esp-4) color-mix(in srgb, var(--balise) 60%, transparent);
+    opacity: 0; animation: feux-detresse 2s steps(1, end) 800ms forwards; /* pas « both » : le halo resterait allumé pendant le délai */
+  }
+  html.demarrage-attente .heros .bouton--principal::after { animation-play-state: paused; }
+}
+@keyframes feux-detresse { 0% { opacity: 1; } 25% { opacity: 0; } 50% { opacity: 1; } 75%, 100% { opacity: 0; } }
+
 /* ---------- Héros ---------- */
 .heros__photo img { height: 217px; object-position: center 21%; }
 .heros__accroche { display: flex; flex-direction: column; gap: var(--esp-8); padding: var(--esp-16) var(--marge) var(--esp-24); }

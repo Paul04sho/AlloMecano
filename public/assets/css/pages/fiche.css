@@ -19,6 +19,15 @@
 /* La photo se révèle depuis sa couleur dominante (moment 5) : sans JS, elle est simplement là */
 .js :is([data-fiche], [data-panneau]) .portrait-fiche img { opacity: 0; transition: opacity var(--t-entree) linear; }
 .js :is([data-fiche], [data-panneau]) .portrait-fiche img.charge { opacity: 1; }
+/* Le portrait en profondeur : quand on fait défiler la fiche, la photo glisse moins vite que la page et s'approche un peu.
+   Frise nommée sur le cadre : l'image, dans un cadre overflow:hidden, ne bouge pas par rapport à lui. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .portrait-fiche--plein { view-timeline: --portrait block; }
+    .portrait-fiche--plein img { animation: portrait-profondeur linear both; animation-timeline: --portrait; animation-range: exit 0% exit 100%; }
+  }
+}
+@keyframes portrait-profondeur { to { transform: translateY(30%) scale(1.06); } }
 
 /* ---------- Bandeau de preuve (76:1219 · 158:836) ---------- */
 .bandeau-preuve {

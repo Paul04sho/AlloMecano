@@ -39,6 +39,11 @@
 .resultats__liste { margin: 0; padding: 0; list-style: none; }
 .resultats__mecano:not(.choisi) .resultats__etendue, .resultats__mecano.choisi .resultats__compacte { display: none; }
 .resultats__mecano[hidden] { display: none; }
+/* La liste se pose en même temps que les repères sur la carte, dans l'ordre des distances (+70 ms par mécano, comme eux) */
+@media (prefers-reduced-motion: no-preference) {
+  .js .resultats__mecano { animation: resultats-pose var(--t-entree) var(--ease-sortie) both; animation-delay: calc(var(--i, 0) * 70ms); }
+}
+@keyframes resultats-pose { from { opacity: 0; transform: translateY(var(--esp-8)); } }
 .resultats__elargir { display: flex; flex-direction: column; gap: var(--esp-4); }
 .resultats__elargir-lien { align-self: flex-start; padding: 0; border: 0; background: none; color: var(--encre); font-size: 15px; line-height: 20px; cursor: pointer; text-decoration-thickness: from-font; text-underline-offset: 3px; }
 .resultats__vide { padding: var(--esp-16) 0; }

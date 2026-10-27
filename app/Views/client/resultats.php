@@ -87,7 +87,7 @@ $contact = function (array $m, string $canal, string $contenu) use ($recherche):
               $commun = ['nom' => $nom, 'portrait' => $m['portrait'] ?? ['src' => ''], 'specialites' => $m['specialites'], 'specialitePanne' => $m['specialites_panne'],
                   'note' => $m['note'], 'avis' => $m['avis'], 'quartier' => $m['quartier'], 'rang' => $m['rang'], 'distanceM' => $m['distance_m'],
                   'autreRive' => $m['autre_rive'], 'href' => '/mecano/' . $m['slug'] . '?r=' . $recherche['public_id'], 'attrs' => ['data-fiche' => $m['slug']], 'transition' => $m['slug']]; ?>
-            <li class="resultats__mecano<?= $i === 0 ? ' choisi' : '' ?><?= ($ouvert ?? null) === $m['slug'] ? ' ouvert' : '' ?>" data-rang="<?= $m['rang'] ?>" data-specialiste="<?= $m['specialiste'] ? '1' : '0' ?>" data-note="<?= e((string) ($m['note'] ?? 0)) ?>">
+            <li style="--i:<?= (int) $i ?>" class="resultats__mecano<?= $i === 0 ? ' choisi' : '' ?><?= ($ouvert ?? null) === $m['slug'] ? ' ouvert' : '' ?>" data-rang="<?= $m['rang'] ?>" data-specialiste="<?= $m['specialiste'] ? '1' : '0' ?>" data-note="<?= e((string) ($m['note'] ?? 0)) ?>">
               <?= composant('ligne-classement', $commun + ['format' => 'etendue', 'rubrique' => $i === 0 ? 'Le plus proche' : 'Choisi sur la carte', 'actions' => $actions, 'classe' => 'resultats__etendue']) ?>
               <?= composant('ligne-classement', $commun + ['classe' => 'resultats__compacte']) ?>
             </li>
