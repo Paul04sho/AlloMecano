@@ -1,0 +1,66 @@
+/* Entrée discrète, sans masquer le fond commun de la page. */
+.js main#contenu {
+  animation: entree-page var(--t-page) var(--ease-sortie);
+}
+
+@keyframes entree-page {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js main#contenu { animation: none; }
+}
+
+/* T1 « Marquage » : le repère jaune ne commence qu’après le délai du prototype. */
+html[data-transition-page="depart"]::before {
+  content: "";
+  position: fixed;
+  z-index: 10000;
+  inset: 0 0 auto;
+  height: 3px;
+  background: var(--balise);
+  opacity: 0;
+  pointer-events: none;
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation:
+    marquage-progression var(--t-nav-progression) var(--ease-trickle) var(--t-nav-attente) forwards,
+    marquage-apparition var(--t-nav-apparition) linear var(--t-nav-attente) forwards;
+}
+
+html[data-transition-page="arrivee"]::before {
+  content: "";
+  position: fixed;
+  z-index: 10000;
+  inset: 0 0 auto;
+  height: 3px;
+  background: var(--balise);
+  opacity: 1;
+  pointer-events: none;
+  transform: scaleX(.8);
+  transform-origin: left center;
+  animation:
+    marquage-finition var(--t-nav-finition) var(--ease-sortie) forwards,
+    marquage-disparition var(--t-etat) linear var(--t-nav-finition) forwards;
+}
+
+@keyframes marquage-progression {
+  to { transform: scaleX(.8); }
+}
+
+@keyframes marquage-apparition {
+  to { opacity: 1; }
+}
+
+@keyframes marquage-finition {
+  to { transform: scaleX(1); }
+}
+
+@keyframes marquage-disparition {
+  to { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-transition-page]::before { content: none; animation: none; }
+}

@@ -35,7 +35,7 @@ $nbsp = Format::INSECABLE;
     <div data-bornes><?= composant('bornes-jour', ['bornes' => $bornes]) ?></div>
   </section>
 
-  <section class="tableau__demandes" aria-labelledby="demandes-titre">
+  <section class="tableau__demandes" aria-labelledby="demandes-titre" data-apparition-defilement>
     <div class="tableau__entete">
       <p class="t-etiquette t-secondaire">Dernières demandes</p>
       <?php if ($liste['total'] > 0): ?><h2 class="t-titre-2" id="demandes-titre"><?= e($liste['titre']) ?></h2>
@@ -49,7 +49,7 @@ $nbsp = Format::INSECABLE;
     <?php endif ?>
   </section>
 
-  <section class="tableau__avis" aria-labelledby="avis-titre">
+  <section class="tableau__avis" aria-labelledby="avis-titre" data-apparition-defilement>
     <?php if ($avis !== null): ?>
       <p class="t-etiquette t-secondaire" id="avis-titre">Dernier avis · <?= e(Format::nombre((float) $profil['note'], 1)) ?> sur 5 · <?= (int) $profil['nb_avis'] ?> avis</p>
       <?= composant('avis', $avis + ['prenomMecano' => $profil['prenom']]) ?>
@@ -57,7 +57,7 @@ $nbsp = Format::INSECABLE;
     <a class="lien-icone t-gras tableau__lien" href="/pro/apercu"><span>Voir ma fiche comme un client</span><?= icone('chevron', 20) ?></a>
   </section>
 
-  <section class="tableau__conseil" aria-labelledby="conseil-titre">
+  <section class="tableau__conseil" aria-labelledby="conseil-titre" data-apparition-defilement>
     <p class="t-etiquette t-secondaire" id="conseil-titre">Le conseil de la semaine</p>
     <?= composant('photo', [
         'image' => 'img/accueil/img-05', 'largeurs' => [302, 604], 'sizes' => '358px', 'largeur' => 604, 'hauteur' => 756, 'classe' => 'tableau__photo',

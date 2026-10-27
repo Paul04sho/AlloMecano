@@ -29,7 +29,7 @@ $i = $stats['indisponibles'];
     </div>
   </header>
 
-  <section class="stats__entonnoir" aria-labelledby="entonnoir-titre">
+  <section class="stats__entonnoir" aria-labelledby="entonnoir-titre" data-apparition-defilement>
     <header class="stats__titre">
       <p class="t-etiquette t-secondaire"><?= e(Format::typo('Entonnoir · ' . $p . ' jours · valeurs sur ' . $autre . ' jours en dessous')) ?></p>
       <h2 class="t-titre-2" id="entonnoir-titre">De la recherche à l’avis</h2>
@@ -51,7 +51,7 @@ $i = $stats['indisponibles'];
     </table>
   </section>
 
-  <section class="stats__indicateurs" aria-label="Indicateurs">
+  <section class="stats__indicateurs" aria-label="Indicateurs" data-apparition-defilement>
     <?= composant('indicateur-stat', [
         'titre' => 'Délai moyen de validation', 'valeur' => $v['heures'] ?? '—', 'unite' => $v['heures'] !== null ? 'h' : null,
         'repere' => Format::typo('Objectif : moins de ' . $v['objectif'] . Format::INSECABLE . 'h' . ($v['mois_dernier'] !== null ? ' · ' . $v['mois_dernier'] . Format::INSECABLE . 'h le mois dernier' : '')),

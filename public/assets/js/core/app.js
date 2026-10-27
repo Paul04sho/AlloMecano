@@ -1,5 +1,10 @@
 // allomécano · comportements communs à toutes les pages (amélioration progressive : tout marche sans JS).
 
+import { demarrerMarquage, demarrerRevelations } from './mouvement.js';
+
+demarrerMarquage();
+demarrerRevelations();
+
 /** Jeton CSRF pour fetch() : en-tête X-CSRF. */
 export const csrf = () => document.querySelector('meta[name="csrf"]')?.content ?? '';
 

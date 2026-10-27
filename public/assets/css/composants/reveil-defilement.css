@@ -1,0 +1,21 @@
+/* Les groupes restent visibles sans JS, sans IntersectionObserver et en mouvement réduit. */
+.revelations-actives [data-apparition-defilement]:not([data-apparition-visible]) {
+  opacity: 0;
+  transform: translateY(var(--esp-12));
+}
+
+.revelations-actives [data-apparition-defilement][data-apparition-visible] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--t-entree) var(--ease-sortie),
+    transform var(--t-entree) var(--ease-sortie);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .revelations-actives [data-apparition-defilement] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

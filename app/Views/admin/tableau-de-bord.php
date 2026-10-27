@@ -19,7 +19,7 @@ $nombre = static fn (int $n): string => Format::nombre($n);
   <h1 class="admin__titre">Tableau de bord</h1>
 </header>
 
-<section class="indicateurs" aria-label="Indicateurs">
+<section class="indicateurs" aria-label="Indicateurs" data-apparition-defilement>
   <?= composant('indicateur', ['valeur' => $i['attente'], 'libelle' => 'Dossiers en attente' . ($i['plus_ancien_h'] !== null ? ' · le plus ancien : ' . $i['plus_ancien_h'] . ' h' : '')]) ?>
   <?= composant('indicateur', ['valeur' => $i['signalements']['ouverts'], 'titre' => 'Signalements ouverts', 'libelle' => $i['signalements']['critiques'] > 0 ? 'Dont ' . $i['signalements']['critiques'] . ' critique' . ($i['signalements']['critiques'] > 1 ? 's' : '') : 'Aucun critique', 'etat' => $i['signalements']['critiques'] > 0 ? 'erreur' : 'dispo']) ?>
   <?= composant('indicateur', ['valeur' => $i['disponibles'], 'libelle' => 'Disponibles maintenant', 'etat' => 'dispo']) ?>
@@ -27,7 +27,7 @@ $nombre = static fn (int $n): string => Format::nombre($n);
 </section>
 
 <div class="admin__colonnes">
-  <section class="admin__file" aria-labelledby="file-titre">
+  <section class="admin__file" aria-labelledby="file-titre" data-apparition-defilement>
     <div class="admin__rubrique">
       <p class="t-etiquette t-secondaire">File d’attente · <?= (int) $enAttente ?> dossier<?= $enAttente > 1 ? 's' : '' ?> · le plus ancien d’abord</p>
       <h2 class="t-titre-1" id="file-titre"><?= count($anciens) > 1 ? 'Les ' . count($anciens) . ' plus anciens' : 'Le plus ancien' ?></h2>
@@ -43,14 +43,14 @@ $nombre = static fn (int $n): string => Format::nombre($n);
   </section>
 
   <div class="admin__activite">
-    <section aria-labelledby="communes-titre">
+    <section aria-labelledby="communes-titre" data-apparition-defilement>
       <div class="admin__rubrique">
         <p class="t-etiquette t-secondaire">Maintenant · <?= (int) $i['disponibles'] ?> mécano<?= $i['disponibles'] > 1 ? 's' : '' ?> disponible<?= $i['disponibles'] > 1 ? 's' : '' ?></p>
         <h2 class="t-titre-3" id="communes-titre">Disponibles par commune</h2>
       </div>
       <?= composant('barres-communes', ['communes' => $communes]) ?>
     </section>
-    <section aria-labelledby="relations-titre">
+    <section aria-labelledby="relations-titre" data-apparition-defilement>
       <div class="admin__rubrique">
         <p class="t-etiquette t-secondaire">30 derniers jours · <?= e($nombre($relations['total'])) ?> mises en relation</p>
         <h2 class="t-titre-3" id="relations-titre">Mises en relation sur 30 jours</h2>

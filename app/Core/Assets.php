@@ -15,6 +15,8 @@ final class Assets
         'css/fonts.css',
         'css/tokens.css',
         'css/base.css',
+        'css/composants/transition-page.css',
+        'css/composants/reveil-defilement.css',
         'css/composants/bouton.css',
         'css/composants/champ.css',
         'css/composants/signes.css',

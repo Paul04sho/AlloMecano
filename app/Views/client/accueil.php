@@ -74,7 +74,7 @@ $lienWhatsapp = 'https://wa.me/?text=' . rawurlencode(url('/'));
   </div>
 
   <!-- Récit minuté (S9) : trois temps -->
-  <section class="recit" id="reconstitution" aria-labelledby="recit-titre">
+  <section class="recit" id="reconstitution" aria-labelledby="recit-titre" data-apparition-defilement>
     <div class="rubrique">
       <p class="t-etiquette">Reconstitution</p>
       <h2 class="t-titre-1" id="recit-titre">Mardi, 09:41,<br class="seul-mobile"> boulevard VGE.</h2>
@@ -127,7 +127,7 @@ $lienWhatsapp = 'https://wa.me/?text=' . rawurlencode(url('/'));
   </section>
 
   <!-- Visage vérifié : section sombre -->
-  <section class="verification sur-sombre" aria-labelledby="verification-titre">
+  <section class="verification sur-sombre" aria-labelledby="verification-titre" data-apparition-defilement>
     <div class="rubrique verification__rubrique">
       <p class="t-etiquette">Vérification</p>
       <h2 class="t-titre-1" id="verification-titre">On a vérifié son visage, pas seulement son numéro.</h2>
@@ -154,7 +154,7 @@ $lienWhatsapp = 'https://wa.me/?text=' . rawurlencode(url('/'));
   </section>
 
   <!-- Trombinoscope -->
-  <section class="trombi" aria-labelledby="trombi-titre">
+  <section class="trombi" aria-labelledby="trombi-titre" data-apparition-defilement>
     <div class="rubrique">
       <p class="t-etiquette">Ils réparent près de vous</p>
       <h2 class="t-titre-1" id="trombi-titre">Des visages, pas des numéros.</h2>
@@ -179,7 +179,7 @@ $lienWhatsapp = 'https://wa.me/?text=' . rawurlencode(url('/'));
   </section>
 
   <!-- Tableau des communes : nombres réels (RG-R3) -->
-  <section class="communes" aria-labelledby="communes-titre" data-communes>
+  <section class="communes" aria-labelledby="communes-titre" data-communes data-apparition-defilement>
     <div class="rubrique">
       <p class="t-etiquette"><?= count($communes) ?> communes · mis à jour à <time datetime="<?= e($maintenant->format('c')) ?>"><?= e(Format::heure($maintenant)) ?></time></p>
       <h2 class="communes__titre" id="communes-titre"><?= e(Format::typo('Qui est disponible, et où ?')) ?></h2>
