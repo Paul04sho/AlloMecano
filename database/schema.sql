@@ -62,7 +62,7 @@ CREATE TABLE `specialites` (
   UNIQUE KEY `uq_specialites_code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Ce que le mécano sait réparer (étiquettes de la fiche).';
 
--- Référentiels · Les tuiles « Qu'est-ce qui s'allume ? » de l'écran C3.
+-- Référentiels · Les tuiles « Quelle est la panne ? » de l'écran C3.
 DROP TABLE IF EXISTS `pannes`;
 CREATE TABLE `pannes` (
   `id` SMALLINT UNSIGNED AUTO_INCREMENT NOT NULL COMMENT 'Identifiant',

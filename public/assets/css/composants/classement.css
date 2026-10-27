@@ -105,3 +105,8 @@ a.ligne-commune:hover .ligne-commune__nom { text-decoration: underline; text-dec
 .ligne-classement__actions--compactes form:last-child .bouton { width: 56px; min-width: 56px; padding: 0; }
 .ligne-classement__actions--compactes form:last-child .bouton__libelle { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 .ligne-classement__actions .bouton__libelle { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Sans photo : initiales sur surface creuse (portrait rond 52, ou 4:5 coupe M sur la ligne étendue) */
+.ligne-classement__initiales { display: grid; place-items: center; background: var(--surface-creuse); color: var(--encre-2); font-family: var(--police-marque); font-weight: 800; }
+.ligne-classement__portrait .ligne-classement__initiales { width: 52px; height: 52px; border-radius: 50%; font-size: 18px; }
+.ligne-classement__portrait45.ligne-classement__initiales { font-size: 28px; }

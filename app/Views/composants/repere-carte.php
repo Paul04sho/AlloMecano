@@ -7,6 +7,7 @@
  * @var string $type
  * @var int|string $rang
  * @var ?string $visage    URL du portrait WebP 80 × 80 (sélectionné)
+ * @var ?string $cadrage   Point focal « x% y% » du portrait, calculé depuis PhotoService
  * @var ?string $etiquette « 1 · 1,2 KM » (sélectionné)
  * @var ?int $largeur   largeur en pixels si elle diffère du type (W44 pour le mécano suivant de C5c, 270:1862)
  */
@@ -21,7 +22,7 @@ $rayon = ['rang' => 8.5, 'numerote' => 8.17, 'selectionne' => 9.5][$type] ?? 8.1
     <circle cx="14" cy="16.17" r="<?= $rayon ?>"/>
   </svg>
   <?php if ($type === 'selectionne'): ?>
-    <?php if (!empty($visage)): ?><img class="repere__visage" src="<?= e($visage) ?>" width="38" height="38" alt=""><?php endif ?>
+    <?php if (!empty($visage)): ?><img class="repere__visage" src="<?= e($visage) ?>" width="38" height="38" alt=""<?= !empty($cadrage) ? ' style="object-position:' . e($cadrage) . '"' : '' ?>><?php endif ?>
     <?php if (!empty($etiquette)): ?><span class="repere__etiquette t-etiquette"><?= e($etiquette) ?></span><?php endif ?>
   <?php else: ?>
     <span class="repere__rang"><?= e((string) $rang) ?></span>

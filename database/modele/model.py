@@ -58,7 +58,7 @@ table("specialites","ref","Ce que le mécano sait réparer (étiquettes de la fi
  ("actif",B,False,"1","Proposée à l'inscription"),
 ],["id"],uniques=[("uq_specialites_code",["code"])])
 
-table("pannes","ref","Les tuiles « Qu'est-ce qui s'allume ? » de l'écran C3.",[
+table("pannes","ref","Les tuiles « Quelle est la panne ? » de l'écran C3.",[
  ("id","SMALLINT UNSIGNED AUTO_INCREMENT",False,None,"Identifiant"),
  ("code","VARCHAR(40)",False,None,"« batterie »"),
  ("libelle","VARCHAR(60)",False,None,"« Batterie »"),
