@@ -27,7 +27,7 @@ final class AccueilController
             'trombinoscope' => AccueilService::trombinoscope(),
             'maintenant' => new \DateTimeImmutable('now', new \DateTimeZone('UTC')),
             'bandeauContact' => $bandeau,
-            'css' => $bandeau !== null ? ['css/pages/accueil.css', 'css/pages/contact.css'] : ['css/pages/accueil.css'],
+            'css' => $bandeau !== null ? ['css/pages/accueil.css', 'css/pages/accueil-defilement.css', 'css/pages/contact.css'] : ['css/pages/accueil.css', 'css/pages/accueil-defilement.css'],
             'js' => ['js/pages/accueil.js'],
         ], 'layouts/client'));
     }

@@ -1,0 +1,43 @@
+/* C1 · D0 · L'accueil raconté au défilement : les sections avancent avec le doigt.
+   Animations liées au défilement (animation-timeline), calculées hors du fil principal, sans script.
+   Sans prise en charge ou en mouvement réduit, l'accueil reste tel quel, entièrement visible. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+
+    /* Ces sections se racontent elles-mêmes : pas d'apparition de section par-dessus (reveil-defilement.css) */
+    .revelations-actives .recit[data-apparition-defilement],
+    .revelations-actives .verification[data-apparition-defilement],
+    .revelations-actives .trombi[data-apparition-defilement] { opacity: 1; transform: none; transition: none; }
+
+    /* Reconstitution : l'heure se pose, le fil se trace jusqu'au temps suivant, le récit monte */
+    .temps__heure time { animation: defile-pose linear both; animation-timeline: view(); animation-range: entry 20% cover 35%; }
+    .temps__marquage { transform-origin: top; animation: defile-trace-y linear both; animation-timeline: view(); animation-range: cover 25% cover 55%; }
+    .temps__contenu { animation: defile-monte linear both; animation-timeline: view(); animation-range: entry 10% cover 30%; }
+
+    /* Vérification : le portrait et la pièce se rapprochent, puis chaque contrôle reçoit son poinçon */
+    .verification__portrait { animation: defile-gauche linear both; animation-timeline: view(); animation-range: entry 15% cover 40%; }
+    .verification__piece { animation: defile-droite linear both; animation-timeline: view(); animation-range: entry 15% cover 40%; }
+    .verification__liste .poincon { animation: defile-tampon both; animation-timing-function: var(--ease-tampon); animation-timeline: view(); animation-range: entry 40% cover 30%; }
+
+    /* Trombinoscope (mobile) : chaque visage grandit en entrant dans la bande qu'on fait glisser */
+    @media (max-width: 1023.98px) {
+      .trombi__mecano { animation: defile-carte linear both; animation-timeline: view(inline); animation-range: entry 0% entry 100%; }
+    }
+
+    @media (min-width: 1024px) {
+      .temps__marquage { transform-origin: left; animation-name: defile-trace-x; }
+      /* Trombinoscope (desktop) : les quatre visages montent en décalé, une colonne sur deux un peu plus tard */
+      .trombi__mecano { animation: defile-monte linear both; animation-timeline: view(); animation-range: entry 0% cover 30%; }
+      .trombi__mecano:nth-child(2n) { animation-range: entry 10% cover 40%; }
+    }
+  }
+}
+
+@keyframes defile-pose { from { opacity: .15; transform: translateY(var(--esp-16)); } }
+@keyframes defile-monte { from { opacity: 0; transform: translateY(var(--esp-24)); } }
+@keyframes defile-trace-y { from { transform: scaleY(0); } }
+@keyframes defile-trace-x { from { transform: scaleX(0); } }
+@keyframes defile-gauche { from { opacity: 0; transform: translateX(calc(var(--esp-32) * -1)); } }
+@keyframes defile-droite { from { opacity: 0; transform: translateX(var(--esp-32)); } }
+@keyframes defile-tampon { from { opacity: 0; transform: scale(1.8); } }
+@keyframes defile-carte { from { opacity: .4; transform: scale(.88); } }
