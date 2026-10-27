@@ -56,3 +56,10 @@ function fr_typo(string $texte): string
 {
     return Format::typo($texte);
 }
+
+/** Déclarations CSS qui font voyager le portrait d'un mécano d'un écran à l'autre (transition-vue.css). Vide sans slug. */
+function vue_portrait(?string $slug): string
+{
+    $nom = preg_replace('/[^a-z0-9-]/', '', strtolower((string) $slug));
+    return $nom === '' ? '' : 'view-transition-name:portrait-' . $nom . ';view-transition-class:portrait';
+}

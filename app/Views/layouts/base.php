@@ -21,6 +21,18 @@ $theme = in_array($theme, ['clair', 'sombre'], true) ? $theme : null;
 <head>
   <meta charset="utf-8">
   <script>document.documentElement.classList.add('js')</script>
+  <?php /* Transitions entre pages : déclarées ici, en ligne, car la page d'arrivée doit les accepter avant son premier rendu (styles dans transition-vue.css) */ ?>
+  <style>@media (prefers-reduced-motion: no-preference) { @view-transition { navigation: auto; } }</style>
+  <script>
+    // Arrivée par une transition de page : pas de seconde entrée ; au retour, la page vient du haut
+    addEventListener('pagereveal', function (e) {
+      if (!e.viewTransition) return;
+      document.documentElement.classList.add('vue-transition');
+      e.viewTransition.ready.catch(function () {}); // transition sautée (page cachée, élément manquant) : la page s'affiche normalement
+      var a = window.navigation && navigation.activation;
+      if (a && a.from && a.entry && a.entry.index < a.from.index) e.viewTransition.types.add('retour');
+    });
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title><?= e(isset($titre) ? $titre . ' · allomécano' : 'allomécano · Le mécano vérifié le plus proche') ?></title>
   <meta name="description" content="<?= e($description ?? 'En panne à Abidjan ? Trouvez le mécanicien vérifié et disponible le plus proche, et appelez-le directement.') ?>">

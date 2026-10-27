@@ -25,6 +25,7 @@
  * @var ?string $actions     étendue : HTML des boutons
  * @var ?string $classe
  * @var array<string,string> $attrs
+ * @var ?string $transition  slug du mécano : son portrait voyage jusqu'à sa fiche (transition-vue.css)
  */
 use App\Core\Format;
 
@@ -43,6 +44,7 @@ $enGras = is_array($specialitePanne ?? null) ? $specialitePanne : (isset($specia
 $meta = !empty($nouveau) ? ['Nouveau'] : [Format::note($note ?? null) . Format::INSECABLE . '★', $avis . Format::INSECABLE . 'avis'];
 if (!empty($quartier) && ($format ?? 'compacte') !== 'etendue') { $meta[] = $quartier; } // l'étendue (60:409) n'affiche que note et avis
 $photo = is_array($portrait) ? $portrait : ['src' => $portrait];
+$vue = vue_portrait($transition ?? null);
 // Pas de photo (pas encore livrée ou fichier absent) : initiales sur surface creuse, jamais un <img src=""> cassé
 $initiales = mb_strtoupper(implode('', array_map(fn ($m) => mb_substr($m, 0, 1), array_slice(preg_split('/[\s-]+/u', trim($nom)) ?: [], 0, 2))));
 $html = '';
@@ -69,7 +71,7 @@ if ($format === 'etendue'): ?>
     </span>
     <?php if (empty($photo['src'])): ?><span class="ligne-classement__portrait45 ligne-classement__initiales" aria-hidden="true"><?= e($initiales) ?></span><?php else: ?>
     <img class="ligne-classement__portrait45" src="<?= e($photo['src']) ?>"<?= !empty($photo['srcset']) ? ' srcset="' . e($photo['srcset']) . '" sizes="80px"' : '' ?> width="80" height="100" alt=""
-         style="<?= !empty($photo['couleur']) ? 'background:' . e($photo['couleur']) . ';' : '' ?><?= !empty($photo['cadrage']) ? 'object-position:' . e($photo['cadrage']) : '' ?>" decoding="async">
+         style="<?= !empty($photo['couleur']) ? 'background:' . e($photo['couleur']) . ';' : '' ?><?= !empty($photo['cadrage']) ? 'object-position:' . e($photo['cadrage']) . ';' : '' ?><?= $vue ?>" decoding="async">
     <?php endif ?>
   </div>
   <?php if (!empty($actions)): ?><div class="ligne-classement__actions"><?= $actions ?></div><?php endif ?>
@@ -87,7 +89,7 @@ $balise = isset($href) ? 'a' : 'div'; ?>
   <span class="ligne-classement__portrait">
     <?php if (!empty($photo['src'])): ?>
     <img src="<?= e($photo['src']) ?>"<?= !empty($photo['srcset']) ? ' srcset="' . e($photo['srcset']) . '" sizes="52px"' : '' ?> width="52" height="52" alt="" loading="lazy" decoding="async"
-         style="<?= !empty($photo['couleur']) ? 'background:' . e($photo['couleur']) . ';' : '' ?><?= !empty($photo['cadrage']) ? 'object-position:' . e($photo['cadrage']) : '' ?>">
+         style="<?= !empty($photo['couleur']) ? 'background:' . e($photo['couleur']) . ';' : '' ?><?= !empty($photo['cadrage']) ? 'object-position:' . e($photo['cadrage']) . ';' : '' ?><?= $vue ?>">
     <?php else: ?><span class="ligne-classement__initiales" aria-hidden="true"><?= e($initiales) ?></span><?php endif ?>
     <?php if ($verifie): ?><?= composant('poincon', ['taille' => 18, 'surPhoto' => true]) ?><?php endif ?>
   </span>

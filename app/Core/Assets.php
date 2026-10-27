@@ -16,6 +16,7 @@ final class Assets
         'css/tokens.css',
         'css/base.css',
         'css/composants/transition-page.css',
+        'css/composants/transition-vue.css',
         'css/composants/reveil-defilement.css',
         'css/composants/bouton.css',
         'css/composants/champ.css',

@@ -41,7 +41,7 @@ $heureAppel = $c['heure'];
     <h2 class="retour__titre t-titre-1" id="retour-titre" tabindex="-1"><?= e($suivant['prenom']) ?> est à <?= e(Format::distance($suivant['distance_m'])) ?> et disponible.</h2>
     <p class="retour__texte t-base t-secondaire"><?= $typo('Vérifié lui aussi. Appelez-le directement, sans repasser par la liste.') ?></p>
     <?= composant('ligne-classement', [
-        'format' => 'etendue', 'href' => '/mecano/' . $suivant['slug'] . '?r=' . $c['recherche'], 'nom' => $suivant['prenom'] . ' ' . $suivant['nom'], 'portrait' => $suivant['portrait'] ?? ['src' => ''],
+        'format' => 'etendue', 'transition' => $suivant['slug'], 'href' => '/mecano/' . $suivant['slug'] . '?r=' . $c['recherche'], 'nom' => $suivant['prenom'] . ' ' . $suivant['nom'], 'portrait' => $suivant['portrait'] ?? ['src' => ''],
         'specialites' => $suivant['specialites'], 'specialitePanne' => $suivant['specialites_panne'], 'note' => $suivant['note'], 'avis' => $suivant['avis'],
         'rang' => $suivant['rang'], 'distanceM' => $suivant['distance_m'], 'autreRive' => $suivant['autre_rive'], 'rubrique' => $suivant['rubrique'], 'classe' => 'retour__suivant',
         'actions' => composant('formulaire-contact', ['mecano' => $suivant['public_id'], 'recherche' => $c['recherche'], 'canal' => 'app', 'precedent' => $c['public_id'], 'position' => $c['position_partagee'],

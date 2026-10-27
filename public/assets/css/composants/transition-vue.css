@@ -1,0 +1,38 @@
+/* Transitions entre pages (View Transitions entre documents, Chrome Android 126+).
+   Ailleurs, la navigation reste normale avec le marquage T1 (transition-page.css).
+   Rien n'attend la fin d'une transition : la nouvelle page est utilisable dès qu'elle est là.
+   L'activation (@view-transition) est en ligne dans layouts/base.php : une page d'arrivée ne la lit pas à temps dans une feuille externe. */
+
+/* Ce qui reste en place pendant que la page change : la barre du haut, la barre d'étapes, le socle */
+.barre:not(.barre--resultats), .barre-formulaire, .barre-mecano { view-transition-name: barre; }
+.parcours { view-transition-name: parcours; }
+.socle { view-transition-name: socle; }
+
+/* La page : l'ancienne s'efface, la nouvelle monte de 6 px (prototype T2), ou descend au retour */
+::view-transition-old(root) { animation: vue-sortie var(--t-etat) var(--ease-sortie) both; }
+::view-transition-new(root) { animation: vue-entree var(--t-page) var(--ease-sortie) both; }
+html:active-view-transition-type(retour)::view-transition-new(root) { animation-name: vue-entree-retour; }
+
+/* Les éléments partagés glissent d'un écran à l'autre */
+::view-transition-group(barre),
+::view-transition-group(parcours),
+::view-transition-group(socle) { animation-duration: var(--t-entree); animation-timing-function: var(--ease-sortie); }
+
+/* Le socle qui n'existe que d'un côté monte ou descend, comme à l'arrivée d'une page */
+::view-transition-new(socle):only-child { animation: vue-socle-entree var(--t-entree) var(--ease-sortie) both; }
+::view-transition-old(socle):only-child { animation: vue-socle-sortie var(--t-etat) var(--ease-sortie) both; }
+
+/* Le portrait du mécano voyage de la liste des résultats jusqu'à sa fiche */
+::view-transition-group(*.portrait) { animation-duration: var(--t-lieu); animation-timing-function: var(--ease-sortie); }
+::view-transition-old(*.portrait),
+::view-transition-new(*.portrait) { height: 100%; object-fit: cover; }
+
+/* La page arrive déjà par la transition : pas de seconde entrée par-dessus */
+.vue-transition main#contenu,
+.vue-transition .socle { animation: none; }
+
+@keyframes vue-sortie { to { opacity: 0; } }
+@keyframes vue-entree { from { opacity: 0; transform: translateY(6px); } }
+@keyframes vue-entree-retour { from { opacity: 0; transform: translateY(-6px); } }
+@keyframes vue-socle-entree { from { transform: translateY(100%); } }
+@keyframes vue-socle-sortie { to { transform: translateY(100%); } }

@@ -7,6 +7,7 @@
  * @var string $mode           plein | panneau
  * @var string $retour         adresse du bouton retour (mode plein)
  * @var ?string $puce          « 1,2 km · Riviera 3 »
+ * @var ?string $transition    slug du mécano : le portrait arrive de la ligne de résultats touchée (transition-vue.css)
  */
 $mode ??= 'plein';
 ?>
@@ -14,7 +15,7 @@ $mode ??= 'plein';
   <?php if (!empty($photo)): ?>
     <img src="<?= e($photo['src']) ?>" srcset="<?= e($photo['srcset']) ?>" sizes="<?= $mode === 'plein' ? '(min-width: 560px) 560px, 100vw' : '372px' ?>"
          alt="Portrait de <?= e($nom) ?>" decoding="async" fetchpriority="high" data-portrait
-         style="object-position:<?= e($photo['cadrage']) ?>">
+         style="object-position:<?= e($photo['cadrage']) ?>;<?= vue_portrait($transition ?? null) ?>">
   <?php endif ?>
   <?php if ($mode === 'plein'): ?>
     <a class="bouton-icone bouton-icone--bitume portrait-fiche__bouton" href="<?= e($retour) ?>" data-retour aria-label="Retour"><?= icone('retour') ?></a>

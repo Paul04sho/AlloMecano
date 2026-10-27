@@ -31,7 +31,7 @@ $phraseZone = 'Intervient ' . ($communes !== '' ? 'à ' . $communes . ', ' : '')
 $sections = fn (string $surtitre, string $titre, string $id) => '<header class="fiche__entete"><p class="t-etiquette t-secondaire">' . e($surtitre) . '</p><h2 class="t-titre-2" id="' . $id . '">' . e($titre) . '</h2></header>';
 ?>
 <article class="fiche" data-fiche data-slug="<?= e($f['slug']) ?>" data-recherche="<?= e((string) $rechercheId) ?>" data-retour="<?= e($retour) ?>">
-  <?= composant('portrait-fiche', ['photo' => $f['portrait'], 'nom' => $f['nom_complet'], 'mode' => 'plein', 'retour' => $retour, 'puce' => $puce]) ?>
+  <?= composant('portrait-fiche', ['photo' => $f['portrait'], 'nom' => $f['nom_complet'], 'mode' => 'plein', 'retour' => $retour, 'puce' => $puce, 'transition' => $f['slug']]) ?>
   <?php if ($f['verifie_le'] !== null): ?><?= composant('bandeau-preuve', ['date' => $f['verifie_le']]) ?><?php endif ?>
 
   <div class="fiche__corps">
