@@ -752,7 +752,7 @@ INSERT INTO quartiers (commune_id,nom,slug,alias,lat,lon) VALUES
 ((SELECT id FROM communes WHERE slug='yopougon'),'Niangon','yopougon-niangon','Niangon Nord, Niangon Sud',5.3350,-4.1050),
 ((SELECT id FROM communes WHERE slug='yopougon'),'Sideci','yopougon-sideci','Sidéci',5.3350,-4.0750),
 ((SELECT id FROM communes WHERE slug='yopougon'),'Selmer','yopougon-selmer',NULL,5.3500,-4.0800),
-((SELECT id FROM communes WHERE slug='yopougon'),'Maroc','yopougon-maroc',NULL,5.3480,-4.0700),
+((SELECT id FROM communes WHERE slug='yopougon'),'Maroc','yopougon-maroc',NULL,5.349935,-4.080947),
 ((SELECT id FROM communes WHERE slug='yopougon'),'Port-Bouët 2','yopougon-port-bouet-2','PB2',5.3380,-4.0920),
 ((SELECT id FROM communes WHERE slug='yopougon'),'Toits Rouges','yopougon-toits-rouges',NULL,5.3550,-4.0850),
 ((SELECT id FROM communes WHERE slug='yopougon'),'Andokoi','yopougon-andokoi','Andokoua',5.3650,-4.0900),
