@@ -6,6 +6,7 @@ const formulaire = document.querySelector('[data-confirmer]');
 const el = formulaire.querySelector('[data-carte]');
 const ecrou = formulaire.querySelector('.confirmer__ecrou');
 const bulle = formulaire.querySelector('[data-bulle]');
+const ombre = formulaire.querySelector('[data-ombre]');
 const nom = formulaire.querySelector('[data-nom]');
 const coordonnees = formulaire.querySelector('[data-coordonnees]');
 const autre = formulaire.querySelector('[data-autre-quartier]');
@@ -54,12 +55,14 @@ function soulever() {
   if (souleve) return;
   souleve = true;
   ecrou.animate([{ transform: 'none' }, { transform: 'translateY(-10px)' }], { duration: duree(160), easing: SORTIE, fill: 'forwards' });
+  ombre?.animate([{ opacity: 0, transform: 'scale(.6)' }, { opacity: 1, transform: 'scale(1)' }], { duration: duree(160), easing: SORTIE, fill: 'forwards' });
   if (premierGeste) { premierGeste = false; bulle.animate([{ opacity: 1 }, { opacity: 0 }], { duration: duree(160), fill: 'forwards' }); }
 }
 function reposer() {
   if (!souleve) return;
   souleve = false;
   ecrou.animate([{ transform: 'translateY(-10px)' }, { transform: 'translateY(2px)', offset: .7 }, { transform: 'none' }], { duration: duree(240), easing: POSE, fill: 'forwards' });
+  ombre?.animate([{ opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(.6)' }], { duration: duree(200), fill: 'forwards' });
 }
 
 function suivre() {

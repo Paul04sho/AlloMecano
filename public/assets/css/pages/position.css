@@ -36,7 +36,9 @@ html.js .js-seul[hidden], html:not(.js) .js-seul { display: none !important; }
   position: absolute; z-index: 600; left: 50%; top: calc(50% + 25px + var(--decalage-repere));
   display: flex; flex-direction: column; align-items: center; gap: var(--esp-8); transform: translate(-50%, -100%); pointer-events: none;
 }
-.confirmer__ecrou { transform-origin: 50% 100%; }
+.confirmer__ecrou { position: relative; transform-origin: 50% 100%; } /* au-dessus de son ombre */
+/* Ombre au sol sous la pointe : elle grandit quand on soulève l'écrou en déplaçant la carte (prototype C2a) */
+.confirmer__ombre { position: absolute; left: 50%; bottom: calc(var(--esp-4) * -1); width: 22px; height: var(--esp-8); margin-left: -11px; border-radius: 50%; background: color-mix(in srgb, var(--bitume) 35%, transparent); opacity: 0; }
 .confirmer__panneau { position: relative; z-index: 2; flex: none; }
 .confirmer__panneau .panneau__interieur { display: flex; flex-direction: column; padding-bottom: calc(var(--hauteur-socle) + var(--esp-16) + env(safe-area-inset-bottom)); }
 .confirmer__coordonnees { margin-top: var(--esp-4); }

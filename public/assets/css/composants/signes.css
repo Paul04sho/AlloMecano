@@ -76,6 +76,19 @@
 @keyframes toast-sortie { to { opacity: 0; transform: translateY(16px); } }
 @media (min-width: 1024px) { .toasts { left: auto; width: 420px; } }
 
+/* ---------- Bannière réseau (prototype · Toasts) : descend du haut et reste tant que le réseau manque ;
+   au retour, passe au vert par fondu croisé puis remonte toute seule ---------- */
+.reseau { position: fixed; left: 0; right: 0; top: 0; z-index: 70; display: grid; pointer-events: none; }
+.reseau__barre {
+  grid-area: 1 / 1; display: flex; align-items: center; gap: calc(var(--esp-8) + 2px);
+  padding: calc(var(--esp-8) + 2px + env(safe-area-inset-top)) var(--marge) calc(var(--esp-8) + 2px);
+  font-weight: 700; letter-spacing: .06em;
+}
+.reseau__barre--hors { background: var(--bitume); color: var(--beton); box-shadow: 0 1px 0 var(--filet-sombre); }
+.reseau__barre--retour { background: var(--dispo-fond); color: var(--beton); }
+.reseau__barre i { flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--gris-voyant); }
+.reseau__barre--retour i { background: var(--dispo-vif); }
+
 /* ---------- Écrou dossier (50:89) ---------- */
 .ecrou-dossier { display: block; overflow: visible; }
 .ecrou-dossier__facette { stroke: none; }

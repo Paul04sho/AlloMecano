@@ -68,7 +68,10 @@
 .radar__anneau--petit { inset: 52px; }
 .radar__balayage { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 300deg, transparent 0deg, color-mix(in srgb, var(--bitume) 10%, transparent) 60deg, transparent 60.5deg); animation: radar-tour 2400ms linear infinite; }
 .radar__balayage::after { content: ""; position: absolute; left: 50%; top: 0; width: 1.5px; height: 50%; margin-left: -.75px; background: color-mix(in srgb, var(--encre) 40%, transparent); }
-.radar.arrete .radar__balayage { animation-play-state: paused; }
+/* Arrêt du radar (fin de recherche) : boucles annulées, balayage effacé, anneaux à 50 %, en 200 ms */
+.radar.arrete .radar__balayage { animation: none; opacity: 0; transition: opacity 200ms linear; }
+.radar.arrete .radar__anneau { animation: none; opacity: .5; transition: opacity 200ms linear; }
+.recherche--arretee .recherche__voyant::after { animation: none; }
 @keyframes radar-anneau { from { opacity: 0; transform: scale(.8); } }
 @keyframes radar-tour { to { transform: rotate(360deg); } }
 .recherche__entete { display: flex; flex-direction: column; gap: var(--esp-8); padding-top: var(--esp-4); }

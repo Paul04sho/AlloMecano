@@ -22,6 +22,7 @@
   --dispo: #12965f;
   --dispo-texte: #0e7c4f;
   --dispo-fond: #0e7c4f;
+  --dispo-vif: #3dd68c; /* voyant vert sur fond vert ou sombre (bannière « de nouveau en ligne ») */
   --erreur: #d7322b;
   --erreur-texte: #b8261f;
   --socle: #15171c;

@@ -43,6 +43,54 @@ export function toast(message, { icone = null, action = null, surAction = null, 
   setTimeout(fermer, duree ?? (action ? 6000 : 4000));
 }
 
+/**
+ * Bannière réseau (prototype · Toasts · bannière réseau) : « Hors ligne » descend du haut (240 ms) et reste tant que
+ * le réseau manque ; au retour, « Vous êtes de nouveau en ligne » passe au vert en fondu (200 ms), puis les deux
+ * remontent après 2 s (240 ms). La page reste affichée et utilisable pendant la coupure.
+ */
+let barreHorsLigne = null;
+export function etatReseau(enLigne) {
+  let zone = document.querySelector('[data-reseau]');
+  if (!zone) {
+    zone = document.createElement('div');
+    zone.className = 'reseau';
+    zone.dataset.reseau = '';
+    zone.setAttribute('role', 'status');
+    zone.setAttribute('aria-live', 'polite');
+    document.body.append(zone);
+  }
+  const d = (ms) => (matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : ms);
+  const barre = (etat, texte) => {
+    const b = document.createElement('p');
+    b.className = `reseau__barre reseau__barre--${etat} t-etiquette`;
+    b.innerHTML = '<i aria-hidden="true"></i><span></span>';
+    b.querySelector('span').textContent = texte;
+    zone.append(b);
+    return b;
+  };
+  if (!enLigne) {
+    if (barreHorsLigne) return;
+    barreHorsLigne = barre('hors', 'Hors ligne · on garde votre recherche');
+    barreHorsLigne.animate([{ transform: 'translateY(-100%)' }, { transform: 'none' }], { duration: d(240), easing: 'cubic-bezier(.2, .8, .2, 1)' });
+    return;
+  }
+  if (!barreHorsLigne) return;
+  const hors = barreHorsLigne;
+  barreHorsLigne = null;
+  const retour = barre('retour', 'Vous êtes de nouveau en ligne');
+  retour.animate([{ opacity: 0 }, { opacity: 1 }], { duration: d(200), fill: 'forwards' });
+  setTimeout(() => {
+    [hors, retour].forEach((b) => b.animate([{ transform: 'none' }, { transform: 'translateY(-100%)' }], { duration: d(240), easing: 'cubic-bezier(.7, 0, .84, 0)', fill: 'forwards' })
+      .finished.then(() => b.remove(), () => b.remove()));
+  }, 2000);
+}
+// Écrans client seulement : « on garde votre recherche » n'a pas de sens dans l'espace pro ni l'administration
+if (!/^\/(pro|admin)(\/|$)/.test(location.pathname)) {
+  addEventListener('offline', () => etatReseau(false));
+  addEventListener('online', () => etatReseau(true));
+  if (navigator.onLine === false) etatReseau(false);
+}
+
 /** Bouton en chargement : libellé au présent + voyant clignotant, largeur figée (spec 7.2). */
 export function chargement(bouton, actif = true) {
   const libelle = bouton.querySelector('.bouton__libelle');

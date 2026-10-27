@@ -35,6 +35,7 @@ $donnees = array_map(fn ($q) => [$q['nom'] . ', ' . $q['commune_nom'], $q['lat']
         'libelle' => 'Carte de votre position. Déplacez-la pour placer le repère exactement où vous êtes.']) ?>
     <div class="confirmer__repere" data-repere>
       <?= composant('bulle', ['texte' => $imprecis ? 'Précision faible : déplacez la carte pour ajuster' : 'Déplacez la carte pour ajuster', 'classe' => 'confirmer__bulle', 'attrs' => ['data-bulle' => '']]) ?>
+      <span class="confirmer__ombre" aria-hidden="true" data-ombre></span>
       <?= composant('ecrou-repere', ['type' => 'carte', 'classe' => 'confirmer__ecrou']) ?>
     </div>
   </div>

@@ -26,8 +26,11 @@ const placerRadar = () => {
 placerRadar();
 carte.on('move zoom resize', placerRadar);
 
+const reduit = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 function arreter() {
   radar.classList.add('arrete');
+  racine.classList.add('recherche--arretee');
   racine.querySelector('.vous-etes-ici')?.classList.remove('vous-etes-ici--recherche');
 }
 const limite = setTimeout(arreter, 20000);
@@ -51,7 +54,11 @@ try {
   reessayer.className = 'bouton bouton--principal bouton--plein';
   reessayer.innerHTML = '<span class="bouton__libelle">Réessayer</span>';
   reessayer.addEventListener('click', () => location.reload());
-  racine.querySelector('.recherche__squelettes').replaceWith(note, reessayer);
+  // Message : les squelettes s'effacent en 120 ms, puis le message monte de 8 px (240 ms, prototype C4b)
+  const squelettes = racine.querySelector('.recherche__squelettes');
+  if (!reduit) await squelettes.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 120, fill: 'forwards' }).finished.catch(() => {});
+  squelettes.replaceWith(note, reessayer);
+  if (!reduit) [note, reessayer].forEach((el) => el.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], { duration: 240, easing: 'cubic-bezier(.2, .8, .2, 1)' }));
   racine.querySelector('.feuille')?.removeAttribute('aria-busy');
   feuille.querySelector('h1').textContent = 'Recherche interrompue';
 }

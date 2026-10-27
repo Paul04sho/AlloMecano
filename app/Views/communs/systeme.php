@@ -113,6 +113,8 @@ $icones = json_decode((string) file_get_contents(RACINE . '/scripts/icones.json'
       <?= composant('note', ['type' => 'erreur', 'message' => 'La recherche n’a pas abouti. Vérifiez le réseau.']) ?>
       <?= composant('note', ['type' => 'danger', 'message' => '<strong>Quelqu’un est blessé&#8239;?</strong> Appelez le 185 d’abord.', 'actions' => composant('bouton', ['libelle' => 'Appeler le 185', 'icone' => 'telephone', 'type' => 'contour', 'href' => 'tel:185'])]) ?>
       <p><button type="button" class="bouton bouton--contour" data-demo-toast><span class="bouton__libelle">Afficher un toast</span></button></p>
+      <p><button type="button" class="bouton bouton--contour" data-demo-reseau="hors"><span class="bouton__libelle">Bannière : hors ligne</span></button></p>
+      <p><button type="button" class="bouton bouton--contour" data-demo-reseau="retour"><span class="bouton__libelle">Bannière : de nouveau en ligne</span></button></p>
     </div>
   </section>
 
